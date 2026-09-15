@@ -1,0 +1,299 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M3",
+  "notice_id": 13,
+  "version_id": 13,
+  "source": {
+    "source_id": "dut_it_faculty",
+    "name": "DUT Faculty of Information Technology"
+  },
+  "title": "THÔNG BÁO THỜI GIAN VỀ XÉT TỐT NGHIỆP ĐỢT 2 VÀ ĐỢT 3 NĂM 2026 (THÁNG 7)",
+  "raw_text": "Khoa Công nghệ Thông tin thông báo đến sinh viên về kế hoạch xét tốt nghiệp đợt 2 và đợt 3 năm 2026 để các bạn chủ động hoàn thiện các thủ tục cần thiết.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 2 NĂM 2026\nDanh sách sinh viên dự kiến được xét tốt nghiệp đợt 2:\nhttps://bom.so/Fc2LX1\nCác sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp cần khẩn trương hoàn tất trước ngày 17/06/2026 để được xét tốt nghiệp.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 3 NĂM 2026 (THÁNG 7)\nĐối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT: cán bộ lớp nhận danh sách tại HC1C từ ngày 16/06, tổ chức cho sinh viên ký tên và nộp 01 ảnh thẻ 2×3 (ghi rõ họ tên phía sau ảnh).\nĐối với các sinh viên khác:\nIn đơn xin xét tốt nghiệp tại trang\nsv.dut.udn.vn\n(mục Đề nghị trường → Xét tốt nghiệp, hoãn tốt nghiệp) và nộp kèm 01 ảnh thẻ 2×3.\nThời hạn nộp đơn xét tốt nghiệp và danh sách đăng ký theo lớp:\nTrước 16h00 ngày 26/06/2026\nĐịa điểm: Phòng Hành chính 1 Cửa - Khu A\nDanh sách sinh viên chưa hoàn thành học phí:\nhttps://bom.so/C1Un6C\nSinh viên cần liên hệ Phòng Kế hoạch Tài chính để kiểm tra và xử lý.\nĐối với sinh viên cần nộp bổ sung các chứng chỉ, thời hạn hoàn thành là trước ngày 15/06/2026 để đảm bảo công tác hậu kiểm phục vụ xét tốt nghiệp. Các bạn sinh viên lưu ý theo dõi và thực hiện đầy đủ các yêu cầu đúng thời gian quy định để quá trình xét tốt nghiệp được diễn ra thuận lợi.",
+  "publication_time": "2026-06-15T08:32:00+07:00",
+  "observed_at": "2026-09-15T08:55:32.442290Z",
+  "url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/12038",
+  "content_hash": "4d8174570bc5d0b4856f0a8cd97ba5f662ce493f7d92dd3af83f674d2e8926f6",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "Các sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "khẩn trương hoàn tất trước ngày 17/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "deadline",
+      "text": "trước ngày 17/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "audience",
+      "text": "Đối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "action",
+      "text": "tổ chức cho sinh viên ký tên và nộp 01 ảnh thẻ 2×3",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e6",
+      "field": "deadline",
+      "text": "Trước 16h00 ngày 26/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e7",
+      "field": "location",
+      "text": "Phòng Hành chính 1 Cửa - Khu A",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e8",
+      "field": "audience",
+      "text": "Đối với các sinh viên khác",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e9",
+      "field": "action",
+      "text": "In đơn xin xét tốt nghiệp tại trang\nsv.dut.udn.vn\n(mục Đề nghị trường → Xét tốt nghiệp, hoãn tốt nghiệp) và nộp kèm 01 ảnh thẻ 2×3.",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e10",
+      "field": "required_document",
+      "text": "nộp kèm 01 ảnh thẻ 2×3",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e11",
+      "field": "audience",
+      "text": "Đối với sinh viên cần nộp bổ sung các chứng chỉ",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e12",
+      "field": "deadline",
+      "text": "trước ngày 15/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e13",
+      "field": "action",
+      "text": "nộp bổ sung các chứng chỉ",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e14",
+      "field": "required_document",
+      "text": "các chứng chỉ",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Các sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "other",
+        "text": "hoàn tất nghĩa vụ học phí hoặc nộp lưu chiểu Đồ án tốt nghiệp còn thiếu",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": {
+        "raw_text": "trước ngày 17/06/2026",
+        "normalized": "2026-06-17",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o2",
+      "audience": {
+        "raw_text": "Đối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [
+          "CNTT"
+        ],
+        "cohorts": [
+          "K21",
+          "K22"
+        ],
+        "programs": [],
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "ký tên theo danh sách lớp và nộp 01 ảnh thẻ 2×3",
+        "evidence_span_ids": [
+          "e5"
+        ]
+      },
+      "deadline": {
+        "raw_text": "Trước 16h00 ngày 26/06/2026",
+        "normalized": "2026-06-26T16:00:00+07:00",
+        "precision": "datetime",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e6"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Phòng Hành chính 1 Cửa - Khu A",
+        "evidence_span_ids": [
+          "e7"
+        ]
+      },
+      "required_documents": [
+        {
+          "text": "01 ảnh thẻ 2×3",
+          "evidence_span_ids": [
+            "e5"
+          ]
+        }
+      ],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o3",
+      "audience": {
+        "raw_text": "Đối với các sinh viên khác",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e8"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "in và nộp đơn xin xét tốt nghiệp",
+        "evidence_span_ids": [
+          "e9"
+        ]
+      },
+      "deadline": {
+        "raw_text": "Trước 16h00 ngày 26/06/2026",
+        "normalized": "2026-06-26T16:00:00+07:00",
+        "precision": "datetime",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e6"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Phòng Hành chính 1 Cửa - Khu A",
+        "evidence_span_ids": [
+          "e7"
+        ]
+      },
+      "required_documents": [
+        {
+          "text": "đơn xin xét tốt nghiệp",
+          "evidence_span_ids": [
+            "e9"
+          ]
+        },
+        {
+          "text": "01 ảnh thẻ 2×3",
+          "evidence_span_ids": [
+            "e10"
+          ]
+        }
+      ],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o4",
+      "audience": {
+        "raw_text": "Đối với sinh viên cần nộp bổ sung các chứng chỉ",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e11"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp bổ sung các chứng chỉ phục vụ xét tốt nghiệp",
+        "evidence_span_ids": [
+          "e13"
+        ]
+      },
+      "deadline": {
+        "raw_text": "trước ngày 15/06/2026",
+        "normalized": "2026-06-15",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e12"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [
+        {
+          "text": "các chứng chỉ cần nộp bổ sung",
+          "evidence_span_ids": [
+            "e14"
+          ]
+        }
+      ],
+      "exceptions": []
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. The first obligation groups two alternative outstanding conditions because the notice gives them one shared deadline."
+}

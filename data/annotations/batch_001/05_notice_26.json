@@ -1,0 +1,153 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M2",
+  "notice_id": 26,
+  "version_id": 26,
+  "source": {
+    "source_id": "dut_ctsv",
+    "name": "DUT Student Affairs"
+  },
+  "title": "Thông báo gia hạn thời gian tự đánh giá kết quả rèn luyện học kỳ II năm học 2025–2026 (đợt 1) đối với sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ",
+  "raw_text": "- Thời gian gia hạn tự đánh giá kết quả rèn luyện (ĐGRL) cho sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ có đăng ký học phần trong học kỳ II năm học 2025-2026:\nTừ 15h00 ngày 16/7/2026 đến hết ngày 17/7/2026\n;\n- Sau thời gian trên, sinh viên không thực hiện đầy đủ quy trình ĐGRL nhận 0 điểm;\n- Thời gian Lớp trưởng và Chủ nhiệm lớp hoàn thành việc xác nhận điểm cho lớp:\nhết ngày 24/7/2026\n;\n- Tất cả các lớp các khóa 2021, khóa 2022 và các lớp trễ tiến độ nộp hồ sơ ĐGRL HK2/2025-2026 về Khoa; Khoa tổng hợp, xác nhận và nộp về Phòng Công tác Sinh viên\ntrước ngày 30/7/2026\n.\n- Đối với các lớp không nộp hồ sơ đúng thời hạn quy định, Nhà trường xem xét hoãn xét cấp học bổng khuyến khích học tập HK2/2025-2026 và trừ điểm thi đua khen thưởng năm học.",
+  "publication_time": "2026-07-16T10:35:00+07:00",
+  "observed_at": "2026-09-15T08:57:14.884190Z",
+  "url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12119",
+  "content_hash": "baf40f76a574cae11511d0eb1558b9c15fd6e219d4399acb8fa3230ec4c453b1",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ có đăng ký học phần trong học kỳ II năm học 2025-2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "tự đánh giá kết quả rèn luyện (ĐGRL)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "deadline",
+      "text": "Từ 15h00 ngày 16/7/2026 đến hết ngày 17/7/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "audience",
+      "text": "Tất cả các lớp các khóa 2021, khóa 2022 và các lớp trễ tiến độ",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "action",
+      "text": "nộp hồ sơ ĐGRL HK2/2025-2026 về Khoa",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e6",
+      "field": "deadline",
+      "text": "trước ngày 30/7/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e7",
+      "field": "exception",
+      "text": "Đối với các lớp không nộp hồ sơ đúng thời hạn quy định, Nhà trường xem xét hoãn xét cấp học bổng khuyến khích học tập HK2/2025-2026 và trừ điểm thi đua khen thưởng năm học.",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ có đăng ký học phần trong học kỳ II năm học 2025-2026",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [
+          "K21",
+          "K22"
+        ],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "update",
+        "text": "tự đánh giá kết quả rèn luyện học kỳ II năm học 2025-2026",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": {
+        "raw_text": "Từ 15h00 ngày 16/7/2026 đến hết ngày 17/7/2026",
+        "normalized": "2026-07-17",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o2",
+      "audience": {
+        "raw_text": "Tất cả các lớp các khóa 2021, khóa 2022 và các lớp trễ tiến độ",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [
+          "K21",
+          "K22"
+        ],
+        "programs": [],
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp hồ sơ ĐGRL HK2/2025-2026 về Khoa",
+        "evidence_span_ids": [
+          "e5"
+        ]
+      },
+      "deadline": {
+        "raw_text": "trước ngày 30/7/2026",
+        "normalized": "2026-07-30",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e6"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": [
+        {
+          "text": "Nếu không nộp hồ sơ đúng hạn, Nhà trường có thể hoãn xét học bổng khuyến khích học tập và trừ điểm thi đua khen thưởng.",
+          "evidence_span_ids": [
+            "e7"
+          ]
+        }
+      ]
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. This notice is a strong temporal candidate because it explicitly says 'gia hạn', but no supersedes/amends relation is asserted until the earlier authoritative notice is identified."
+}

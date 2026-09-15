@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M2",
+  "notice_id": 2,
+  "version_id": 2,
+  "source": {
+    "source_id": "dut_academic",
+    "name": "DUT Academic and Examination Notices"
+  },
+  "title": "Thông báo kiểm tra trình độ tiếng Anh đầu vào cho sinh viên Chương trình tiên tiến và Cơ khí hàng không (dạy và học bằng tiếng Anh), khóa tuyển sinh năm 2026 New",
+  "raw_text": "Sinh viên xem thông báo kiểm tra:\nTẠI ĐÂY\nDanh sách miễn thi:\nTẠI ĐÂY\nDanh sách phòng thi, số báo danh:\nTẠI ĐÂY",
+  "publication_time": "2026-09-10T13:49:00+07:00",
+  "observed_at": "2026-09-15T08:52:40.441358Z",
+  "url": "https://dut.udn.vn/Tintuc/Thongbao/id/12256",
+  "content_hash": "3dbb9f61bbe4e88546352fb088d1b9235f4e234e2be4bdfa6aed25cfdb8aec02",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "Sinh viên",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "xem thông báo kiểm tra",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Sinh viên",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "check",
+        "text": "xem thông báo kiểm tra trình độ tiếng Anh đầu vào",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": null,
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": []
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. This landing page only contains links; the detailed linked notice, exemption list, and room list were not ingested into raw_text, so no deadline, room, or program-specific audience is asserted."
+}

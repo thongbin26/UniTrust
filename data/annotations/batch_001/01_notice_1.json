@@ -1,0 +1,100 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M1",
+  "notice_id": 1,
+  "version_id": 1,
+  "source": {
+    "source_id": "dut_academic",
+    "name": "DUT Academic and Examination Notices"
+  },
+  "title": "Thông báo về việc xếp lớp tiếng Anh và kiểm tra trình độ tiếng Anh đầu vào đối với sinh viên khóa tuyển sinh năm 2026 Hot",
+  "raw_text": "Phòng Đào tạo và Bảo đảm Chất lượng thông báo cho tất cả các em sinh viên khóa tuyển sinh 2026\n\"Về việc xếp lớp tiếng Anh và kiểm tra trình độ tiếng Anh đầu vào đối với sinh viên khóa tuyển sinh năm 2026\".\n1. Chi tiết thông báo xem:\nTẠI ĐÂY\n2.\nSinh viên xếp lớp theo\nPhương thức 1: Sử dụng chứng chỉ tiếng Anh\n(Chi tiết có trong thông báo)\na) Áp dụng đối với sinh viên có chứng chỉ tiếng Anh còn giá trị tính đến ngày 20/6/2026 (thời hạn cung cấp chứng chỉ ngoại ngữ theo Quy chế tuyển sinh 2026).\nChứng chỉ được quy đổi để miễn học hoặc xếp vào lớp tương ứng theo bảng quy đổi tại Phụ lục I kèm theo Thông báo này.\nb)\nDanh sách sinh viên được xếp lớp tiếng Anh theo Phương thức 1 được công bố tại website\nhttps://sv.dut.udn.vn\nsau khi có kết quả hậu kiểm hợp lệ.\n3. Danh sách sinh viên được xếp lớp theo\nPhương thức 2:\nSử dụng kết quả thi tốt nghiệp THPT môn tiếng Anh xem:\nTẠI ĐÂY\nLưu ý:\nSinh viên đã được xếp lớp theo\nPhương thức 1 hoặc Phương thức 2\nnhưng có nguyện vọng tham gia kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp: sinh viên đăng ký trực tiếp tại Khu hành chính 1 cửa (khu A), từ ngày\n14/9/2026 đến 18/9/2026\n.\n4. Phương thức 3:\nTổ chức kiểm tra trình độ tiếng Anh và xếp lớp\n- Thời gian: sáng ngày 04/10/2026 (Chủ nhật), Từ\n07h00 đến\n10h45,\nĐịa điểm : Khu giảng đường F và giảng đường H.\nMọi thắc mắc cần hỗ trợ, sinh viên gửi email đến Phòng Đào tạo và Bảo đảm chất lượng (dt-bdcl.dhbk@dut.udn.vn), tiêu đề email “\nAV đầu vào-Khoa2026-MSSV\n” hoặc gọi điện thoại số 0905.168.760 gặp chuyên viên Nguyễn Văn Khai./.",
+  "publication_time": "2026-09-15T08:16:00+07:00",
+  "observed_at": "2026-09-15T08:52:39.590129Z",
+  "url": "https://dut.udn.vn/Tintuc/Thongbao/id/12264",
+  "content_hash": "ab8b5ec0afd6d76a320b88d51edb871e1e0ab39e201780f02670127c610676bc",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "tất cả các em sinh viên khóa tuyển sinh 2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "audience",
+      "text": "Sinh viên đã được xếp lớp theo\nPhương thức 1 hoặc Phương thức 2\nnhưng có nguyện vọng tham gia kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "action",
+      "text": "sinh viên đăng ký trực tiếp tại Khu hành chính 1 cửa (khu A)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "deadline",
+      "text": "14/9/2026 đến 18/9/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "location",
+      "text": "Khu hành chính 1 cửa (khu A)",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Sinh viên đã được xếp lớp theo Phương thức 1 hoặc Phương thức 2 nhưng có nguyện vọng tham gia kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [
+          "K26"
+        ],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1",
+          "e2"
+        ]
+      },
+      "action": {
+        "action_type": "register",
+        "text": "đăng ký kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "deadline": {
+        "raw_text": "14/9/2026 đến 18/9/2026",
+        "normalized": "2026-09-18",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Khu hành chính 1 cửa (khu A)",
+        "evidence_span_ids": [
+          "e5"
+        ]
+      },
+      "required_documents": [],
+      "exceptions": []
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. Method 3 test schedule is not encoded as a separate obligation because the raw text does not explicitly state which students must follow that method."
+}

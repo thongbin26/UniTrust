@@ -1,0 +1,282 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M3",
+  "notice_id": 16,
+  "version_id": 16,
+  "source": {
+    "source_id": "dut_it_faculty",
+    "name": "DUT Faculty of Information Technology"
+  },
+  "title": "Thông báo về việc tuyển chọn sinh viên tham gia Chương trình trao đổi sinh viên Erasmus KA171 tại Hy Lạp",
+  "raw_text": "Khoa Công nghệ Thông tin thông báo đến sinh viên về chương trình trao đổi sinh viên trong khuôn khổ dự án Erasmus KA171 tại Trường Đại học Địa Trung Hải Hellenic (Hy Lạp) với các thông tin cụ thể như sau:\n1. Thông tin học bổng\nSố lượng\n: 01 suất\nThời gian học tập\n: Học kỳ mùa đông năm 2026\nDự kiến từ\ntháng 10/2026 đến tháng 02/2027\nQuyền lợi học bổng\n:\nHỗ trợ chi phí đi lại:\n1.735 EUR\nHỗ trợ sinh hoạt:\ntối đa 850 EUR/tháng\n(tối đa 150 ngày ~ khoảng 5 tháng)\n🔹\nLưu ý\n:\nMức hỗ trợ sinh hoạt được tính theo số ngày học tập thực tế (không bao gồm thời gian di chuyển và thời gian đến nơi).\nTheo quy định của Ủy ban Châu Âu, mỗi tháng được tính là 30 ngày.\n2. Điều kiện tham gia\nSinh viên đăng ký cần đáp ứng các tiêu chí sau:\nCó chứng chỉ tiếng Anh:\nIELTS từ 6.5 trở lên\nhoặc tương đương\nCó chuyên môn phù hợp với chương trình\nGiao tiếp tiếng Anh tốt, tự tin, chủ động\nTích cực tham gia các hoạt động xã hội và hợp tác quốc tế\nCó nguyện vọng tham gia chương trình trao đổi quốc tế\nCam kết tham gia hỗ trợ, quảng bá các hoạt động hợp tác quốc tế của Trường sau khi hoàn thành chương trình\n3. Thời gian và link đăng ký\nThời gian đăng ký online\n:\nTừ ngày\n26/05/2026 đến ngày 31/05/2026\nLink đăng ký\n:\n👉\nhttps://forms.gle/XrVJbNHWt9UhkB4z6\n4. Hồ sơ đăng ký\nHồ sơ bao gồm (nộp\nbằng tiếng Anh và tiếng Việt\n):\nSơ yếu lý lịch (CV)\nThư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị\nBảng điểm\nChứng chỉ ngoại ngữ\nBản sao hộ chiếu\nBằng khen/Giấy khen (nếu có)\n📩\nNộp hồ sơ bản mềm qua email\n: vnha@dut.udn.vn\n📌\nLưu ý\n:\nSinh viên chuẩn bị sẵn hồ sơ bản cứng.\nHồ sơ bản cứng sẽ được nộp trực tiếp tại Ban Khoa học và Hợp tác quốc tế vào\nngày 02/06/2026\nsau khi có thông báo kết quả tuyển chọn.\n5. Thông tin bổ sung\nĐây là cơ hội tốt để sinh viên trải nghiệm môi trường học tập quốc tế, nâng cao năng lực chuyên môn và kỹ năng ngoại ngữ. Khoa CNTT khuyến khích sinh viên quan tâm tích cực tham gia.\n📣\nKhoa Công nghệ Thông tin\nđề nghị sinh viên quan tâm theo dõi và đăng ký đúng thời hạn.",
+  "publication_time": "2026-05-26T21:52:00+07:00",
+  "observed_at": "2026-09-15T08:55:34.241939Z",
+  "url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/11999",
+  "content_hash": "33a8ad988ce94f29534e6a625daa06734a3e9de34658866789a7f7b3851bdfbb",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "Sinh viên đăng ký cần đáp ứng các tiêu chí sau:\nCó chứng chỉ tiếng Anh:\nIELTS từ 6.5 trở lên\nhoặc tương đương\nCó chuyên môn phù hợp với chương trình\nGiao tiếp tiếng Anh tốt, tự tin, chủ động\nTích cực tham gia các hoạt động xã hội và hợp tác quốc tế\nCó nguyện vọng tham gia chương trình trao đổi quốc tế\nCam kết tham gia hỗ trợ, quảng bá các hoạt động hợp tác quốc tế của Trường sau khi hoàn thành chương trình",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "3. Thời gian và link đăng ký\nThời gian đăng ký online",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "deadline",
+      "text": "Từ ngày\n26/05/2026 đến ngày 31/05/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "required_document",
+      "text": "Sơ yếu lý lịch (CV)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "required_document",
+      "text": "Thư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e6",
+      "field": "required_document",
+      "text": "Bảng điểm",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e7",
+      "field": "required_document",
+      "text": "Chứng chỉ ngoại ngữ",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e8",
+      "field": "required_document",
+      "text": "Bản sao hộ chiếu",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e9",
+      "field": "exception",
+      "text": "Bằng khen/Giấy khen (nếu có)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e10",
+      "field": "action",
+      "text": "Nộp hồ sơ bản mềm qua email\n: vnha@dut.udn.vn",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e11",
+      "field": "action",
+      "text": "Hồ sơ bản cứng sẽ được nộp trực tiếp tại Ban Khoa học và Hợp tác quốc tế vào\nngày 02/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e12",
+      "field": "deadline",
+      "text": "ngày 02/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e13",
+      "field": "location",
+      "text": "Ban Khoa học và Hợp tác quốc tế",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Sinh viên đăng ký cần đáp ứng các tiêu chí của chương trình Erasmus KA171",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "register",
+        "text": "đăng ký online chương trình trao đổi Erasmus KA171",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": {
+        "raw_text": "Từ ngày 26/05/2026 đến ngày 31/05/2026",
+        "normalized": "2026-05-31",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o2",
+      "audience": {
+        "raw_text": "Sinh viên đăng ký cần đáp ứng các tiêu chí của chương trình Erasmus KA171",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp hồ sơ bản mềm qua email vnha@dut.udn.vn",
+        "evidence_span_ids": [
+          "e10"
+        ]
+      },
+      "deadline": null,
+      "amount": null,
+      "location": null,
+      "required_documents": [
+        {
+          "text": "Sơ yếu lý lịch (CV)",
+          "evidence_span_ids": [
+            "e4"
+          ]
+        },
+        {
+          "text": "Thư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị",
+          "evidence_span_ids": [
+            "e5"
+          ]
+        },
+        {
+          "text": "Bảng điểm",
+          "evidence_span_ids": [
+            "e6"
+          ]
+        },
+        {
+          "text": "Chứng chỉ ngoại ngữ",
+          "evidence_span_ids": [
+            "e7"
+          ]
+        },
+        {
+          "text": "Bản sao hộ chiếu",
+          "evidence_span_ids": [
+            "e8"
+          ]
+        }
+      ],
+      "exceptions": [
+        {
+          "text": "Bằng khen/Giấy khen là tài liệu tùy chọn nếu có.",
+          "evidence_span_ids": [
+            "e9"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "o3",
+      "audience": {
+        "raw_text": "Sinh viên đăng ký cần đáp ứng các tiêu chí của chương trình Erasmus KA171",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp hồ sơ bản cứng sau khi có thông báo kết quả tuyển chọn",
+        "evidence_span_ids": [
+          "e11"
+        ]
+      },
+      "deadline": {
+        "raw_text": "ngày 02/06/2026",
+        "normalized": "2026-06-02",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e12"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Ban Khoa học và Hợp tác quốc tế",
+        "evidence_span_ids": [
+          "e13"
+        ]
+      },
+      "required_documents": [
+        {
+          "text": "Sơ yếu lý lịch (CV)",
+          "evidence_span_ids": [
+            "e4"
+          ]
+        },
+        {
+          "text": "Thư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị",
+          "evidence_span_ids": [
+            "e5"
+          ]
+        },
+        {
+          "text": "Bảng điểm",
+          "evidence_span_ids": [
+            "e6"
+          ]
+        },
+        {
+          "text": "Chứng chỉ ngoại ngữ",
+          "evidence_span_ids": [
+            "e7"
+          ]
+        },
+        {
+          "text": "Bản sao hộ chiếu",
+          "evidence_span_ids": [
+            "e8"
+          ]
+        }
+      ],
+      "exceptions": []
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. This is an optional exchange-program opportunity. Scholarship support amounts are not mapped to obligation.amount because they are benefits, not payments owed by the student."
+}

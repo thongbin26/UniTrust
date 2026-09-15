@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M3",
+  "notice_id": 29,
+  "version_id": 29,
+  "source": {
+    "source_id": "dut_ctsv",
+    "name": "DUT Student Affairs"
+  },
+  "title": "Thông báo học bổng Vallet năm học 2026-2027",
+  "raw_text": "Phòng Công tác Sinh viên thông báo học bổng Vallet năm học 2026-2027\n1. Số lượng và số lượng học bổng:\n- Số lượng: 15 suất\n- Giá trị: 34.000.000 đồng/suất\n2. Tiêu chuẩn xét chọn sinh viên nhận học bổng:\n- Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026;\n- Là sinh viên học giỏi trong 3 học kỳ liên tiếp gồm HK 2 năm học 2024-2025; HK 1 và HK 2 năm học 2025-2026;\n- Ưu tiên cho những sinh viên đạt các giải thưởng về học tập, về NCKH trong thời gian theo học đại học (tính đến hết năm học 2025-2026), có các chứng chỉ quốc tế về tiếng Anh hay tiếng Pháp vẫn còn giá trị tính đến hết năm học 2025-2026.\n3. Nộp hồ sơ đề nghị xét cấp học bổng, bao gồm:\n- Phiếu đăng ký học bổng: sinh viên in ra và điền tay, tải mẫu tại đường link:\nhttps://drive.google.com/file/d/1ljqc0v0pgg6bxHIlF0KcTk6LV9l5EV5L/view?usp=sharing\n- Các bảng điểm của 3 học kỳ liên tiếp như đã nói ở mục ngay trên (HK 2 năm học 2024-2025; HK 1 và HK 2 năm học 2025-2026) có đóng dấu xác nhận của Nhà trường;\n- Bản sao công chứng CMND hoặc CCCD;\n- Bản sao công chứng của các tất cả các chứng nhận về thành tích học tập và/hoặc NCKH, chứng chỉ quốc tế về tiếng Anh hay Pháp, HĐCĐ trong thời gian học đại học (tính đến hết năm học 2025-2026);\nSinh viên đăng ký học bổng tại link:\nhttps://forms.gle/AtyFoN5pMQC6cvLJ8\nvà nộp hồ sơ về\nPhòng Công tác Sinh viên - Phòng S06.08\n(Chuyên viên Đới Phương Thanh) thời gian: từ\n09h00-11h00 ngày 24/7/2026",
+  "publication_time": "2026-07-07T14:27:00+07:00",
+  "observed_at": "2026-09-15T08:57:16.647722Z",
+  "url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12104",
+  "content_hash": "e84cff102b1f589cd18e545d3425e25eb579e5ed363788e9a44278a559682570",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "Sinh viên đăng ký học bổng tại link",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "action",
+      "text": "nộp hồ sơ về\nPhòng Công tác Sinh viên - Phòng S06.08",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "deadline",
+      "text": "09h00-11h00 ngày 24/7/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "location",
+      "text": "Phòng Công tác Sinh viên - Phòng S06.08",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e6",
+      "field": "required_document",
+      "text": "Phiếu đăng ký học bổng",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e7",
+      "field": "required_document",
+      "text": "Các bảng điểm của 3 học kỳ liên tiếp",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e8",
+      "field": "required_document",
+      "text": "Bản sao công chứng CMND hoặc CCCD",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e9",
+      "field": "required_document",
+      "text": "Bản sao công chứng của các tất cả các chứng nhận về thành tích học tập và/hoặc NCKH, chứng chỉ quốc tế về tiếng Anh hay Pháp, HĐCĐ trong thời gian học đại học (tính đến hết năm học 2025-2026)",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "register",
+        "text": "đăng ký học bổng Vallet tại đường link đăng ký",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": null,
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o2",
+      "audience": {
+        "raw_text": "Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp hồ sơ đề nghị xét cấp học bổng Vallet",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "deadline": {
+        "raw_text": "09h00-11h00 ngày 24/7/2026",
+        "normalized": "2026-07-24T11:00:00+07:00",
+        "precision": "datetime",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Phòng Công tác Sinh viên - Phòng S06.08",
+        "evidence_span_ids": [
+          "e5"
+        ]
+      },
+      "required_documents": [
+        {
+          "text": "Phiếu đăng ký học bổng",
+          "evidence_span_ids": [
+            "e6"
+          ]
+        },
+        {
+          "text": "Các bảng điểm của 3 học kỳ liên tiếp",
+          "evidence_span_ids": [
+            "e7"
+          ]
+        },
+        {
+          "text": "Bản sao công chứng CMND hoặc CCCD",
+          "evidence_span_ids": [
+            "e8"
+          ]
+        },
+        {
+          "text": "Bản sao công chứng các chứng nhận/thành tích, chứng chỉ quốc tế và hoạt động cộng đồng nếu có",
+          "evidence_span_ids": [
+            "e9"
+          ]
+        }
+      ],
+      "exceptions": []
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. This is an optional scholarship opportunity, not a mandatory student duty. The 34,000,000 VND scholarship value is not placed in obligation.amount because it is a benefit value, not a payment obligation."
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M3",
+  "notice_id": 17,
+  "version_id": 17,
+  "source": {
+    "source_id": "dut_it_faculty",
+    "name": "DUT Faculty of Information Technology"
+  },
+  "title": "VEDC 2026 – Cuộc thi Thiết kế Điện tử Việt Nam 2026 chính thức khởi động",
+  "raw_text": "Cuộc thi Thiết kế Điện tử Việt Nam 2026 (VEDC 2026) chính thức được phát động trên quy mô toàn quốc. Đây là sân chơi học thuật dành cho sinh viên yêu thích lĩnh vực Điện tử, IoT và Trí tuệ nhân tạo, tạo cơ hội nghiên cứu, sáng tạo và hiện thực hóa các ý tưởng công nghệ.\n1. Chủ đề\n“AI nhúng cho hệ thống IoT thông minh” (Embedded AI for Smart IoT Systems)\n2. Đơn vị tổ chức\n- Hội Vô tuyến – Điện tử Việt Nam (REV)\n– Đơn vị chủ trì\n- Phối hợp tổ chức:\na) Trường Đại học Công nghệ Thông tin và Truyền thông Việt – Hàn (VKU), Đại học Đà Nẵng (đơn vị đăng cai)\nb) Học viện Kỹ thuật Quân sự (MTA)\nc) Trường Đại học Khoa học Tự nhiên – ĐHQG TP.HCM (HCMUS)\n3. Nội dung cuộc thi\nSinh viên tham gia nghiên cứu, thiết kế và xây dựng các sản phẩm điện tử ứng dụng hệ thống nhúng và công nghệ IoT nhằm giải quyết các vấn đề thực tiễn.\nLĩnh vực ưu tiên:\nCông nghiệp, nông nghiệp, môi trường, y tế, giáo dục, giao thông, đô thị thông minh.\nYêu cầu kỹ thuật:\n- Có thành phần nhúng và IoT (cảm biến, vi điều khiển, FPGA/GPU, kết nối mạng...)\n- Phần cứng: ESP32, STM32, Raspberry Pi, Arduino, Jetson Nano, Google Coral, FPGA hoặc PCB tự thiết kế\n- Phần mềm: firmware, hệ thống kết nối cloud hoặc server nội bộ, dashboard hiển thị dữ liệu\n- Khuyến khích tích hợp AI/ML trên thiết bị nhúng hoặc thiết bị biên\n4. Đối tượng tham gia\n- Sinh viên các trường Đại học, Cao đẳng trên toàn quốc\n- Mỗi đội gồm\n2–5 thành viên\n- Khuyến khích có giảng viên hướng dẫn\n5. Lộ trình và thời gian\na) Vòng 1 – Sơ loại (theo 3 miền)\n- Hạn nộp hồ sơ: 30/06/2026\n- Công bố kết quả: trước 11/07/2026\n- Chọn 30 đội vào vòng Bán kết\nb) Vòng 2 – Bán kết (theo 3 miền)\n- Thời gian: 19 – 24/10/2026\n- Địa điểm: Hà Nội (MTA), Đà Nẵng (VKU), TP.HCM (HCMUS)\n- Công bố kết quả: trước 27/10/2026\n- Chọn 10 đội vào Chung kết\nc) Vòng 3 – Chung kết toàn quốc\n- Thời gian: 25/11/2026\n- Địa điểm: Trường VKU, 470 Trần Đại Nghĩa, Ngũ Hành Sơn, Đà Nẵng\n6. Cơ cấu giải thưởng\n- Giải Nhất: 20 triệu đồng và Giấy chứng nhận\n- 02 Giải Nhì: 10 triệu đồng/giải và Giấy chứng nhận\n- 03 Giải Ba: 6 triệu đồng/giải và Giấy chứng nhận\n- 04 Giải Khuyến khích: 3 triệu đồng/giải và Giấy chứng nhận\n- Giải phụ (Sáng tạo nhất, Được yêu thích nhất, Tiềm năng nhất): 1 triệu đồng/giải và Giấy chứng nhận\n7. Đăng ký tham gia\n- Link đăng ký: https://bom.so/VEDC2026\n- Hồ sơ gồm: mô tả ý tưởng, sơ đồ hệ thống, tính mới, khả năng ứng dụng, video minh họa (nếu có)\n8. Thông tin thêm\nVEDC 2026 không chỉ là một cuộc thi học thuật mà còn là cơ hội kết nối sinh viên với doanh nghiệp công nghệ, góp phần phát triển các ý tưởng sáng tạo thành sản phẩm thực tiễn và định hướng khởi nghiệp.",
+  "publication_time": "2026-05-23T10:48:00+07:00",
+  "observed_at": "2026-09-15T08:55:34.833840Z",
+  "url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/11996",
+  "content_hash": "07105c0da3883c65c8341df2616fb74e3d8b42bbc2ba3d964a6d28f8f8815078",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "Sinh viên các trường Đại học, Cao đẳng trên toàn quốc",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "audience",
+      "text": "Mỗi đội gồm\n2–5 thành viên",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "deadline",
+      "text": "Hạn nộp hồ sơ: 30/06/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "action",
+      "text": "Đăng ký tham gia\n- Link đăng ký: https://bom.so/VEDC2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "required_document",
+      "text": "mô tả ý tưởng",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e6",
+      "field": "required_document",
+      "text": "sơ đồ hệ thống",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e7",
+      "field": "required_document",
+      "text": "tính mới",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e8",
+      "field": "required_document",
+      "text": "khả năng ứng dụng",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e9",
+      "field": "exception",
+      "text": "video minh họa (nếu có)",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Sinh viên các trường Đại học, Cao đẳng trên toàn quốc; mỗi đội gồm 2–5 thành viên",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1",
+          "e2"
+        ]
+      },
+      "action": {
+        "action_type": "register",
+        "text": "đăng ký tham gia VEDC 2026 và nộp hồ sơ sơ loại",
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "deadline": {
+        "raw_text": "Hạn nộp hồ sơ: 30/06/2026",
+        "normalized": "2026-06-30",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [
+        {
+          "text": "mô tả ý tưởng",
+          "evidence_span_ids": [
+            "e5"
+          ]
+        },
+        {
+          "text": "sơ đồ hệ thống",
+          "evidence_span_ids": [
+            "e6"
+          ]
+        },
+        {
+          "text": "tính mới",
+          "evidence_span_ids": [
+            "e7"
+          ]
+        },
+        {
+          "text": "khả năng ứng dụng",
+          "evidence_span_ids": [
+            "e8"
+          ]
+        }
+      ],
+      "exceptions": [
+        {
+          "text": "Video minh họa là tài liệu tùy chọn nếu có.",
+          "evidence_span_ids": [
+            "e9"
+          ]
+        }
+      ]
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. This is an optional competition opportunity, not a mandatory student duty."
+}

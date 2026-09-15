@@ -1,0 +1,88 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M1",
+  "notice_id": 5,
+  "version_id": 5,
+  "source": {
+    "source_id": "dut_academic",
+    "name": "DUT Academic and Examination Notices"
+  },
+  "title": "Thông báo phúc khảo điểm thi cuối kỳ Hè năm học 2025-2026",
+  "raw_text": "Phòng Quản lý Chất lượng và Pháp chế Thông báo đến các em kế hoạch phúc khảo điểm thi cuối học kỳ hè năm học 2025-2026 như sau:\n- Đăng ký trên hệ thống thông tin sinh viên: từ ngày\n23/8/2026 đến 25/8/2026.\n-\nSinh viên không được đăng kí các học phần thi vấn đáp (nếu đăng kí cũng không được phúc khảo)\n* Lưu ý: - Sinh viên chỉ đăng kí trên hệ thống thông tin sv,\nkhông nộp đơn\n.\nSinh viên xem kết quả phúc khảo:\nTẠI ĐÂY\n- Nếu sinh viên đã\nđăng kí nhầm thì hủy\nđăng ký phúc khảo\nĐĂNG KÝ TẠI ĐÂY\n(LƯU Ý DÙNG TÀI KHOẢN CỦA SINH VIÊN)\n- Mọi thắc mắc xin báo về email đến Phòng QLCL&PC: qml.dhbk@dut.udn.vn; để được giải đáp.",
+  "publication_time": "2026-08-19T13:25:00+07:00",
+  "observed_at": "2026-09-15T08:52:42.730930Z",
+  "url": "https://dut.udn.vn/Tintuc/Thongbao/id/12183",
+  "content_hash": "cd62684a2ba33e41e46a07a65144f86d5452eaff3108b7e646256af65502e6c3",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "action",
+      "text": "Đăng ký trên hệ thống thông tin sinh viên",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "deadline",
+      "text": "23/8/2026 đến 25/8/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "exception",
+      "text": "Sinh viên không được đăng kí các học phần thi vấn đáp (nếu đăng kí cũng không được phúc khảo)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "exception",
+      "text": "không nộp đơn",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": null,
+      "action": {
+        "action_type": "register",
+        "text": "đăng ký phúc khảo điểm thi cuối học kỳ hè trên hệ thống thông tin sinh viên",
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "deadline": {
+        "raw_text": "23/8/2026 đến 25/8/2026",
+        "normalized": "2026-08-25",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": [
+        {
+          "text": "Không áp dụng phúc khảo cho các học phần thi vấn đáp.",
+          "evidence_span_ids": [
+            "e3"
+          ]
+        },
+        {
+          "text": "Chỉ đăng ký trên hệ thống, không nộp đơn.",
+          "evidence_span_ids": [
+            "e4"
+          ]
+        }
+      ]
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review."
+}

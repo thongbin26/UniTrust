@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M1",
+  "notice_id": 3,
+  "version_id": 3,
+  "source": {
+    "source_id": "dut_academic",
+    "name": "DUT Academic and Examination Notices"
+  },
+  "title": "THÔNG BÁO Khảo sát lớp học phần học kỳ hè, năm học 2025-2026.",
+  "raw_text": "Nhằm thu thập ý kiến phản hồi của sinh viên về hoạt động giảng dạy và học tập, Nhà trường tổ chức khảo sát lớp học phần học kỳ hè, năm học 2025-2026.\n- Thời gian thực hiện khảo sát: Từ ngày 08/09/2026 đến ngày 20/09/2026.\n- Hình thức khảo sát trực tuyến tại website: https://fb.dut.udn.vn\nSinh viên tham gia học kỳ hè sử dụng tài khoản cá nhân (số thẻ sinh viên) đăng nhập vào website: https://fb.dut.udn.vn/PageDangNhap.aspx để thực hiện trả lời khảo sát (mục [Khảo sát] → [Về lớp học phần]).\nĐề nghị sinh viên tham gia khảo sát đầy đủ, nghiêm túc và đúng thời gian quy định.",
+  "publication_time": "2026-09-08T11:07:00+07:00",
+  "observed_at": "2026-09-15T08:52:41.204964Z",
+  "url": "https://dut.udn.vn/Tintuc/Thongbao/id/12237",
+  "content_hash": "add1529c3716aace075c9d380b6a5441fe109e90750328e0edb10dcc6781fa7a",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "Sinh viên tham gia học kỳ hè",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "thực hiện trả lời khảo sát",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "deadline",
+      "text": "Từ ngày 08/09/2026 đến ngày 20/09/2026",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "Sinh viên tham gia học kỳ hè",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "other",
+        "text": "thực hiện khảo sát lớp học phần học kỳ hè",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": {
+        "raw_text": "Từ ngày 08/09/2026 đến ngày 20/09/2026",
+        "normalized": "2026-09-20",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": null,
+      "required_documents": [],
+      "exceptions": []
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. The survey website is treated as an online channel, not a physical location."
+}

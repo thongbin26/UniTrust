@@ -1,0 +1,186 @@
+{
+  "schema_version": "0.1",
+  "annotation_status": "REVIEWED",
+  "annotator_id": "M2",
+  "notice_id": 24,
+  "version_id": 24,
+  "source": {
+    "source_id": "dut_ctsv",
+    "name": "DUT Student Affairs"
+  },
+  "title": "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN, GIẢM HỌC PHÍ, TRỢ CẤP XÃ HỘI VÀ HỖ TRỢ CHI PHÍ HỌC TẬP HỌC KỲ I, NĂM HỌC 2026 -2027",
+  "raw_text": "Nhà trường hướng dẫn sinh viên (SV) nộp hồ sơ chính sách về Miễn, giảm học phí, Trợ cấp xã hội và Hỗ trợ chi phí học tập học kỳ I/\n2026\n-\n2027\ncho SV hệ chính quy, cụ thể như sau:\n1.\nCách thức nộp hồ sơ: SV nộp hồ sơ trực tiếp tại Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)\n2.\nThời gian nộp hồ sơ: Từ nay đến hết ngày\n10\n/\n9\n/2026 (vào khung giờ 07h30-11h00 từ thứ Hai đến thứ Sáu).\nLưu ý:\nSinh viên là con CBVC thuộc Đại học Đà Nẵng nộp đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác về Phòng Công tác Sinh viên, cụ thể như sau:\n- Đối với con CBVC của Trường ĐHBK, nộp đơn đề nghị một lần duy nhất vào đầu khoá học.\n- Đối với con CBVC thuộc các trường đại học thành viên của ĐHĐN, nộp đơn đề nghị vào đầu mỗi học kỳ trong suốt khoá học.\nSinh viên tải các mẫu đơn:\nhttps://dut.udn.vn/Phong/CTSV/Gioithieu/id/1077\nMọi thắc mắc, sinh viên vào nhóm zalo:\nhttps://zalo.me/g/qzznsy080\nChi tiết Thông báo xem tại:\nhttps://drive.google.com/file/d/1GXQH2URkObOQFzk5WkgtkLI2EfeMmEQR/view?usp=sharing",
+  "publication_time": "2026-08-19T09:05:00+07:00",
+  "observed_at": "2026-09-15T08:57:13.537792Z",
+  "url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12181",
+  "content_hash": "c284c649e7c81331c88e2634321254480df44de1738d7eb0b344c314585c3508",
+  "evidence_spans": [
+    {
+      "evidence_id": "e1",
+      "field": "audience",
+      "text": "SV hệ chính quy",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e2",
+      "field": "action",
+      "text": "SV nộp hồ sơ trực tiếp tại Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e3",
+      "field": "deadline",
+      "text": "10\n/\n9\n/2026",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e4",
+      "field": "location",
+      "text": "Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e5",
+      "field": "audience",
+      "text": "Sinh viên là con CBVC thuộc Đại học Đà Nẵng",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e6",
+      "field": "required_document",
+      "text": "đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e7",
+      "field": "exception",
+      "text": "Đối với con CBVC của Trường ĐHBK, nộp đơn đề nghị một lần duy nhất vào đầu khoá học.",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e8",
+      "field": "exception",
+      "text": "Đối với con CBVC thuộc các trường đại học thành viên của ĐHĐN, nộp đơn đề nghị vào đầu mỗi học kỳ trong suốt khoá học.",
+      "start_char": null,
+      "end_char": null
+    },
+    {
+      "evidence_id": "e9",
+      "field": "action",
+      "text": "nộp đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác",
+      "start_char": null,
+      "end_char": null
+    }
+  ],
+  "obligations": [
+    {
+      "obligation_id": "o1",
+      "audience": {
+        "raw_text": "SV hệ chính quy",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [
+          "chính quy"
+        ],
+        "evidence_span_ids": [
+          "e1"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp hồ sơ chính sách miễn, giảm học phí, trợ cấp xã hội và hỗ trợ chi phí học tập",
+        "evidence_span_ids": [
+          "e2"
+        ]
+      },
+      "deadline": {
+        "raw_text": "10/9/2026",
+        "normalized": "2026-09-10",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)",
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "required_documents": [],
+      "exceptions": []
+    },
+    {
+      "obligation_id": "o2",
+      "audience": {
+        "raw_text": "Sinh viên là con CBVC thuộc Đại học Đà Nẵng",
+        "applies_to_all_students": false,
+        "faculties": [],
+        "majors": [],
+        "cohorts": [],
+        "programs": [],
+        "evidence_span_ids": [
+          "e5"
+        ]
+      },
+      "action": {
+        "action_type": "submit",
+        "text": "nộp đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác",
+        "evidence_span_ids": [
+          "e9"
+        ]
+      },
+      "deadline": {
+        "raw_text": "10/9/2026",
+        "normalized": "2026-09-10",
+        "precision": "date",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "evidence_span_ids": [
+          "e3"
+        ]
+      },
+      "amount": null,
+      "location": {
+        "text": "Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)",
+        "evidence_span_ids": [
+          "e4"
+        ]
+      },
+      "required_documents": [
+        {
+          "text": "đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác",
+          "evidence_span_ids": [
+            "e6"
+          ]
+        }
+      ],
+      "exceptions": [
+        {
+          "text": "Con CBVC của Trường ĐHBK nộp đơn một lần duy nhất vào đầu khoá học.",
+          "evidence_span_ids": [
+            "e7"
+          ]
+        },
+        {
+          "text": "Con CBVC thuộc các trường đại học thành viên của ĐHĐN nộp đơn vào đầu mỗi học kỳ.",
+          "evidence_span_ids": [
+            "e8"
+          ]
+        }
+      ]
+    }
+  ],
+  "temporal_relations": [],
+  "notes": "AI draft for human review. Detailed document requirements for other policy categories are in the linked notice/attachment and are not inferred here."
+}
