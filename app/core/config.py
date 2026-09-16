@@ -20,5 +20,15 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    llm_provider: str = "ollama"
+
+    openai_api_key: str = ""
+    openai_model: str = "gpt-5.6-luna"
+    openai_reasoning_effort: str = "none"
+
+    # Ollama settings
+    ollama_base_url: str = "http://127.0.0.1:11434"
+    ollama_model: str = "qwen3:4b"
+    ollama_num_ctx: int = 8192
 
 settings = Settings()
