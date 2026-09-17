@@ -16,8 +16,8 @@ st.caption(
 )
 
 st.info(
-    "Project setup is working. "
-    "The real Verify, Evidence and For You screens will be built later."
+    "Welcome to UniTrust V2 Competition Demo. "
+    "Select a page from the sidebar to begin verification, browse evidence, or check personalized obligations."
 )
 
 

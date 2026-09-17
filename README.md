@@ -30,7 +30,26 @@ Current components:
 - `scripts/` — utility scripts
 - `docs/` — project documentation
 
-## Run backend
+## Prerequisites
+- Activate `.venv` (`.venv\Scripts\activate` on Windows, `source .venv/bin/activate` on Unix).
+- Local semantic AI (Ollama with Qwen3:4b) is **optional**. The backend will start and perform deterministic verification regardless of Ollama's availability.
 
+## Local Demo Startup Workflow
+
+Open two terminals.
+
+**Terminal A (Backend):**
 ```bash
-python -m uvicorn main:app --reload
+uvicorn main:app --reload
+```
+
+**Terminal B (Frontend):**
+```bash
+streamlit run frontend/Home.py
+```
+
+## Demo & Coverage Limitations
+
+- **Structured Semantic Coverage:** UniTrust currently has human-reviewed structured coverage for a subset of the indexed DUT notices. Other official notices remain browseable, but structured verification may abstain when reviewed fields are not available.
+- **Temporal History:** Real temporal data currently has zero historical versions. The Evidence page will honestly reflect this ("No historical version is currently stored for this notice."). Synthetic demo examples are explicitly marked in the code and do not mutate the real database.
+- **Local Embedding Model:** `multilingual-e5-small` is initialized once during FastAPI startup. It is heavily cached for interactive query latency.

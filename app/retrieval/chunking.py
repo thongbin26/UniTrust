@@ -16,37 +16,37 @@ def chunk_notice_version(
     """
     chunks = []
     lines = raw_text.split('\n')
-    
+
     current_start = 0
     current_chunk_lines = []
     current_chunk_length = 0
-    
+
     # Simple chunking by paragraph (double newline) or max lines/length
     chunk_index = 0
-    
+
     start_char = 0
-    
+
     for i, line in enumerate(lines):
         line_len = len(line)
-        
+
         # If line is empty, it might be a paragraph break
         is_break = (line.strip() == "")
-        
+
         if not is_break:
             if not current_chunk_lines:
                 start_char = current_start
             current_chunk_lines.append(line)
             current_chunk_length += line_len
-            
+
         # We break if we hit a paragraph break and we have content, or if chunk gets too big
         if (is_break and current_chunk_lines) or current_chunk_length > 500 or (i == len(lines) - 1 and current_chunk_lines):
             end_char = current_start + line_len if (i == len(lines) - 1 and not is_break) else current_start
-            
+
             chunk_text = '\n'.join(current_chunk_lines)
-            
+
             # Recalculate exact end_char based on start_char and chunk_text
             exact_end_char = start_char + len(chunk_text)
-            
+
             chunk = RetrievalChunk(
                 chunk_id=f"{version_id}_{chunk_index}",
                 notice_id=notice_id,
@@ -64,7 +64,35 @@ def chunk_notice_version(
             chunk_index += 1
             current_chunk_lines = []
             current_chunk_length = 0
-            
+
         current_start += line_len + 1 # +1 for the \n that was split
-        
+
+    return chunks
+
+def build_corpus() -> list[RetrievalChunk]:
+    from app.db.database import get_connection
+    chunks = []
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT
+                nv.notice_id, nv.version_id, n.source_id,
+                nv.raw_text, n.title, n.publication_date, n.canonical_url,
+                (nv.content_hash = n.current_content_hash) as is_latest
+            FROM notice_versions nv
+            JOIN notices n ON nv.notice_id = n.notice_id
+        """)
+        rows = cursor.fetchall()
+        for row in rows:
+            new_chunks = chunk_notice_version(
+                notice_id=row["notice_id"],
+                version_id=row["version_id"],
+                source_id=row["source_id"],
+                raw_text=row["raw_text"],
+                title=row["title"],
+                publication_date=None,
+                canonical_url=row["canonical_url"],
+                is_latest_version=bool(row["is_latest"])
+            )
+            chunks.extend(new_chunks)
     return chunks
