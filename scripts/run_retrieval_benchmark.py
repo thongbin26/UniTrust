@@ -143,7 +143,8 @@ def evaluate_retriever(retriever, queries, name="Retriever"):
         "Recall@5": recalls_5 / n,
         "MRR": mrr_sum / n,
         "latency_mean_ms": sum(latencies)/n * 1000,
-        "latency_median_ms": sorted(latencies)[n//2] * 1000 if n > 0 else 0
+        "latency_median_ms": sorted(latencies)[n//2] * 1000 if n > 0 else 0,
+        "latency_p95_ms": sorted(latencies)[int(0.95 * n)] * 1000 if n > 0 else 0
     }
     
     print(f"\n--- {name} Results ---")
