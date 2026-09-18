@@ -41,7 +41,7 @@ try:
             
             changes = api_client.get_notice_changes(selected_id)
             if not changes.get("has_history"):
-                st.info("No historical version is currently stored for this notice.")
+                st.info("Hiện chưa lưu phiên bản lịch sử nào cho thông báo này.")
             else:
                 st.success("Historical versions found.")
                 st.json(changes.get("changes", []))

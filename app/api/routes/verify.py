@@ -23,9 +23,11 @@ def verify_claim(request: VerifyRequest, service: VerificationService = Depends(
         results = service.verify(request.text)
     except Exception as e:
         import traceback
+        import logging
+        logging.error(traceback.format_exc())
         with open("verify_error.log", "w") as f:
             f.write(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Verification pipeline error: {str(e)}")
+        raise HTTPException(status_code=500, detail="An unexpected error occurred during the verification pipeline.")
         
     mapped_results = []
     for res in results:
