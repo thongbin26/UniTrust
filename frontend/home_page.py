@@ -6,13 +6,31 @@ from frontend.ui_style import apply_global_styles
 
 apply_global_styles()
 
-st.markdown('<h1 class="hero-title" style="text-align: center; margin-top: 2rem;">🎓 UniTrust</h1>', unsafe_allow_html=True)
-st.markdown('<p class="hero-tagline" style="text-align: center;">Kiểm chứng đúng nguồn, an tâm hành động.</p>', unsafe_allow_html=True)
-
-st.markdown(
-    '<p class="hero-pitch" style="text-align: center; margin: 0 auto 3rem auto;">UniTrust giúp sinh viên kiểm tra thông tin được chuyển tiếp bằng cách đối chiếu với các thông báo chính thức của nhà trường.</p>', 
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2rem;">
+    <div style="flex: 1; padding-right: 2rem;">
+        <h1 class="hero-title" style="margin-top: 0; color: #1e3a8a;">UniTrust</h1>
+        <p class="hero-tagline" style="font-size: 1.25rem; font-weight: 500; color: #3b82f6;">Kiểm chứng đúng nguồn, an tâm hành động.</p>
+        <p class="hero-pitch" style="color: #4b5563; line-height: 1.6; margin-bottom: 2rem;">
+            UniTrust giúp sinh viên tra cứu và xác minh thông tin dựa trên các thông báo,
+            quy định chính thức của nhà trường. Không còn lo lắng về tin giả hay thông báo hết hạn.
+        </p>
+    </div>
+    <div style="flex: 1; text-align: center;">
+        <!-- Simple inline SVG for hero graphic -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="auto">
+            <rect width="400" height="300" fill="#f8fafc" rx="16"/>
+            <rect x="50" y="80" width="120" height="80" fill="#eff6ff" rx="8" stroke="#bfdbfe" stroke-width="2"/>
+            <path d="M70 110 h80 M70 130 h50" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="200" cy="120" r="30" fill="#ffffff" stroke="#2563eb" stroke-width="4"/>
+            <path d="M190 120 l8 8 l15 -15" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="230" y="140" width="120" height="80" fill="#ecfdf5" rx="8" stroke="#a7f3d0" stroke-width="2"/>
+            <path d="M250 170 h80 M250 190 h50" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+            <path d="M130 180 Q165 220 200 170 T270 120" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6,6"/>
+        </svg>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -20,73 +38,44 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
     <div class="stCard">
-        <h3>🛡️ Xác minh thông tin</h3>
-        <p>Kiểm tra chéo nội dung tin nhắn với bằng chứng chính thức để xem có chính xác và còn hiệu lực không.</p>
+        <h3 style="color: #0f172a; display: flex; align-items: center; gap: 8px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Xác minh
+        </h3>
+        <p style="color: #4b5563;">Kiểm tra chéo nội dung tin nhắn với bằng chứng chính thức.</p>
     </div>
     """, unsafe_allow_html=True)
 with col2:
     st.markdown("""
     <div class="stCard">
-        <h3>📄 Tra cứu thông báo</h3>
-        <p>Tìm kiếm nhanh hoặc xem danh sách đầy đủ các thông báo chính thức từ nhà trường.</p>
+        <h3 style="color: #0f172a; display: flex; align-items: center; gap: 8px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Tra cứu
+        </h3>
+        <p style="color: #4b5563;">Tìm kiếm hoặc duyệt danh sách các thông báo nhà trường.</p>
     </div>
     """, unsafe_allow_html=True)
 with col3:
     st.markdown("""
     <div class="stCard">
-        <h3>👤 Dành cho bạn</h3>
-        <p>Lưu hồ sơ cá nhân để xem các nghĩa vụ và yêu cầu cụ thể áp dụng riêng cho bạn.</p>
+        <h3 style="color: #0f172a; display: flex; align-items: center; gap: 8px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Dành cho bạn
+        </h3>
+        <p style="color: #4b5563;">Xem các nghĩa vụ và yêu cầu cá nhân hóa theo hồ sơ.</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("---")
-
-st.markdown("### 📊 Dữ liệu hiện có")
-st.markdown("""
-<div class="stCard" style="background-color: #eff6ff; border-color: #bfdbfe;">
-    <ul style="color: #1e3a8a; line-height: 1.8; margin-bottom: 0;">
-        <li><b>3</b> Nguồn thông báo chính thức</li>
-        <li><b>30</b> Thông báo đã thu thập</li>
-        <li><b>10</b> Thông báo đã rà soát</li>
-        <li><b>18</b> Nghĩa vụ đã cấu trúc</li>
-    </ul>
-</div>
-""", unsafe_allow_html=True)
-
-with st.expander("Kết quả đánh giá hệ thống (Chi tiết kỹ thuật)"):
+st.markdown("<br><br>", unsafe_allow_html=True)
+with st.expander("Về UniTrust"):
     st.markdown("""
-    <ul style="color: #4b5563; line-height: 1.8;">
-        <li><b>Tỷ lệ truy xuất đúng ở kết quả đầu tiên:</b> 94.83% (N=58 mẫu từ nguồn thực tế) - [Hybrid Hit@1]</li>
-        <li><b>Độ chính xác xác minh có kiểm soát:</b> 78.00% (N=50 mẫu biến đổi nhân tạo)</li>
-        <li><b>Độ chính xác trên dữ liệu rà soát thủ công:</b> 66.67% (N=18)</li>
-    </ul>
-    """, unsafe_allow_html=True)
+    **Dữ liệu hiện có**
+    - 3 Nguồn thông báo chính thức
+    - 30 Thông báo đã thu thập
+    - 18 Nghĩa vụ đã cấu trúc
 
-st.markdown("---")
-
-st.subheader("Trạng thái kết nối")
-
-backend_url = st.text_input(
-    "Địa chỉ máy chủ (Backend URL)",
-    value="http://127.0.0.1:8000",
-)
-
-if st.button("Kiểm tra kết nối"):
-    try:
-        response = httpx.get(
-            f"{backend_url}/health",
-            timeout=3.0,
-        )
-        response.raise_for_status()
-
-        data = response.json()
-
-        if data.get("status") == "ok":
-            st.success("Hệ thống UniTrust đang hoạt động ổn định.")
-        else:
-            st.warning("Hệ thống có phản hồi nhưng báo cáo tình trạng chưa tối ưu.")
-
-    except Exception as exc:
-        st.error(
-            "Không thể kết nối đến máy chủ UniTrust. Vui lòng đảm bảo hệ thống đã được khởi động."
-        )
+    **Chi tiết kỹ thuật**
+    - Tỷ lệ truy xuất đúng ở kết quả đầu tiên: 94.83% (N=58 mẫu từ nguồn thực tế) - [Hybrid Hit@1]
+    - Độ chính xác xác minh có kiểm soát: 78.00% (N=50 mẫu biến đổi nhân tạo)
+    - Độ chính xác trên dữ liệu rà soát thủ công: 66.67% (N=18)
+    """)

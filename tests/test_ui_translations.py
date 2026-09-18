@@ -46,14 +46,15 @@ def test_dut_catalog_schema():
     with open(catalog_path, "r", encoding="utf-8") as f:
         catalog = json.load(f)
         
-    assert "metadata" in catalog
-    assert catalog["metadata"]["catalog_year"] == 2026
+    assert "catalog_year" in catalog
+    assert catalog["catalog_year"] == 2026
     
     faculties = catalog["faculties"]
     assert len(faculties) >= 9
     
-    cntt = next(f for f in faculties if f["name"] == "Khoa Công nghệ thông tin")
-    assert "Công nghệ thông tin" in cntt["majors"]
+    cntt = next(f for f in faculties if f["display_name"] == "Khoa Công nghệ Thông tin")
+    programs = [p["display_name"] for p in cntt["programs"]]
+    assert "Công nghệ thông tin" in programs
 
 def test_cohort_mapping_logic():
     # Extracted logic from For You page
@@ -73,15 +74,15 @@ def test_cohort_mapping_logic():
 def test_dependent_dropdown_helper_logic():
     catalog = {
         "faculties": [
-            {"name": "Khoa A", "majors": ["M1", "M2"]},
-            {"name": "Khoa B", "majors": ["M3"]}
+            {"display_name": "Khoa A", "programs": [{"display_name": "M1"}, {"display_name": "M2"}]},
+            {"display_name": "Khoa B", "programs": [{"display_name": "M3"}]}
         ]
     }
     
     def get_majors_for_faculty(fac_name):
         for f in catalog["faculties"]:
-            if f["name"] == fac_name:
-                return f.get("majors", [])
+            if f["display_name"] == fac_name:
+                return [p["display_name"] for p in f.get("programs", [])]
         return []
 
     assert get_majors_for_faculty("Khoa A") == ["M1", "M2"]

@@ -1,114 +1,216 @@
 {
-  "metadata": {
-    "catalog_year": 2026,
-    "last_verified_date": "2026-09-18"
-  },
+  "catalog_year": 2026,
+  "organization_effective_date": "2026-08-20",
+  "last_verified_date": "2026-09-18",
   "faculties": [
     {
-      "name": "Khoa Công nghệ thông tin",
+      "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao",
+      "display_name": "Khoa Điện tử và Trí tuệ nhân tạo",
       "status": "VERIFIED",
-      "source_url": "http://itf.dut.udn.vn/",
-      "majors": [
-        "Công nghệ thông tin",
-        "Kỹ thuật máy tính",
-        "Khoa học dữ liệu và Trí tuệ nhân tạo",
-        "Kỹ thuật phần mềm",
-        "Không xác định / Khác"
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kỹ thuật điện tử - viễn thông",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Khoa học dữ liệu và Trí tuệ nhân tạo",
+          "type": "nganh",
+          "faculty_assignment_status": "PROVISIONAL",
+          "evidence_status": "PROJECT_OWNER_REPORTED_CURRENT_STATE",
+          "official_post_restructure_confirmation_found": false,
+          "note": "Older official pages still reflect the pre-20/08/2026 structure. Moved from Khoa Công nghệ Thông tin."
+        }
       ]
     },
     {
-      "name": "Khoa Điện tử và Trí tuệ nhân tạo",
+      "faculty_id": "khoa_co_khi_giao_thong_nang_luong",
+      "display_name": "Khoa Cơ khí Giao thông và Năng lượng",
       "status": "VERIFIED",
-      "source_url": "http://fast.dut.udn.vn/",
-      "majors": [
-        "Kỹ thuật điện tử - viễn thông",
-        "Không xác định / Khác"
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kỹ thuật cơ khí (Cơ khí Động lực)",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật ô tô",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật tàu thủy",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật nhiệt",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật phương tiện đường sắt tốc độ cao",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Cơ khí giao thông và Năng lượng",
+      "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song",
+      "display_name": "Khoa Hóa, Môi trường và Khoa học Sự sống",
       "status": "VERIFIED",
-      "source_url": "https://dut.udn.vn/KhoaCKGT",
-      "majors": [
-        "Kỹ thuật cơ khí (Cơ khí Động lực)",
-        "Kỹ thuật ô tô",
-        "Kỹ thuật tàu thủy",
-        "Kỹ thuật nhiệt",
-        "Kỹ thuật phương tiện đường sắt tốc độ cao",
-        "Không xác định / Khác"
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kỹ thuật hóa học",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật môi trường",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Công nghệ thực phẩm",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Công nghệ sinh học",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Quản lý tài nguyên và môi trường",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Cơ khí",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Kỹ thuật cơ khí",
-        "Kỹ thuật cơ điện tử",
-        "Không xác định / Khác"
+      "faculty_id": "khoa_xay_dung",
+      "display_name": "Khoa Xây dựng",
+      "status": "VERIFIED",
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kỹ thuật xây dựng",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật xây dựng công trình giao thông",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật xây dựng công trình thủy",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật cơ sở hạ tầng",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Điện",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Kỹ thuật điện",
-        "Kỹ thuật điều khiển và tự động hóa",
-        "Không xác định / Khác"
+      "faculty_id": "khoa_dien",
+      "display_name": "Khoa Điện",
+      "status": "VERIFIED",
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kỹ thuật điện",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật điều khiển và tự động hóa",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Hóa, Môi trường và Khoa học sự sống",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Kỹ thuật hóa học",
-        "Kỹ thuật môi trường",
-        "Công nghệ thực phẩm",
-        "Công nghệ sinh học",
-        "Quản lý tài nguyên và môi trường",
-        "Không xác định / Khác"
+      "faculty_id": "khoa_co_khi",
+      "display_name": "Khoa Cơ khí",
+      "status": "VERIFIED",
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kỹ thuật cơ khí",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật cơ điện tử",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Kiến trúc",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Kiến trúc",
-        "Không xác định / Khác"
+      "faculty_id": "khoa_cong_nghe_thong_tin",
+      "display_name": "Khoa Công nghệ Thông tin",
+      "status": "VERIFIED",
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Công nghệ thông tin",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật máy tính",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        },
+        {
+          "display_name": "Kỹ thuật phần mềm",
+          "type": "nganh",
+          "faculty_assignment_status": "VERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Quản lý dự án",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Kinh tế xây dựng",
-        "Quản lý công nghiệp",
-        "Logistics và Quản lý chuỗi cung ứng",
-        "Không xác định / Khác"
+      "faculty_id": "khoa_quan_ly_du_an_cong_nghiep",
+      "display_name": "Khoa Quản lý Dự án và Công nghiệp",
+      "status": "VERIFIED",
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kinh tế xây dựng",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Quản lý công nghiệp",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        },
+        {
+          "display_name": "Logistics và Quản lý chuỗi cung ứng",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        }
       ]
     },
     {
-      "name": "Khoa Xây dựng",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Kỹ thuật xây dựng",
-        "Kỹ thuật xây dựng công trình giao thông",
-        "Kỹ thuật xây dựng công trình thủy",
-        "Kỹ thuật cơ sở hạ tầng",
-        "Không xác định / Khác"
-      ]
-    },
-    {
-      "name": "Chưa xác định",
-      "status": "UNVERIFIED",
-      "source_url": "CHƯA XÁC MINH",
-      "majors": [
-        "Không xác định / Khác"
+      "faculty_id": "khoa_kien_truc",
+      "display_name": "Khoa Kiến trúc",
+      "status": "VERIFIED",
+      "effective_from": "2026-08-20",
+      "programs": [
+        {
+          "display_name": "Kiến trúc",
+          "type": "nganh",
+          "faculty_assignment_status": "UNVERIFIED"
+        }
       ]
     }
   ]

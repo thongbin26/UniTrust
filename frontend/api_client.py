@@ -56,4 +56,8 @@ class APIClient:
         }
         return self._post("/for-you", json=payload)
 
+    def for_you(self, profile: dict) -> Dict[str, Any]:
+        """Canonical method used by For You page."""
+        return self._post("/for-you", json=profile)
+
 api_client = APIClient()

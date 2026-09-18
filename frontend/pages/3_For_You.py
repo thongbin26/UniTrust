@@ -98,7 +98,6 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
         <div><b>Khoa:</b> {profile.get('faculty')}</div>
         <div><b>Ngành / Chuyên ngành:</b> {profile.get('major')}</div>
         <div><b>Khóa tuyển sinh:</b> {profile.get('cohort_label')}</div>
-        <div><b>Chương trình đào tạo:</b> {profile.get('program', 'Đại trà / Không xác định')}</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -114,7 +113,7 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
 else:
     st.markdown("### Hồ sơ của bạn")
     
-    faculty_names = [f["name"] for f in catalog.get("faculties", [])]
+    faculty_names = [f["display_name"] for f in catalog.get("faculties", [])]
     
     # Pre-fill if editing
     prev_faculty = st.session_state.student_profile.get("faculty") if st.session_state.student_profile else None
@@ -124,15 +123,29 @@ else:
     
     selected_faculty = st.selectbox("Khoa", options=faculty_names, index=faculty_idx)
     
-    faculty_obj = next((f for f in catalog.get("faculties", []) if f["name"] == selected_faculty), None)
+    faculty_obj = next((f for f in catalog.get("faculties", []) if f["display_name"] == selected_faculty), None)
     
     if faculty_obj and faculty_obj.get("status") == "UNVERIFIED":
-        st.warning("⚠️ Danh mục ngành của khoa này đang được UniTrust cập nhật và xác minh.")
-        
-    major_options = faculty_obj["majors"] if faculty_obj else ["Không xác định / Khác"]
+        st.warning("⚠️ Danh mục ngành của khoa này đang được UniTrust cập nhật theo cơ cấu tổ chức mới.")
+        major_options = ["Không xác định / Khác"]
+    elif faculty_obj:
+        major_options = [p["display_name"] for p in faculty_obj.get("programs", []) if p.get("faculty_assignment_status") in ("VERIFIED", "PROVISIONAL")]
+        if not major_options:
+            major_options = ["Không xác định / Khác"]
+        else:
+            major_options.append("Không xác định / Khác")
+    else:
+        major_options = ["Không xác định / Khác"]
     
     major_idx = major_options.index(prev_major) if prev_major in major_options else 0
     selected_major = st.selectbox("Ngành / Chuyên ngành", options=major_options, index=major_idx)
+
+    # Check if selected major is PROVISIONAL
+    if faculty_obj:
+        for p in faculty_obj.get("programs", []):
+            if p["display_name"] == selected_major and p.get("faculty_assignment_status") == "PROVISIONAL":
+                st.caption("ℹ️ Thông tin khoa quản lý đang được UniTrust cập nhật theo cơ cấu tổ chức mới.")
+                break
     
     cohort_options = [
         "Khóa tuyển sinh 2021 (K21)",
@@ -156,7 +169,7 @@ else:
     }
     selected_cohort = cohort_map[selected_cohort_label]
     
-    selected_program = st.selectbox("Chương trình đào tạo (Không bắt buộc)", options=["Đại trà", "Chất lượng cao", "Tiên tiến", "PFIEV", "Khác"], index=0)
+    selected_cohort = cohort_map[selected_cohort_label]
     
     if st.button("Lưu hồ sơ & Xem kết quả", type="primary"):
         st.session_state.student_profile = {
@@ -164,7 +177,7 @@ else:
             "major": selected_major,
             "cohort_label": selected_cohort_label,
             "cohort": selected_cohort,
-            "program": selected_program
+            "program": "Đại trà" # Placeholder removed from UI but kept in state safely
         }
         st.session_state.edit_mode = False
         st.query_params["faculty"] = selected_faculty
@@ -172,7 +185,6 @@ else:
         st.query_params["cohort_label"] = selected_cohort_label
         if selected_cohort:
             st.query_params["cohort"] = selected_cohort
-        st.query_params["program"] = selected_program
         st.rerun()
 
 st.markdown("---")
@@ -250,4 +262,4 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
                     st.write("Trống.")
                     
         except Exception as e:
-            st.error(f"Đã xảy ra lỗi khi lấy thông tin Dành cho bạn: {e}")
+            st.error("Không thể tải thông tin dành cho bạn lúc này. Vui lòng thử lại.")

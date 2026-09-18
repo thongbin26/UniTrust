@@ -1,6 +1,5 @@
 import streamlit as st
 from frontend.api_client import api_client
-from frontend.demo_cases import DEMO_CASES
 from frontend.ui_translations import (
     get_trust_state_vi,
     get_temporal_state_vi,
@@ -8,8 +7,6 @@ from frontend.ui_translations import (
     get_explanation_vi,
     get_field_name_vi
 )
-
-
 
 st.markdown("""
 <style>
@@ -59,19 +56,6 @@ with st.expander("ℹ️ Giới hạn dữ liệu hiện tại"):
     st.info("Hệ thống UniTrust hiện đang tập trung xử lý dữ liệu cấu trúc đã được rà soát cho một số thông báo chọn lọc của ĐHBK. Việc xác minh các thông tin nằm ngoài phạm vi này có thể trả về kết quả 'Chưa đủ bằng chứng'.")
 
 text_input = st.text_area("Nội dung cần xác minh", height=150, placeholder="Nhập hoặc dán nội dung thông báo tại đây...")
-
-# Demo Cases
-st.markdown("**Ví dụ minh họa:**")
-col1, col2, col3 = st.columns(3)
-if col1.button(DEMO_CASES[0]["ui_label"], help="Chạy ví dụ về thông tin hoàn toàn chính xác"):
-    text_input = DEMO_CASES[0]["claim_text"]
-    st.rerun()
-if col2.button(DEMO_CASES[1]["ui_label"], help="Chạy ví dụ về thông tin bị sai hạn chót"):
-    text_input = DEMO_CASES[1]["claim_text"]
-    st.rerun()
-if col3.button(DEMO_CASES[2]["ui_label"], help="Chạy ví dụ về thông tin chưa có bằng chứng kiểm chứng"):
-    text_input = DEMO_CASES[2]["claim_text"]
-    st.rerun()
 
 st.markdown("<br>", unsafe_allow_html=True)
 
