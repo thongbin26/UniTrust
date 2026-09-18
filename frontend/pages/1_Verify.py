@@ -1,87 +1,162 @@
 import streamlit as st
 from frontend.api_client import api_client
 from frontend.demo_cases import DEMO_CASES
+from frontend.ui_translations import (
+    get_trust_state_vi,
+    get_temporal_state_vi,
+    get_abstention_reason_vi,
+    get_explanation_vi,
+    get_field_name_vi
+)
 
-st.set_page_config(page_title="Verify", page_icon="🔍", layout="wide")
 
-st.title("🔍 Verify Information")
-st.markdown("Paste forwarded information below to verify it against official university evidence.")
 
-st.info("UniTrust currently has human-reviewed structured coverage for a subset of the indexed DUT notices. Other official notices remain browseable, but structured verification may abstain when reviewed fields are not available.")
+st.markdown("""
+<style>
+    .stCard {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+        margin-bottom: 20px;
+    }
+    .result-card {
+        background-color: #f8fafc;
+        border-left: 6px solid #3b82f6;
+    }
+    .result-verified { border-left-color: #10b981; }
+    .result-conflict { border-left-color: #ef4444; }
+    .result-partial { border-left-color: #f59e0b; }
+    .result-insufficient { border-left-color: #6b7280; }
+    
+    .field-card {
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+    .field-header {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 4px;
+    }
+    .evidence-card {
+        background-color: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 20px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# OCR Placeholder
-st.file_uploader("Upload Screenshot (OCR) - Coming in a later hardening step", disabled=True, help="OCR functionality is pending.")
+st.title("🛡️ Xác minh thông tin")
+st.markdown("Dán hoặc nhập thông tin được chuyển tiếp vào bên dưới để xác minh chéo với các bằng chứng chính thức từ nhà trường.")
 
-text_input = st.text_area("Information to verify", height=150)
-use_llm = st.checkbox("Use local semantic AI (may be slower)")
-top_k = st.number_input("Top K evidence chunks", min_value=1, max_value=20, value=5)
+with st.expander("ℹ️ Giới hạn dữ liệu hiện tại"):
+    st.info("Hệ thống UniTrust hiện đang tập trung xử lý dữ liệu cấu trúc đã được rà soát cho một số thông báo chọn lọc của ĐHBK. Việc xác minh các thông tin nằm ngoài phạm vi này có thể trả về kết quả 'Chưa đủ bằng chứng'.")
 
-# Example buttons (Explicitly marked Demo Examples)
-st.write("**Demo Cases:**")
+text_input = st.text_area("Nội dung cần xác minh", height=150, placeholder="Nhập hoặc dán nội dung thông báo tại đây...")
+
+# Demo Cases
+st.markdown("**Ví dụ minh họa:**")
 col1, col2, col3 = st.columns(3)
-if col1.button(DEMO_CASES[0]["label"], help=DEMO_CASES[0]["purpose"]):
+if col1.button(DEMO_CASES[0]["ui_label"], help="Chạy ví dụ về thông tin hoàn toàn chính xác"):
     text_input = DEMO_CASES[0]["claim_text"]
     st.rerun()
-if col2.button(DEMO_CASES[1]["label"], help=DEMO_CASES[1]["purpose"]):
+if col2.button(DEMO_CASES[1]["ui_label"], help="Chạy ví dụ về thông tin bị sai hạn chót"):
     text_input = DEMO_CASES[1]["claim_text"]
     st.rerun()
-if col3.button(DEMO_CASES[2]["label"], help=DEMO_CASES[2]["purpose"]):
+if col3.button(DEMO_CASES[2]["ui_label"], help="Chạy ví dụ về thông tin chưa có bằng chứng kiểm chứng"):
     text_input = DEMO_CASES[2]["claim_text"]
     st.rerun()
 
-if st.button("Verify", type="primary"):
+st.markdown("<br>", unsafe_allow_html=True)
+
+if st.button("Xác minh thông tin", type="primary", use_container_width=True):
     if not text_input.strip():
-        st.error("Please enter some text to verify.")
+        st.error("Vui lòng nhập nội dung cần xác minh.")
     else:
-        with st.spinner("Verifying against official sources..."):
+        with st.spinner("Đang xác minh dữ liệu với hệ thống chính thức..."):
             try:
-                result = api_client.verify_claim(text_input, use_llm=use_llm, top_k=top_k)
-                st.success(f"Verification complete in {result.get('latency_ms', 0):.2f}ms")
+                # hardcode top_k=5, use_llm=False to simplify UI and focus on claim
+                result = api_client.verify_claim(text_input, use_llm=False, top_k=5)
                 
                 for claim_res in result.get('results', []):
-                    st.divider()
-                    st.markdown(f"**Claim:** `{claim_res['raw_claim_text']}`")
-                    
                     verdict = claim_res['verdict']
                     temp = claim_res['temporal_status']
                     
-                    # Trust State rendering
-                    st.subheader("Trạng thái Xác minh (Trust State)")
-                    if verdict == "VERIFIED":
-                        st.success("✅ **Đã xác minh** - Thông tin này khớp với thông báo chính thức hiện hành.")
-                    elif verdict == "PARTIALLY_VERIFIED":
-                        st.warning("⚠️ **Xác minh một phần** - Một phần thông tin được xác minh, phần khác chưa rõ ràng.")
-                    elif verdict == "CONFLICT":
-                        st.error("❌ **Có mâu thuẫn** - Nội dung có điểm mâu thuẫn với thông báo chính thức.")
-                    else: # INSUFFICIENT_EVIDENCE
-                        reason = claim_res.get('abstention_reason')
-                        reason_text = reason if reason and reason != "None" else "Lý do chưa xác định"
-                        st.info(f"❔ **Chưa đủ bằng chứng** - Chưa đủ bằng chứng chính thống để xác minh chắc chắn thông tin này. ({reason_text})")
-                        
-                    # Temporal State rendering
-                    st.subheader("Trạng thái Thời gian (Temporal State)")
-                    if temp == "CURRENT":
-                        st.success("🕒 **Phiên bản hiện hành**")
-                    elif temp == "SUPERSEDED_OUTDATED":
-                        st.error("🕒 **Đã bị thay thế / lỗi thời**")
-                    else:
-                        st.warning("🕒 **Chưa xác định phiên bản**")
-                        
-                    if claim_res.get('field_results'):
-                        st.markdown("**So sánh chi tiết (Field Comparisons):**")
-                        for k, v in claim_res['field_results'].items():
-                            st.markdown(f"- **{k.title()}**: {v['state']} ({v['explanation']})")
+                    trust_vi = get_trust_state_vi(verdict)
+                    temp_vi = get_temporal_state_vi(temp)
+                    explanation = get_explanation_vi(verdict)
                     
-                    st.markdown("**Bằng chứng Chính thức (Official Evidence):**")
+                    card_class = "result-card "
+                    icon = "✅"
+                    if verdict == "VERIFIED":
+                        card_class += "result-verified"
+                    elif verdict == "CONFLICT":
+                        card_class += "result-conflict"
+                        icon = "❌"
+                    elif verdict == "PARTIALLY_VERIFIED":
+                        card_class += "result-partial"
+                        icon = "⚠️"
+                    else:
+                        card_class += "result-insufficient"
+                        icon = "❔"
+                    
+                    st.markdown(f"""
+                    <div class="stCard {card_class}">
+                        <h2 style="margin-top:0;">KẾT QUẢ XÁC MINH</h2>
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 1.1rem; margin-bottom: 8px;"><b>Trạng thái:</b> {icon} {trust_vi}</div>
+                            <div style="font-size: 1.1rem;"><b>Tình trạng phiên bản:</b> 🕒 {temp_vi}</div>
+                        </div>
+                        <hr style="margin: 16px 0; border-color: #e5e7eb;">
+                        <h4 style="margin-top:0;">Vì sao UniTrust kết luận như vậy?</h4>
+                        <p>{explanation}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    if verdict == "INSUFFICIENT_EVIDENCE":
+                        reason = claim_res.get('abstention_reason')
+                        reason_vi = get_abstention_reason_vi(reason)
+                        st.info(f"**Lý do:** {reason_vi}")
+
+                    if claim_res.get('field_results'):
+                        st.markdown("### So sánh chi tiết")
+                        for k, v in claim_res['field_results'].items():
+                            f_state_vi = get_trust_state_vi(v['state'])
+                            f_name_vi = get_field_name_vi(k)
+                            st.markdown(f"""
+                            <div class="field-card">
+                                <div class="field-header">Trường dữ liệu: {f_name_vi}</div>
+                                <div style="color: #4b5563;"><b>Kết quả:</b> {f_state_vi}</div>
+                            </div>
+                            """, unsafe_allow_html=True)
+                    
+                    st.markdown("### Nguồn bằng chứng chính thức")
                     prov = claim_res.get('primary_provenance')
                     if prov:
-                        with st.expander("Chi tiết kỹ thuật (Technical Details)"):
-                            st.write(f"**Title:** {prov.get('title')}")
-                            st.write(f"**Source URL:** {prov.get('canonical_url')}")
-                            st.write(f"**Notice ID:** {prov.get('notice_id')} (Version {prov.get('version_id')})")
-                            st.write(f"**Exact Official Text:**")
-                            st.code(prov.get('exact_chunk_text'))
+                        st.markdown(f"""
+                        <div class="evidence-card">
+                            <h4 style="margin-top: 0; color: #166534;">{prov.get('title')}</h4>
+                            <p style="margin-bottom: 8px;"><b>URL:</b> <a href="{prov.get('canonical_url')}">{prov.get('canonical_url')}</a></p>
+                            <div style="background: #ffffff; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; color: #374151; border: 1px solid #d1fae5;">
+                                {prov.get('exact_chunk_text')}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
                     else:
-                        st.info("Không có bằng chứng chính thức cụ thể cho yêu cầu này.")
+                        st.info("Không tìm thấy bằng chứng cụ thể liên quan trong hệ thống.")
+                    
+                    with st.expander("Chi tiết kỹ thuật (Dành cho nhà phát triển)"):
+                        st.write(f"**Domain Verdict:** `{verdict}`")
+                        st.write(f"**Temporal Status:** `{temp}`")
+                        st.write(f"**Abstention Reason:** `{claim_res.get('abstention_reason')}`")
+                        if prov:
+                            st.write(f"**Notice ID:** `{prov.get('notice_id')}` | **Version ID:** `{prov.get('version_id')}`")
+                            
             except Exception as e:
-                st.error(f"Failed to verify: {e}")
+                st.error("Rất tiếc, đã có lỗi xảy ra trong quá trình xác minh. Vui lòng thử lại sau.")

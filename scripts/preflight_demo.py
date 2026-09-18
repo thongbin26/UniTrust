@@ -53,7 +53,7 @@ def check_model_cache():
         return False
 
 def main():
-    print("--- UniTrust V2 Preflight Check ---")
+    print("--- UniTrust Preflight Check ---")
     
     has_failure = False
     

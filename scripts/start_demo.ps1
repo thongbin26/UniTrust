@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $ProjectRoot = (Resolve-Path "$ScriptDir\..").Path
 
-Write-Host "--- UniTrust V2 Demo Startup ---" -ForegroundColor Cyan
+Write-Host "--- UniTrust Demo Startup ---" -ForegroundColor Cyan
 Write-Host "Project Root: $ProjectRoot"
 
 # 1. Verify .venv exists
@@ -75,7 +75,7 @@ if ($FrontendProcess.HasExited) {
 }
 
 Write-Host "===============================================" -ForegroundColor Green
-Write-Host "🚀 UniTrust V2 Demo is now running!" -ForegroundColor Green
+Write-Host "🚀 UniTrust Demo is now running!" -ForegroundColor Green
 Write-Host "Backend API: http://127.0.0.1:8000" -ForegroundColor Green
 Write-Host "Frontend UI: http://127.0.0.1:8501" -ForegroundColor Green
 Write-Host "===============================================" -ForegroundColor Green

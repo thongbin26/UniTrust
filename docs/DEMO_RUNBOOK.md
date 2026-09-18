@@ -1,6 +1,6 @@
-# UniTrust V2 - Demo Runbook
+# UniTrust - Demo Runbook
 
-This runbook outlines the steps to present the final UniTrust V2 prototype. The live demo is designed to last approximately 2-3 minutes.
+This runbook outlines the steps to present the final UniTrust prototype. The live demo is designed to last approximately 2-3 minutes.
 
 ## A. Pre-demo Setup & Commands
 

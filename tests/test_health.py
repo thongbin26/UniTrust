@@ -12,5 +12,5 @@ def test_health_endpoint():
     data = response.json()
 
     assert data["status"] == "ok"
-    assert data["service"] == "UniTrust V2"
+    assert data["service"] == "UniTrust"
     assert data["database"] == "ok"

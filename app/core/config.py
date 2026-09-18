@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "UniTrust V2"
+    app_name: str = "UniTrust"
     app_env: str = "development"
     debug: bool = True
 

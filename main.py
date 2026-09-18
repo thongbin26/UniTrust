@@ -47,7 +47,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version="0.2.0",
-    description="UniTrust V2 Competition Demo API",
+    description="UniTrust Competition Demo API",
     debug=settings.debug,
     lifespan=lifespan,
 )
@@ -63,7 +63,7 @@ app.include_router(for_you_router)
 @app.get("/")
 def root() -> dict:
     return {
-        "message": "UniTrust V2 API is running.",
+        "message": "UniTrust API is running.",
         "docs": "/docs",
         "health": "/health",
         "sources": "/sources",

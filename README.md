@@ -1,10 +1,10 @@
-# UniTrust V2
+# UniTrust
 
 **Temporal Evidence & Obligation Intelligence for University Notices**
 
 > Đúng nguồn. Đúng phiên bản. Đúng người.
 
-UniTrust V2 is a competition prototype for verifying student-facing information against authoritative university notices and tracking how student obligations change over time.
+UniTrust is a competition prototype for verifying student-facing information against authoritative university notices and tracking how student obligations change over time.
 
 ## Problem & System Thesis
 

@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "catalog_year": 2026,
+    "last_verified_date": "2026-09-18"
+  },
+  "faculties": [
+    {
+      "name": "Khoa Công nghệ thông tin",
+      "status": "VERIFIED",
+      "source_url": "http://itf.dut.udn.vn/",
+      "majors": [
+        "Công nghệ thông tin",
+        "Kỹ thuật máy tính",
+        "Khoa học dữ liệu và Trí tuệ nhân tạo",
+        "Kỹ thuật phần mềm",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Điện tử và Trí tuệ nhân tạo",
+      "status": "VERIFIED",
+      "source_url": "http://fast.dut.udn.vn/",
+      "majors": [
+        "Kỹ thuật điện tử - viễn thông",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Cơ khí giao thông và Năng lượng",
+      "status": "VERIFIED",
+      "source_url": "https://dut.udn.vn/KhoaCKGT",
+      "majors": [
+        "Kỹ thuật cơ khí (Cơ khí Động lực)",
+        "Kỹ thuật ô tô",
+        "Kỹ thuật tàu thủy",
+        "Kỹ thuật nhiệt",
+        "Kỹ thuật phương tiện đường sắt tốc độ cao",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Cơ khí",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Kỹ thuật cơ khí",
+        "Kỹ thuật cơ điện tử",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Điện",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Kỹ thuật điện",
+        "Kỹ thuật điều khiển và tự động hóa",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Hóa, Môi trường và Khoa học sự sống",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Kỹ thuật hóa học",
+        "Kỹ thuật môi trường",
+        "Công nghệ thực phẩm",
+        "Công nghệ sinh học",
+        "Quản lý tài nguyên và môi trường",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Kiến trúc",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Kiến trúc",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Quản lý dự án",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Kinh tế xây dựng",
+        "Quản lý công nghiệp",
+        "Logistics và Quản lý chuỗi cung ứng",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Khoa Xây dựng",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Kỹ thuật xây dựng",
+        "Kỹ thuật xây dựng công trình giao thông",
+        "Kỹ thuật xây dựng công trình thủy",
+        "Kỹ thuật cơ sở hạ tầng",
+        "Không xác định / Khác"
+      ]
+    },
+    {
+      "name": "Chưa xác định",
+      "status": "UNVERIFIED",
+      "source_url": "CHƯA XÁC MINH",
+      "majors": [
+        "Không xác định / Khác"
+      ]
+    }
+  ]
+}
