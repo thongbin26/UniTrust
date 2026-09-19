@@ -144,21 +144,21 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
                 html += '</div>'
                 st.markdown(html, unsafe_allow_html=True)
 
-            st.markdown(f"### Việc áp dụng cho bạn ({len(applies)})")
+            st.markdown(f"### Có thể áp dụng cho bạn ({len(applies)})")
             if applies:
                 for o in applies:
                     render_obs(o, "obs-apply")
             else:
                 st.info("Hiện không có việc nào bắt buộc áp dụng trực tiếp cho bạn.")
 
-            st.markdown(f"### Cần kiểm tra thêm ({len(unknown)})")
+            st.markdown(f"### Chưa đủ thông tin để xác định ({len(unknown)})")
             if unknown:
                 for o in unknown:
                     render_obs(o, "obs-unknown")
             else:
                 st.write("Không có việc nào cần kiểm tra thêm.")
                 
-            with st.expander(f"Không áp dụng ({len(not_applies)})"):
+            with st.expander(f"Không áp dụng theo hồ sơ hiện tại ({len(not_applies)})"):
                 if not_applies:
                     for o in not_applies:
                         render_obs(o, "obs-not-apply")

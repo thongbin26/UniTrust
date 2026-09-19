@@ -1,9 +1,9 @@
 import streamlit as st
-import unicodedata
 import logging
 from html import escape
 from streamlit_searchbox import st_searchbox
 from frontend.api_client import api_client
+from frontend.evidence_search import rank_notices
 
 st.markdown("""
 <style>
@@ -110,71 +110,8 @@ try:
             if not searchterm:
                 return [(f"[{n['category']}] {n['title']} - Nguồn: {n['source_display_name']}", n['notice_id']) for n in notices]
 
-            def unaccent(text):
-                nfkd_form = unicodedata.normalize('NFKD', text)
-                return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
-
-            q = unaccent(searchterm.lower()).strip()
-            synonyms = {
-                "diem ren luyen": ["ren luyen", "danh gia ren luyen", "ket qua ren luyen"],
-                "tot nghiep": ["tot nghiep", "xet tot nghiep", "do an tot nghiep"]
-            }
-
-            query_tokens = set(q.split())
-            if q in synonyms:
-                for syn in synonyms[q]:
-                    query_tokens.update(syn.split())
-
-            scored_notices = []
-            for n in notices:
-                t = unaccent(n['title'].lower())
-                c = unaccent(n['category'].lower())
-                s = unaccent(n['source_display_name'].lower())
-                txt = unaccent(n['searchable_text'].lower() if n.get('searchable_text') else "")
-
-                score = 0
-                match_reasons = []
-
-                if q in t:
-                    score += 100
-                    match_reasons.append("Tiêu đề chứa cụm từ chính xác")
-                elif any(syn in t for syn in synonyms.get(q, [])):
-                    score += 80
-                    match_reasons.append("Tiêu đề chứa từ đồng nghĩa")
-
-                t_tokens = set(t.split())
-                if query_tokens and query_tokens.issubset(t_tokens):
-                    score += 50
-                    match_reasons.append("Tiêu đề chứa tất cả từ khóa")
-
-                if q in c:
-                    score += 40
-                    match_reasons.append("Khớp chuyên mục")
-
-                title_matches = len(query_tokens.intersection(t_tokens))
-                if title_matches > 0:
-                    score += (title_matches * 20)
-                    if not any("Tiêu đề" in r for r in match_reasons):
-                        match_reasons.append(f"Tiêu đề chứa một phần từ khóa")
-
-                txt_tokens = set(txt.split())
-                txt_matches = len(query_tokens.intersection(txt_tokens))
-                if txt and (q in txt or any(syn in txt for syn in synonyms.get(q, []))):
-                    score += 30
-                    match_reasons.append("Nội dung chứa cụm từ chính xác")
-                elif txt_matches > 0:
-                    score += (txt_matches * 5)
-                    match_reasons.append("Nội dung chứa từ khóa")
-
-                if score >= 40:
-                    nc = n.copy()
-                    nc['search_score'] = score
-                    nc['match_reasons'] = list(dict.fromkeys(match_reasons))
-                    scored_notices.append(nc)
-
-            scored_notices.sort(key=lambda x: x['search_score'], reverse=True)
             results = []
-            for n in scored_notices[:10]:
+            for n in rank_notices(notices, searchterm):
                 reason_str = ", ".join(n['match_reasons'][:2])
                 label = f"[{n['category']}] {n['title']} (Điểm: {n['search_score']} - {reason_str})"
                 results.append((label, n['notice_id']))

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
-from typing import List
+import sqlite3
 
 from app.api.schemas import StudentProfile, ForYouResponse, ForYouObligationItem, ObligationApplicability
-from app.api.deps import get_structured_repository
+from app.api.deps import get_db_connection, get_structured_repository
 from app.verification.repository import OfficialStructuredRepository
 from app.temporal.resolver import TemporalResolver
 from app.models.obligation import StudentObligation
@@ -21,33 +21,53 @@ def evaluate_applicability(profile: StudentProfile, obligation: StudentObligatio
     if not aud.faculties and not aud.cohorts and not aud.programs and not aud.majors:
         return ObligationApplicability(status="UNKNOWN", explanation="Ambiguous audience targets")
         
-    # Check explicitly required dimensions. A dimension is required if its list is non-empty.
-    # The profile must match ALL non-empty dimensions.
-    
-    # Track if we found any mismatch
-    if aud.faculties:
-        if not profile.faculty or profile.faculty not in aud.faculties:
-            return ObligationApplicability(status="DOES_NOT_APPLY", explanation="Faculty mismatch or missing")
-            
-    if aud.majors:
-        if not profile.major or profile.major not in aud.majors:
-            return ObligationApplicability(status="DOES_NOT_APPLY", explanation="Major mismatch or missing")
-            
-    if aud.cohorts:
-        if not profile.cohort or profile.cohort not in aud.cohorts:
-            return ObligationApplicability(status="DOES_NOT_APPLY", explanation="Cohort mismatch or missing")
-            
-    if aud.programs:
-        if not profile.program or profile.program not in aud.programs:
-            return ObligationApplicability(status="DOES_NOT_APPLY", explanation="Program mismatch or missing")
-            
-    # If we haven't failed any explicit dimension, and there were explicit dimensions, it applies.
+    missing_dimensions = []
+    mismatched_dimensions = []
+    dimensions = (
+        ("faculty", profile.faculty, aud.faculties),
+        ("major", profile.major, aud.majors),
+        ("cohort", profile.cohort, aud.cohorts),
+        ("program", profile.program, aud.programs),
+    )
+    for name, profile_value, required_values in dimensions:
+        if not required_values:
+            continue
+        if profile_value is None:
+            missing_dimensions.append(name)
+        elif profile_value not in required_values:
+            mismatched_dimensions.append(name)
+
+    # A known mismatch is sufficient even when another dimension is unknown.
+    if mismatched_dimensions:
+        return ObligationApplicability(
+            status="DOES_NOT_APPLY",
+            explanation=f"Profile does not match: {', '.join(mismatched_dimensions)}",
+        )
+    if missing_dimensions:
+        return ObligationApplicability(
+            status="UNKNOWN",
+            explanation=f"Profile is missing: {', '.join(missing_dimensions)}",
+        )
+
     return ObligationApplicability(status="APPLIES", explanation="Profile explicitly matches all required dimensions")
 
 @router.post("", response_model=ForYouResponse)
-def get_for_you(profile: StudentProfile, repo: OfficialStructuredRepository = Depends(get_structured_repository)):
+def get_for_you(
+    profile: StudentProfile,
+    repo: OfficialStructuredRepository = Depends(get_structured_repository),
+    conn: sqlite3.Connection = Depends(get_db_connection),
+):
     obligations_out = []
     temp_resolver = TemporalResolver()
+    notice_ids = sorted({notice_id for notice_id, _ in repo.cache})
+    canonical_urls = {}
+    if notice_ids:
+        placeholders = ",".join("?" for _ in notice_ids)
+        rows = conn.execute(
+            f"SELECT notice_id, canonical_url FROM notices WHERE notice_id IN ({placeholders})",
+            notice_ids,
+        ).fetchall()
+        canonical_urls = {row["notice_id"]: row["canonical_url"] for row in rows}
     
     # We iterate over all known reviewed annotations
     for (notice_id, version_id), annotation in repo.cache.items():
@@ -68,7 +88,7 @@ def get_for_you(profile: StudentProfile, repo: OfficialStructuredRepository = De
                 notice_id=notice_id,
                 version_id=version_id,
                 title=annotation.title or f"Notice {notice_id}",
-                canonical_url=None # Retrieve from DB if needed, but ForYou response can omit it or use None
+                canonical_url=canonical_urls.get(notice_id),
             ))
             
     # Sort by deadline availability (those with deadlines first), then by APPLIES first

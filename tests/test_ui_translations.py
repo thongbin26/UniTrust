@@ -22,8 +22,8 @@ def test_temporal_state_vi():
     assert get_temporal_state_vi("UNKNOWN") == "Chưa xác định phiên bản"
 
 def test_applicability_vi():
-    assert get_applicability_vi("APPLIES") == "Áp dụng cho bạn"
-    assert get_applicability_vi("DOES_NOT_APPLY") == "Không áp dụng"
+    assert get_applicability_vi("APPLIES") == "Có thể áp dụng cho bạn"
+    assert get_applicability_vi("DOES_NOT_APPLY") == "Không áp dụng theo hồ sơ hiện tại"
     assert get_applicability_vi("UNKNOWN") == "Chưa đủ thông tin để xác định"
 
 def test_abstention_reasons_vi():

@@ -1,8 +1,12 @@
 from pathlib import Path
 
+import pytest
 from streamlit.testing.v1 import AppTest
 
 from app.api.schemas import ForYouResponse
+from app.api.schemas import StudentProfile
+from app.api.routes.for_you import evaluate_applicability
+from app.models.obligation import ActionType, ActionValue, AudienceCondition, StudentObligation
 from frontend.api_client import api_client
 from frontend.profile_state import api_profile, load_catalog, make_profile
 from tests.phase1_fixtures import phase1_client, frontend_http
@@ -23,6 +27,7 @@ def test_api_client_for_you_uses_real_contract(phase1_client, frontend_http):
     obligation = next(o for o in response["obligations"] if o["notice_id"] == 13 and o["obligation_id"] == "o2")
     assert obligation["action_text"]
     assert obligation["applicability"]["status"] == "APPLIES"
+    assert obligation["canonical_url"].startswith("https://")
     assert "obligation" not in obligation and "applicability_status" not in obligation
     assert obligation["temporal_status"] == "CURRENT"
 
@@ -34,10 +39,60 @@ def test_existing_exact_match_and_missing_dimension_semantics(phase1_client):
 
     assert result("CNTT", "K22")["applicability"]["status"] == "APPLIES"
     assert result("Công nghệ thông tin", "K22")["applicability"]["status"] == "DOES_NOT_APPLY"
-    assert result("CNTT", None)["applicability"]["status"] == "DOES_NOT_APPLY"
+    assert result("CNTT", None)["applicability"]["status"] == "UNKNOWN"
     items = phase1_client.post("/for-you", json={"program": None}).json()["obligations"]
     program_item = next(o for o in items if o["notice_id"] == 24 and o["obligation_id"] == "o1")
-    assert program_item["applicability"]["status"] == "DOES_NOT_APPLY"
+    assert program_item["applicability"]["status"] == "UNKNOWN"
+
+
+def obligation(**audience):
+    return StudentObligation(
+        obligation_id="test",
+        audience=AudienceCondition(**audience),
+        action=ActionValue(action_type=ActionType.CHECK, text="Kiểm tra"),
+    )
+
+
+@pytest.mark.parametrize(
+    ("dimension", "audience_field", "required"),
+    [
+        ("faculty", "faculties", "CNTT"),
+        ("major", "majors", "CNTT"),
+        ("cohort", "cohorts", "K22"),
+        ("program", "programs", "CTTT"),
+    ],
+)
+def test_required_missing_dimension_is_unknown(dimension, audience_field, required):
+    result = evaluate_applicability(
+        StudentProfile(),
+        obligation(**{audience_field: [required]}),
+    )
+    assert result.status == "UNKNOWN"
+    assert dimension in result.explanation
+
+
+def test_known_mismatch_is_does_not_apply_even_when_another_dimension_is_missing():
+    result = evaluate_applicability(
+        StudentProfile(major="KTPM", cohort=None),
+        obligation(majors=["CNTT"], cohorts=["K22"]),
+    )
+    assert result.status == "DOES_NOT_APPLY"
+
+
+def test_all_required_dimensions_known_and_matching_applies():
+    result = evaluate_applicability(
+        StudentProfile(faculty="K-CNTT", major="CNTT", cohort="K22", program="CTTT"),
+        obligation(faculties=["K-CNTT"], majors=["CNTT"], cohorts=["K22"], programs=["CTTT"]),
+    )
+    assert result.status == "APPLIES"
+
+
+def test_unrestricted_dimension_does_not_exclude_obligation():
+    result = evaluate_applicability(
+        StudentProfile(faculty="Khoa khác", cohort="K22"),
+        obligation(cohorts=["K22"]),
+    )
+    assert result.status == "APPLIES"
 
 
 def test_for_you_page_renders_real_response(frontend_http, phase1_client):
@@ -52,8 +107,8 @@ def test_for_you_page_renders_real_response(frontend_http, phase1_client):
     text = "\n".join(element.value for element in page.markdown)
     assert all(item["action_text"] in text for item in items)
     assert "Công nghệ thông tin" in text
-    assert "Việc áp dụng cho bạn (1)" in text
-    assert "Cần kiểm tra thêm" in text
+    assert "Có thể áp dụng cho bạn (1)" in text
+    assert "Chưa đủ thông tin để xác định" in text
 
 
 def test_for_you_page_hides_request_errors(frontend_http, monkeypatch):

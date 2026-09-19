@@ -15,7 +15,7 @@ def list_notices(conn: sqlite3.Connection = Depends(get_db_connection), repo: Of
         SELECT n.notice_id, n.title, n.publication_date, s.name as source_name
         FROM notices n
         JOIN sources s ON n.source_id = s.source_id
-        ORDER BY n.publication_date DESC
+        ORDER BY n.publication_date DESC, n.notice_id DESC
     """)
     rows = cursor.fetchall()
 
@@ -59,7 +59,7 @@ def get_search_index(conn: sqlite3.Connection = Depends(get_db_connection)):
             FROM notice_versions v1
             WHERE version_id = (SELECT MAX(version_id) FROM notice_versions v2 WHERE v2.notice_id = v1.notice_id)
         ) v ON n.notice_id = v.notice_id
-        ORDER BY n.publication_date DESC
+        ORDER BY n.publication_date DESC, n.notice_id DESC
     """)
     rows = cursor.fetchall()
     results = []

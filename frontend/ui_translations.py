@@ -15,8 +15,8 @@ TEMPORAL_STATE_VI = {
 }
 
 APPLICABILITY_VI = {
-    "APPLIES": "Áp dụng cho bạn",
-    "DOES_NOT_APPLY": "Không áp dụng",
+    "APPLIES": "Có thể áp dụng cho bạn",
+    "DOES_NOT_APPLY": "Không áp dụng theo hồ sơ hiện tại",
     "UNKNOWN": "Chưa đủ thông tin để xác định"
 }
 
