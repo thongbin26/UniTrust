@@ -10,7 +10,7 @@ class APIClient:
         # Local LLMs can be slow (e.g. Qwen3 4B takes 100s+)
         self.llm_timeout = float(os.getenv("API_LLM_TIMEOUT", "120.0"))
 
-    def _get(self, path: str, timeout: float = None) -> Dict[str, Any]:
+    def _get(self, path: str, timeout: float = None) -> Dict[str, Any] | List[Dict[str, Any]]:
         try:
             resp = httpx.get(f"{self.base_url}{path}", timeout=timeout or self.std_timeout)
             resp.raise_for_status()
@@ -37,6 +37,9 @@ class APIClient:
 
     def list_notices(self) -> List[Dict[str, Any]]:
         return self._get("/evidence/notices")
+
+    def get_search_index(self) -> List[Dict[str, Any]]:
+        return self._get("/evidence/search-index")
 
     def get_notice(self, notice_id: int) -> Dict[str, Any]:
         return self._get(f"/evidence/notices/{notice_id}")

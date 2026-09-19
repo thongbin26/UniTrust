@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Dict, Any
 from app.api.deps import get_db_connection, get_structured_repository
+from app.api.schemas import NoticeSearchIndexItem
 from app.verification.repository import OfficialStructuredRepository
 import sqlite3
 
@@ -45,11 +46,11 @@ def list_notices(conn: sqlite3.Connection = Depends(get_db_connection), repo: Of
         })
     return results
 
-@router.get("/search-index", response_model=List[Dict[str, Any]])
+@router.get("/search-index", response_model=List[NoticeSearchIndexItem])
 def get_search_index(conn: sqlite3.Connection = Depends(get_db_connection)):
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT n.notice_id, n.title, n.publication_date, s.name as source_display_name,
+        SELECT n.notice_id, n.title, s.name as source_display_name,
                v.raw_text, s.source_id
         FROM notices n
         JOIN sources s ON n.source_id = s.source_id
@@ -68,9 +69,7 @@ def get_search_index(conn: sqlite3.Connection = Depends(get_db_connection)):
             "title": r["title"],
             "source_id": r["source_id"],
             "source_display_name": r["source_display_name"],
-            "publication_date": r["publication_date"],
             "searchable_text": r["raw_text"],
-            "snippet": r["raw_text"][:150] + "..." if r["raw_text"] and len(r["raw_text"]) > 150 else r["raw_text"]
         })
     return results
 

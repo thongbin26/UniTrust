@@ -1,5 +1,7 @@
 import streamlit as st
 import unicodedata
+import logging
+from html import escape
 from streamlit_searchbox import st_searchbox
 from frontend.api_client import api_client
 
@@ -78,7 +80,7 @@ def get_category(title, text):
 @st.cache_data(ttl=300)
 def fetch_search_index():
     source_map = {
-        "dut_daotao": "Phòng Đào tạo",
+        "dut_academic": "Phòng Đào tạo",
         "dut_ctsv": "Phòng Công tác sinh viên",
         "dut_it_faculty": "Khoa Công nghệ thông tin"
     }
@@ -180,6 +182,7 @@ try:
 
         selected_id = st_searchbox(
             search_notices,
+            default_options=search_notices(""),
             key="evidence_searchbox",
             placeholder="Gõ từ khóa (vd: rèn luyện, học phí...) hoặc duyệt danh sách bên dưới"
         )
@@ -191,21 +194,15 @@ try:
             st.markdown(f"""
             <div class="stCard">
                 <div class="category-badge">{notice_meta['category']}</div>
-                <h2 class="doc-title">{notice.get("title")}</h2>
-                <div class="doc-meta"><b>Nguồn chính thức:</b> {notice.get("source_name")}</div>
-                <div class="doc-meta"><b>Ngày ban hành:</b> {notice.get("publication_date")}</div>
-                <div class="doc-meta"><b>Đường dẫn gốc:</b> <a href="{notice.get("canonical_url")}" target="_blank">Xem tại đây</a></div>
+                <h2 class="doc-title">{escape(notice["title"])}</h2>
+                <div class="doc-meta"><b>Nguồn chính thức:</b> {escape(notice_meta["source_display_name"])}</div>
+                <div class="doc-meta"><b>Ngày ban hành:</b> {escape(notice["publication_date"] or "Chưa rõ")}</div>
+                <div class="doc-meta"><b>Đường dẫn gốc:</b> <a href="{escape(notice["canonical_url"])}" target="_blank">Xem tại đây</a></div>
                 <hr style="margin: 20px 0; border-color: #e5e7eb;">
                 <h4 style="margin-top:0; color:#111827;">Nội dung thông báo</h4>
-                <div class="doc-body">{notice.get("raw_text")}</div>
+                <div class="doc-body">{escape(notice["raw_text"] or "")}</div>
             </div>
             """, unsafe_allow_html=True)
-
-            if notice_meta['has_structured_obligations']:
-                st.info("✅ Thông báo này đã được UniTrust rà soát và cấu trúc. Có chứa các nghĩa vụ được hệ thống nhận diện.")
-            else:
-                st.warning("⚠️ Thông báo này chưa được hệ thống rà soát cấu trúc nghĩa vụ.")
-
 
             st.subheader("Lịch sử cập nhật")
             changes = api_client.get_notice_changes(selected_id)
@@ -214,14 +211,9 @@ try:
             else:
                 st.success("Đã tìm thấy các phiên bản lịch sử.")
 
-            with st.expander("Chi tiết kỹ thuật (Dành cho nhà phát triển)"):
-                st.write(f"**Notice ID:** `{notice.get('notice_id')}`")
-                st.write(f"**Current Version ID:** `{notice.get('current_version_id')}`")
-                if changes.get("has_history"):
-                    st.json(changes.get("changes", []))
-
     else:
         st.info("Chưa có thông báo nào trong cơ sở dữ liệu.")
 
-except Exception as e:
-    st.error(f"Lỗi khi tải bằng chứng: {e}")
+except Exception:
+    logging.getLogger(__name__).exception("Evidence browser failed")
+    st.error("Không thể tải thông báo lúc này. Vui lòng thử lại.")

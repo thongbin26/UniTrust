@@ -40,6 +40,14 @@ class NoticeListItem(BaseModel):
     has_structured_obligations: bool
     structured_coverage: str
 
+class NoticeSearchIndexItem(BaseModel):
+    """Fields used by the evidence browser; search text is stored notice text."""
+    notice_id: int
+    title: str
+    source_id: str
+    source_display_name: str
+    searchable_text: str
+
 class NoticeVersionChange(BaseModel):
     field_name: str
     old_value: Any
