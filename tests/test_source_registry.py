@@ -1,4 +1,5 @@
 import httpx
+from datetime import datetime, timezone
 
 from app.core.config import settings
 from app.db.database import init_database
@@ -53,6 +54,64 @@ def test_seed_source_registry(
     assert "dut_ctsv" in ids
     assert "dut_academic" in ids
     assert "dut_it_faculty" in ids
+
+
+def test_startup_is_byte_idempotent(monkeypatch, tmp_path):
+    use_temp_database(monkeypatch, tmp_path)
+    database = tmp_path / "test_unitrust.db"
+    before = database.read_bytes()
+    monkeypatch.setattr("app.sources.repository.utc_now", lambda: datetime(2040, 1, 1, tzinfo=timezone.utc))
+
+    init_database()
+    seed_sources()
+    init_database()
+    seed_sources()
+
+    assert database.read_bytes() == before
+
+
+def test_seed_updates_only_changed_metadata(monkeypatch, tmp_path):
+    from app.db.database import get_connection
+    from app.sources import repository
+    from app.sources.seed import SEED_SOURCES
+
+    use_temp_database(monkeypatch, tmp_path)
+    before = {source.source_id: source for source in list_sources()}
+    changed = SEED_SOURCES[0].model_copy(update={"expected_marker": None})
+    monkeypatch.setattr(repository, "SEED_SOURCES", [changed, *SEED_SOURCES[1:]])
+    changed_at = datetime(2040, 1, 1, tzinfo=timezone.utc)
+    monkeypatch.setattr(repository, "utc_now", lambda: changed_at)
+    seed_sources()
+    after = {source.source_id: source for source in list_sources()}
+
+    assert after[changed.source_id].expected_marker is None
+    with get_connection() as connection:
+        changed_timestamps = connection.execute(
+            "SELECT created_at, updated_at FROM sources WHERE source_id = ?",
+            (changed.source_id,),
+        ).fetchone()
+    assert changed_timestamps["updated_at"] == changed_at.isoformat()
+    assert changed_timestamps["created_at"] != changed_timestamps["updated_at"]
+    assert after[changed.source_id].health_status == before[changed.source_id].health_status
+    for source in SEED_SOURCES[1:]:
+        assert after[source.source_id] == before[source.source_id]
+
+    # Restoring a nullable marker is a real change, too (SQL must be null-safe).
+    monkeypatch.setattr(repository, "SEED_SOURCES", SEED_SOURCES)
+    seed_sources()
+    assert get_source(changed.source_id).expected_marker == SEED_SOURCES[0].expected_marker
+
+
+def test_seed_inserts_missing_source_only(monkeypatch, tmp_path):
+    from app.db.database import get_connection
+
+    use_temp_database(monkeypatch, tmp_path)
+    kept = get_source("dut_academic")
+    with get_connection() as connection:
+        connection.execute("DELETE FROM sources WHERE source_id = 'dut_ctsv'")
+    seed_sources()
+    assert get_source("dut_ctsv") is not None
+    assert get_source("dut_academic") == kept
 
 
 def test_healthy_source_check_with_mock(

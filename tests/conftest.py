@@ -29,29 +29,18 @@ def isolated_runtime_artifacts(tmp_path_factory):
     retrieval_cache = runtime_dir / "retrieval"
     shutil.copy2(root / "unitrust.db", database_path)
 
-    original_database_url = settings.database_url
-    settings.database_url = f"sqlite:///{database_path}"
-
-    import app.retrieval.dense as dense_module
-
-    original_dense_retriever = dense_module.DenseRetriever
-
-    class IsolatedDenseRetriever(original_dense_retriever):
-        def __init__(self, model_name="intfloat/multilingual-e5-small", cache_dir=None):
-            super().__init__(
-                model_name=model_name,
-                cache_dir=str(retrieval_cache) if cache_dir is None else cache_dir,
-            )
-
-    dense_module.DenseRetriever = IsolatedDenseRetriever
     try:
-        yield {
-            "database_path": database_path,
-            "retrieval_cache": retrieval_cache,
-        }
+        with pytest.MonkeyPatch.context() as runtime_config:
+            runtime_config.setattr(settings, "database_url", f"sqlite:///{database_path}")
+            runtime_config.setattr(settings, "retrieval_cache_dir", str(retrieval_cache))
+            runtime_config.setattr(settings, "dense_local_files_only", True)
+            runtime_config.setenv("HF_HUB_OFFLINE", "1")
+            runtime_config.setenv("TRANSFORMERS_OFFLINE", "1")
+            yield {
+                "database_path": database_path,
+                "retrieval_cache": retrieval_cache,
+            }
     finally:
-        dense_module.DenseRetriever = original_dense_retriever
-        settings.database_url = original_database_url
         assert _protected_hashes(root) == protected_before
 
 

@@ -1,73 +1,73 @@
+"""Fast contract smoke checks against an already-running local demo."""
+
 import httpx
-import sys
 
-def main():
-    print("--- 3. Health Checks ---")
-    r1 = httpx.get("http://127.0.0.1:8000/health")
-    print(f"Backend /health: {r1.status_code}")
-    
-    r2 = httpx.get("http://127.0.0.1:8501/healthz")
-    print(f"Frontend /healthz: {r2.status_code} - {r2.text}")
-    
-    print("\n--- 5. Demo Cases via /verify ---")
-    
-    # Case A
-    case_a = "Sinh viên khóa 2022 ngành CNTT ký tên theo danh sách lớp và nộp 01 ảnh thẻ 2x3 trước 16h00 ngày 26/06/2026."
-    res_a = httpx.post("http://127.0.0.1:8000/verify", json={"text": case_a}, timeout=20.0)
-    print(f"Case A HTTP Status: {res_a.status_code}")
-    if res_a.status_code == 200:
-        data = res_a.json()["results"][0]
-        print(f"  Trust State: {data['verdict']}")
-        print(f"  Temporal State: {data['temporal_status']}")
-        print(f"  Abstention: {data.get('abstention_reason')}")
-        prov = data.get("primary_provenance")
-        print(f"  Provenance: {'Present' if prov else 'None'} " + (f"(notice_id={prov['notice_id']}, version_id={prov['version_id']})" if prov else ""))
 
-    # Case B
-    case_b = "Sinh viên khóa 2022 ngành CNTT ký tên theo danh sách lớp và nộp 01 ảnh thẻ 2x3 trước 16h00 ngày 30/06/2026."
-    res_b = httpx.post("http://127.0.0.1:8000/verify", json={"text": case_b}, timeout=20.0)
-    print(f"\nCase B HTTP Status: {res_b.status_code}")
-    if res_b.status_code == 200:
-        data = res_b.json()["results"][0]
-        print(f"  Trust State: {data['verdict']}")
-        print(f"  Temporal State: {data['temporal_status']}")
-        print(f"  Abstention: {data.get('abstention_reason')}")
-        prov = data.get("primary_provenance")
-        print(f"  Provenance: {'Present' if prov else 'None'} " + (f"(notice_id={prov['notice_id']}, version_id={prov['version_id']})" if prov else ""))
+class SmokeFailure(RuntimeError):
+    pass
 
-    # Case C
-    case_c = "Đại học yêu cầu sinh viên đi học mặc áo màu đỏ"
-    res_c = httpx.post("http://127.0.0.1:8000/verify", json={"text": case_c}, timeout=20.0)
-    print(f"\nCase C HTTP Status: {res_c.status_code}")
-    if res_c.status_code == 200:
-        data = res_c.json()["results"][0]
-        print(f"  Trust State: {data['verdict']}")
-        print(f"  Temporal State: {data['temporal_status']}")
-        print(f"  Abstention: {data.get('abstention_reason')}")
-        prov = data.get("primary_provenance")
-        print(f"  Provenance: {'Present' if prov else 'None'} " + (f"(notice_id={prov['notice_id']}, version_id={prov['version_id']})" if prov else ""))
 
-    print("\n--- 6. Evidence Endpoints ---")
-    ev1 = httpx.get("http://127.0.0.1:8000/evidence/notices/13")
-    print(f"GET /evidence/notices/13: {ev1.status_code}")
-    
-    ev2 = httpx.get("http://127.0.0.1:8000/evidence/notices/13/versions")
-    print(f"GET /evidence/notices/13/versions: {ev2.status_code} - {ev2.json() if ev2.status_code == 200 else ''}")
-    
-    ev3 = httpx.get("http://127.0.0.1:8000/evidence/notices/13/changes")
-    print(f"GET /evidence/notices/13/changes: {ev3.status_code} - {ev3.json() if ev3.status_code == 200 else ''}")
+def require(condition, message):
+    if not condition:
+        raise SmokeFailure(message)
 
-    print("\n--- 7. For You Endpoint ---")
-    fy = httpx.post("http://127.0.0.1:8000/for-you", json={"major": "CNTT", "cohort": "K22"})
-    print(f"POST /for-you: {fy.status_code}")
-    if fy.status_code == 200:
-        obs = fy.json()["obligations"]
-        applies = sum(1 for o in obs if o["applicability"]["status"] == "APPLIES")
-        does_not_apply = sum(1 for o in obs if o["applicability"]["status"] == "DOES_NOT_APPLY")
-        unknown = sum(1 for o in obs if o["applicability"]["status"] == "UNKNOWN")
-        print(f"APPLIES: {applies}")
-        print(f"DOES_NOT_APPLY: {does_not_apply}")
-        print(f"UNKNOWN: {unknown}")
+
+def response_json(response):
+    response.raise_for_status()
+    return response.json()
+
+
+def run_checks(client: httpx.Client) -> None:
+    api = "http://127.0.0.1:8000"
+    health = response_json(client.get(f"{api}/health"))
+    require(isinstance(health, dict) and health.get("status") == "ok"
+            and health.get("service") == "UniTrust" and health.get("database") == "ok", "Backend is not ready")
+    print("[PASS] Backend health")
+
+    frontend = client.get("http://127.0.0.1:8501/_stcore/health")
+    frontend.raise_for_status()
+    require(frontend.text.strip() == "ok", "Frontend is not ready")
+    print("[PASS] Frontend health")
+
+    notices = response_json(client.get(f"{api}/evidence/search-index"))
+    index_fields = {"notice_id", "title", "source_id", "source_display_name", "searchable_text"}
+    require(isinstance(notices, list) and len(notices) > 0, "Evidence index is empty or malformed")
+    require(all(isinstance(item, dict) and index_fields <= item.keys() for item in notices), "Evidence index contract mismatch")
+    print(f"[PASS] Evidence search-index ({len(notices)} notices)")
+
+    profile = response_json(client.post(f"{api}/for-you", json={"major": "CNTT", "cohort": "K22"}))
+    require(isinstance(profile, dict) and isinstance(profile.get("obligations"), list), "For You contract mismatch")
+    obligations = profile["obligations"]
+    require(bool(obligations), "For You returned no reviewed obligations")
+    require(all(isinstance(item, dict) and isinstance(item.get("action_text"), str)
+                and isinstance(item.get("applicability"), dict)
+                and item["applicability"].get("status") in {"APPLIES", "DOES_NOT_APPLY", "UNKNOWN"}
+                for item in obligations), "For You obligation contract mismatch")
+    print(f"[PASS] For You ({len(obligations)} obligations)")
+
+    verification = response_json(client.post(f"{api}/verify", json={
+        "text": "Sinh viên khóa 2022 ngành CNTT ký tên theo danh sách lớp và nộp 01 ảnh thẻ 2x3 trước 16h00 ngày 26/06/2026.",
+        "use_llm": False, "top_k": 5,
+    }, timeout=60))
+    require(isinstance(verification, dict) and isinstance(verification.get("results"), list)
+            and bool(verification["results"]), "Verification returned no results")
+    require(all(isinstance(item, dict)
+                and item.get("verdict") in {"VERIFIED", "PARTIALLY_VERIFIED", "CONFLICT", "INSUFFICIENT_EVIDENCE"}
+                and isinstance(item.get("field_results"), dict)
+                for item in verification["results"]), "Verification contract mismatch")
+    print("[PASS] Deterministic verification (LLM disabled)")
+
+
+def main() -> int:
+    try:
+        with httpx.Client(timeout=10, trust_env=False) as client:
+            run_checks(client)
+    except (httpx.HTTPError, SmokeFailure, ValueError) as exc:
+        print(f"[FAIL] Smoke test: {exc}")
+        return 1
+    print("Smoke test PASSED.")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

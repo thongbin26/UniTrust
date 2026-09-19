@@ -50,6 +50,14 @@ def seed_sources() -> None:
                     expected_marker = excluded.expected_marker,
                     provenance_note = excluded.provenance_note,
                     updated_at = excluded.updated_at
+                WHERE sources.name IS NOT excluded.name
+                   OR sources.source_type IS NOT excluded.source_type
+                   OR sources.base_url IS NOT excluded.base_url
+                   OR sources.listing_url IS NOT excluded.listing_url
+                   OR sources.official_domain IS NOT excluded.official_domain
+                   OR sources.is_official IS NOT excluded.is_official
+                   OR sources.expected_marker IS NOT excluded.expected_marker
+                   OR sources.provenance_note IS NOT excluded.provenance_note
                 """,
                 (
                     source.source_id,

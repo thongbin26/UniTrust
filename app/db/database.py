@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 from app.core.config import settings
@@ -41,8 +42,10 @@ def init_database() -> None:
 
         connection.execute(
             """
-            INSERT OR REPLACE INTO app_meta (key, value)
+            INSERT INTO app_meta (key, value)
             VALUES (?, ?)
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value
+            WHERE app_meta.value IS NOT excluded.value
             """,
             ("schema_version", "0.2"),
         )
@@ -114,10 +117,16 @@ def init_database() -> None:
 
 def database_is_ready() -> bool:
     try:
-        with get_connection() as connection:
-            connection.execute("SELECT 1")
+        # Readiness must never create a missing database or modify its contents.
+        uri = get_database_path().resolve().as_uri() + "?mode=ro"
+        with closing(sqlite3.connect(uri, uri=True, timeout=1)) as connection:
+            version = connection.execute(
+                "SELECT value FROM app_meta WHERE key = 'schema_version'"
+            ).fetchone()
+            for table in ("sources", "notices", "notice_versions"):
+                connection.execute(f"SELECT 1 FROM {table} LIMIT 0")
 
-        return True
+        return version == ("0.2",)
 
-    except sqlite3.Error:
+    except (sqlite3.Error, ValueError, OSError):
         return False

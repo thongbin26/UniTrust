@@ -11,6 +11,10 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./unitrust.db"
 
+    retrieval_cache_dir: str = "data/processed/retrieval"
+    # The demo launcher requires local files; development can download a missing model.
+    dense_local_files_only: bool = False
+
     # Step 2 chưa sử dụng AI.
     llm_api_key: str = ""
 

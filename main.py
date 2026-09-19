@@ -1,4 +1,6 @@
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
+import logging
+from time import perf_counter
 from fastapi import FastAPI
 
 from app.api.routes.health import router as health_router
@@ -10,38 +12,60 @@ from app.core.config import settings
 from app.db.database import init_database
 from app.sources.repository import seed_sources
 
+logger = logging.getLogger("uvicorn.error")
+
+
+@contextmanager
+def startup_step(name: str):
+    started = perf_counter()
+    yield
+    logger.info("Startup %s: %.3fs", name, perf_counter() - started)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_database()
-    seed_sources()
+    app.state.startup_ready = False
+    with startup_step("database initialization"):
+        init_database()
+    with startup_step("source registry"):
+        seed_sources()
 
     # Initialize expensive singletons once
-    from app.retrieval.bm25 import BM25Retriever
-    from app.retrieval.dense import DenseRetriever
-    from app.retrieval.hybrid import HybridRetriever
-    from app.verification.decomposer import ClaimDecomposer
-    from app.verification.repository import OfficialStructuredRepository
-    from app.verification.abstention import AbstentionPolicy
-    from app.verification.service import VerificationService
-    from app.retrieval.chunking import build_corpus
+    with startup_step("retrieval imports"):
+        from app.retrieval.bm25 import BM25Retriever
+        from app.retrieval.dense import DenseRetriever
+        from app.retrieval.hybrid import HybridRetriever
+        from app.verification.decomposer import ClaimDecomposer
+        from app.verification.repository import OfficialStructuredRepository
+        from app.verification.abstention import AbstentionPolicy
+        from app.verification.service import VerificationService
+        from app.retrieval.chunking import build_corpus
 
     # DenseRetriever loads E5 model here, blocking startup if it's very slow.
     # To keep Ollama optional, we do not require LLM here.
     bm25 = BM25Retriever()
-    dense = DenseRetriever()
+    with startup_step("dense model loading"):
+        dense = DenseRetriever()
     hybrid = HybridRetriever([bm25, dense])
 
-    chunks = build_corpus()
-    hybrid.index(chunks)
+    with startup_step("corpus loading"):
+        chunks = build_corpus()
+    with startup_step("BM25 and dense indexing"):
+        hybrid.index(chunks)
 
     decomposer = ClaimDecomposer(use_llm_fallback=False)
-    repo = OfficialStructuredRepository()
+    with startup_step("reviewed annotations"):
+        repo = OfficialStructuredRepository()
     policy = AbstentionPolicy()
 
     app.state.repository = repo
     app.state.verification_service = VerificationService(hybrid, decomposer, repo, policy)
 
-    yield
+    app.state.startup_ready = True
+    try:
+        yield
+    finally:
+        app.state.startup_ready = False
 
 
 app = FastAPI(
