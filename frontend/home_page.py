@@ -1,81 +1,77 @@
-import httpx
 import streamlit as st
-from frontend.ui_style import apply_global_styles
 
+from frontend.ui_style import apply_global_styles
 
 
 apply_global_styles()
 
-st.markdown("""
-<div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2rem;">
-    <div style="flex: 1; padding-right: 2rem;">
-        <h1 class="hero-title" style="margin-top: 0; color: #1e3a8a;">UniTrust</h1>
-        <p class="hero-tagline" style="font-size: 1.25rem; font-weight: 500; color: #3b82f6;">Kiểm chứng đúng nguồn, an tâm hành động.</p>
-        <p class="hero-pitch" style="color: #4b5563; line-height: 1.6; margin-bottom: 2rem;">
-            UniTrust giúp sinh viên tra cứu và xác minh thông tin dựa trên các thông báo,
-            quy định chính thức của nhà trường. Không còn lo lắng về tin giả hay thông báo hết hạn.
+hero_copy, hero_visual = st.columns([1.12, 0.88], gap="large", vertical_alignment="center")
+with hero_copy:
+    st.markdown(
+        """
+        <div class="ut-eyebrow">Thông tin đáng tin cậy cho sinh viên DUT</div>
+        <h1 class="ut-page-title" style="font-size:clamp(2.8rem,6vw,4.8rem);margin-bottom:.7rem;">UniTrust</h1>
+        <p style="color:#2563eb;font-size:1.28rem;font-weight:720;margin:0 0 1rem;">
+            Kiểm chứng đúng nguồn, an tâm hành động.
         </p>
-    </div>
-    <div style="flex: 1; text-align: center;">
-        <!-- Simple inline SVG for hero graphic -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="auto">
-            <rect width="400" height="300" fill="#f8fafc" rx="16"/>
-            <rect x="50" y="80" width="120" height="80" fill="#eff6ff" rx="8" stroke="#bfdbfe" stroke-width="2"/>
-            <path d="M70 110 h80 M70 130 h50" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="200" cy="120" r="30" fill="#ffffff" stroke="#2563eb" stroke-width="4"/>
-            <path d="M190 120 l8 8 l15 -15" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="230" y="140" width="120" height="80" fill="#ecfdf5" rx="8" stroke="#a7f3d0" stroke-width="2"/>
-            <path d="M250 170 h80 M250 190 h50" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
-            <path d="M130 180 Q165 220 200 170 T270 120" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6,6"/>
-        </svg>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+        <p class="ut-page-description" style="font-size:1.08rem;max-width:650px;">
+            Đối chiếu thông tin bạn nhận được với thông báo chính thức, tìm nội dung hiện hành
+            và nhận biết những việc có thể liên quan đến hồ sơ của mình.
+        </p>
+        """,
+        unsafe_allow_html=True,
+    )
+    verify_cta, evidence_cta = st.columns(2)
+    with verify_cta:
+        if st.button("Xác minh thông tin", type="primary", icon=":material/verified_user:", use_container_width=True):
+            st.switch_page("pages/1_Verify.py")
+    with evidence_cta:
+        st.page_link("pages/2_Evidence.py", label="Tra cứu thông báo", icon=":material/search:", use_container_width=True)
 
-st.markdown("---")
+with hero_visual:
+    st.markdown(
+        """
+        <div class="ut-card" style="padding:1rem;background:linear-gradient(145deg,#ffffff,#f2f7ff);">
+            <svg aria-label="Luồng kiểm chứng thông tin" viewBox="0 0 520 330" width="100%" role="img">
+                <defs><linearGradient id="shield" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+                <rect x="24" y="58" width="148" height="98" rx="18" fill="#fff" stroke="#dbe4f0"/>
+                <circle cx="51" cy="87" r="10" fill="#dbeafe"/><rect x="70" y="79" width="73" height="9" rx="4" fill="#94a3b8"/>
+                <rect x="45" y="108" width="100" height="8" rx="4" fill="#cbd5e1"/><rect x="45" y="128" width="72" height="8" rx="4" fill="#dbe4f0"/>
+                <path d="M175 108 C210 108 218 150 237 150" fill="none" stroke="#9ab5df" stroke-width="3" stroke-dasharray="7 7"/>
+                <path d="M260 74 L325 99 V150 C325 203 288 232 260 245 C232 232 195 203 195 150 V99 Z" fill="url(#shield)"/>
+                <path d="M231 155 L251 175 L292 130" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M326 169 C357 169 363 210 383 210" fill="none" stroke="#9ab5df" stroke-width="3" stroke-dasharray="7 7"/>
+                <rect x="354" y="177" width="142" height="102" rx="18" fill="#fff" stroke="#bdebdc"/>
+                <rect x="378" y="201" width="95" height="10" rx="5" fill="#5bbba4"/><rect x="378" y="226" width="82" height="8" rx="4" fill="#b7dacf"/><rect x="378" y="246" width="60" height="8" rx="4" fill="#d4ebe4"/>
+                <text x="98" y="190" fill="#64748b" font-size="14" text-anchor="middle">Thông tin nhận được</text>
+                <text x="260" y="283" fill="#1d4ed8" font-size="15" font-weight="700" text-anchor="middle">UniTrust đối chiếu</text>
+                <text x="425" y="309" fill="#0f766e" font-size="14" text-anchor="middle">Nguồn chính thức</text>
+            </svg>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.markdown("""
-    <div class="stCard">
-        <h3 style="color: #0f172a; display: flex; align-items: center; gap: 8px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Xác minh
-        </h3>
-        <p style="color: #4b5563;">Kiểm tra chéo nội dung tin nhắn với bằng chứng chính thức.</p>
-    </div>
-    """, unsafe_allow_html=True)
-with col2:
-    st.markdown("""
-    <div class="stCard">
-        <h3 style="color: #0f172a; display: flex; align-items: center; gap: 8px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            Tra cứu
-        </h3>
-        <p style="color: #4b5563;">Tìm kiếm hoặc duyệt danh sách các thông báo nhà trường.</p>
-    </div>
-    """, unsafe_allow_html=True)
-with col3:
-    st.markdown("""
-    <div class="stCard">
-        <h3 style="color: #0f172a; display: flex; align-items: center; gap: 8px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            Dành cho bạn
-        </h3>
-        <p style="color: #4b5563;">Xem các nghĩa vụ và yêu cầu cá nhân hóa theo hồ sơ.</p>
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown('<div class="ut-section-title">Ba cách UniTrust hỗ trợ bạn</div>', unsafe_allow_html=True)
+value_columns = st.columns(3, gap="medium")
+values = [
+    ("01", "Xác minh", "Đối chiếu nội dung tin nhắn hoặc bài đăng với bằng chứng chính thức."),
+    ("02", "Tra cứu", "Tìm nhanh thông báo cần thiết và đọc nội dung từ đúng nguồn."),
+    ("03", "Dành cho bạn", "Nhận biết nghĩa vụ có thể áp dụng dựa trên hồ sơ đã khai báo."),
+]
+for column, (number, title, description) in zip(value_columns, values):
+    with column:
+        st.markdown(
+            f'<div class="ut-card-flat" style="min-height:170px;"><div class="ut-eyebrow" style="margin-bottom:1rem;">{number}</div><h3 style="font-size:1.2rem;margin:0 0 .55rem;">{title}</h3><p style="color:#526176;margin:0;">{description}</p></div>',
+            unsafe_allow_html=True,
+        )
 
-st.markdown("<br><br>", unsafe_allow_html=True)
-with st.expander("Về UniTrust"):
-    st.markdown("""
-    **Dữ liệu hiện có**
-    - 3 Nguồn thông báo chính thức
-    - 30 Thông báo đã thu thập
-    - 18 Nghĩa vụ đã cấu trúc
-
-    **Chi tiết kỹ thuật**
-    - Tỷ lệ truy xuất đúng ở kết quả đầu tiên: 94.83% (N=58 mẫu từ nguồn thực tế) - [Hybrid Hit@1]
-    - Độ chính xác xác minh có kiểm soát: 78.00% (N=50 mẫu biến đổi nhân tạo)
-    - Độ chính xác trên dữ liệu rà soát thủ công: 66.67% (N=18)
-    """)
+st.markdown(
+    """
+    <div class="ut-card" style="margin-top:2rem;display:flex;gap:1rem;align-items:flex-start;box-shadow:none;background:#eff6ff;border-color:#cfe0ff;">
+        <div style="color:#1d4ed8;font-size:1.35rem;font-weight:800;line-height:1;">✓</div>
+        <div><strong style="color:#0f172a;">Kết luận có căn cứ, giữ nguyên phần chưa chắc chắn.</strong><div style="color:#526176;margin-top:.25rem;">UniTrust cho biết khi nào thông tin đã được xác minh, có mâu thuẫn hoặc chưa đủ bằng chứng để kết luận.</div></div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)

@@ -107,7 +107,7 @@ def test_for_you_page_renders_real_response(frontend_http, phase1_client):
     text = "\n".join(element.value for element in page.markdown)
     assert all(item["action_text"] in text for item in items)
     assert "Công nghệ thông tin" in text
-    assert "Có thể áp dụng cho bạn (1)" in text
+    assert "Có thể áp dụng cho bạn" in text
     assert "Chưa đủ thông tin để xác định" in text
 
 

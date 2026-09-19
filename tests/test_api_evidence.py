@@ -67,7 +67,7 @@ def test_evidence_page_empty_index(frontend_http, monkeypatch):
     monkeypatch.setattr(api_client, "get_search_index", lambda: [])
     page = AppTest.from_file(Path(__file__).resolve().parents[1] / "frontend/pages/2_Evidence.py").run()
     assert not page.exception and not page.error
-    assert page.info[0].value == "Chưa có thông báo nào trong cơ sở dữ liệu."
+    assert any("Chưa có thông báo để tra cứu" in element.value for element in page.markdown)
     assert frontend_http == []
 
 

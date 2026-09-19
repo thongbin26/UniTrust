@@ -1,10 +1,11 @@
-# ui_translations.py
+from datetime import datetime
+
 # Maps backend canonical enums to Vietnamese presentation strings
 
 TRUST_STATE_VI = {
     "VERIFIED": "Đã xác minh",
     "PARTIALLY_VERIFIED": "Xác minh một phần",
-    "CONFLICT": "Có mâu thuẫn",
+    "CONFLICT": "Có thông tin mâu thuẫn",
     "INSUFFICIENT_EVIDENCE": "Chưa đủ bằng chứng"
 }
 
@@ -21,10 +22,19 @@ APPLICABILITY_VI = {
 }
 
 ABSTENTION_REASONS_VI = {
+    "NO_RETRIEVAL_EVIDENCE": "Không tìm thấy thông báo chính thức liên quan.",
     "NO_OFFICIAL_FIELD": "Chưa có bằng chứng chính thức cho loại thông tin này.",
-    "NO_EVIDENCE": "Không tìm thấy thông báo chính thức liên quan.",
-    "AMBIGUOUS_EVIDENCE": "Bằng chứng chưa đủ rõ ràng để kết luận.",
-    "PARTIAL_MATCH": "Nội dung khớp một phần nhưng còn thiếu thông tin."
+    "INSUFFICIENT_FIELD_COVERAGE": "Nguồn hiện có chưa bao quát đủ các chi tiết cần kiểm tra.",
+    "UNSUPPORTED_CLAIM_FIELD": "Nội dung này nằm ngoài các trường thông tin hiện được đối chiếu.",
+    "AMBIGUOUS_OFFICIAL_EVIDENCE": "Bằng chứng chính thức chưa đủ rõ ràng để kết luận.",
+    "TEMPORAL_UNCERTAINTY": "Chưa xác định chắc chắn phiên bản thông báo đang có hiệu lực.",
+}
+
+FIELD_STATE_VI = {
+    "MATCH": "Khớp với nguồn chính thức",
+    "CONFLICT": "Có mâu thuẫn",
+    "INSUFFICIENT_EVIDENCE": "Chưa đủ bằng chứng",
+    "NOT_CLAIMED": "Không có trong nội dung cần kiểm tra",
 }
 
 FIELD_NAMES_VI = {
@@ -38,8 +48,29 @@ FIELD_NAMES_VI = {
     "publication_date": "Ngày ban hành"
 }
 
+SOURCE_NAMES_VI = {
+    "dut_academic": "Thông báo đào tạo và khảo thí DUT",
+    "dut_ctsv": "Công tác sinh viên DUT",
+    "dut_it_faculty": "Khoa Công nghệ Thông tin DUT",
+}
+
 def get_field_name_vi(field: str) -> str:
     return FIELD_NAMES_VI.get(field, field.title())
+
+def get_field_state_vi(state: str) -> str:
+    return FIELD_STATE_VI.get(state, "Chưa xác định")
+
+def get_source_name_vi(source_id: str, source_name: str) -> str:
+    return SOURCE_NAMES_VI.get(source_id, source_name or "Nguồn chính thức DUT")
+
+def format_date_vi(value: str | None) -> str:
+    if not value:
+        return "Chưa xác định"
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return str(value)
+    return parsed.strftime("%d/%m/%Y")
 
 def get_trust_state_vi(verdict: str) -> str:
     return TRUST_STATE_VI.get(verdict, verdict)

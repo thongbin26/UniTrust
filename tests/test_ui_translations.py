@@ -5,13 +5,16 @@ from frontend.ui_translations import (
     get_temporal_state_vi,
     get_applicability_vi,
     get_abstention_reason_vi,
-    get_explanation_vi
+    get_explanation_vi,
+    get_field_state_vi,
+    get_source_name_vi,
+    format_date_vi,
 )
 from frontend.demo_cases import DEMO_CASES
 
 def test_trust_state_vi():
     assert get_trust_state_vi("VERIFIED") == "Đã xác minh"
-    assert get_trust_state_vi("CONFLICT") == "Có mâu thuẫn"
+    assert get_trust_state_vi("CONFLICT") == "Có thông tin mâu thuẫn"
     assert get_trust_state_vi("PARTIALLY_VERIFIED") == "Xác minh một phần"
     assert get_trust_state_vi("INSUFFICIENT_EVIDENCE") == "Chưa đủ bằng chứng"
     assert get_trust_state_vi("UNKNOWN_VERDICT") == "UNKNOWN_VERDICT"
@@ -32,6 +35,16 @@ def test_abstention_reasons_vi():
 
 def test_explanation_vi():
     assert "khớp với bằng chứng" in get_explanation_vi("VERIFIED")
+
+def test_field_state_and_source_names_vi():
+    assert get_field_state_vi("MATCH") == "Khớp với nguồn chính thức"
+    assert get_field_state_vi("CONFLICT") == "Có mâu thuẫn"
+    assert get_field_state_vi("UNKNOWN_VALUE") == "Chưa xác định"
+    assert get_source_name_vi("dut_academic", "DUT Academic and Examination Notices") == "Thông báo đào tạo và khảo thí DUT"
+    assert get_source_name_vi("unknown", "Nguồn đã xác nhận") == "Nguồn đã xác nhận"
+    assert format_date_vi("2026-09-14T15:58:00+07:00") == "14/09/2026"
+    assert format_date_vi(None) == "Chưa xác định"
+    assert format_date_vi("Học kỳ I") == "Học kỳ I"
 
 def test_demo_cases_schema_unchanged():
     assert isinstance(DEMO_CASES, list)
