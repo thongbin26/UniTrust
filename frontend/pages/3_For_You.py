@@ -4,6 +4,7 @@ from html import escape
 import streamlit as st
 
 from frontend.api_client import api_client
+from frontend.for_you_presenter import group_visible_obligations
 from frontend.profile_state import (
     COHORT_LABELS,
     api_profile,
@@ -188,16 +189,17 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
         try:
             response = api_client.for_you(api_profile(st.session_state.student_profile))
             obligations = response["obligations"]
-            applies = [item for item in obligations if item["applicability"]["status"] == "APPLIES"]
-            unknown = [item for item in obligations if item["applicability"]["status"] == "UNKNOWN"]
-            not_applies = [item for item in obligations if item["applicability"]["status"] == "DOES_NOT_APPLY"]
+            visible_groups = group_visible_obligations(obligations)
+            applies = visible_groups["APPLIES"]
+            unknown = visible_groups["UNKNOWN"]
+            not_applies = visible_groups["DOES_NOT_APPLY"]
 
             st.markdown(f'<div class="ut-section-title">Có thể áp dụng cho bạn <span class="ut-count">{len(applies)}</span></div>', unsafe_allow_html=True)
             if applies:
                 render_obligation_list(applies, "applies")
             else:
                 st.markdown(
-                    '<div class="ut-empty"><strong>Chưa có nghĩa vụ áp dụng trực tiếp</strong>Không có thông báo nào khớp đầy đủ với hồ sơ hiện tại.</div>',
+                    '<div class="ut-empty"><strong>Chưa có nghĩa vụ còn hiệu lực khớp đầy đủ</strong>Trong dữ liệu UniTrust hiện có, chưa có thông báo còn cần quan tâm nào khớp đầy đủ với hồ sơ của bạn.</div>',
                     unsafe_allow_html=True,
                 )
 
@@ -206,7 +208,7 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
                 st.caption("Hồ sơ hiện chưa có đủ thông tin để xác định các thông báo dưới đây có áp dụng cho bạn hay không.")
                 render_obligation_list(unknown, "unknown", initially_visible=4)
             else:
-                st.caption("Không có thông báo nào đang chờ thêm thông tin hồ sơ.")
+                st.caption("Trong dữ liệu UniTrust hiện có, chưa có thông báo còn cần quan tâm nào đang chờ thêm thông tin hồ sơ.")
 
             with st.expander(f"Không áp dụng theo hồ sơ hiện tại ({len(not_applies)})"):
                 if not_applies:

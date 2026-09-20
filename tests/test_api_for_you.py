@@ -30,6 +30,9 @@ def test_api_client_for_you_uses_real_contract(phase1_client, frontend_http):
     assert obligation["canonical_url"].startswith("https://")
     assert "obligation" not in obligation and "applicability_status" not in obligation
     assert obligation["temporal_status"] == "CURRENT"
+    assert obligation["actionability_status"] == "EXPIRED"
+    # Applicability, notice temporal validity, and actionability are independent.
+    assert obligation["applicability"]["status"] == "APPLIES"
 
 
 def test_existing_exact_match_and_missing_dimension_semantics(phase1_client):
@@ -105,10 +108,18 @@ def test_for_you_page_renders_real_response(frontend_http, phase1_client):
     assert frontend_http[0][2]["program"] is None
     items = phase1_client.post("/for-you", json=api_profile(cntt_profile())).json()["obligations"]
     text = "\n".join(element.value for element in page.markdown)
-    assert all(item["action_text"] in text for item in items)
+    expired_actions = [
+        item["action_text"]
+        for item in items
+        if item["actionability_status"] == "EXPIRED"
+    ]
+    assert expired_actions
+    assert all(action not in text for action in expired_actions)
     assert "Công nghệ thông tin" in text
     assert "Có thể áp dụng cho bạn" in text
     assert "Chưa đủ thông tin để xác định" in text
+    assert "Có thể áp dụng cho bạn <span class=\"ut-count\">0</span>" in text
+    assert "Trong dữ liệu UniTrust hiện có" in text
 
 
 def test_for_you_page_hides_request_errors(frontend_http, monkeypatch):

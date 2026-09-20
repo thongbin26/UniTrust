@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from datetime import datetime
 import sqlite3
 
 from app.api.schemas import StudentProfile, ForYouResponse, ForYouObligationItem, ObligationApplicability
@@ -6,8 +7,13 @@ from app.api.deps import get_db_connection, get_structured_repository
 from app.verification.repository import OfficialStructuredRepository
 from app.temporal.resolver import TemporalResolver
 from app.models.obligation import StudentObligation
+from app.actionability import DUT_TIMEZONE, resolve_actionability
 
 router = APIRouter(prefix="/for-you", tags=["For You"])
+
+
+def get_actionability_now() -> datetime:
+    return datetime.now(DUT_TIMEZONE)
 
 def evaluate_applicability(profile: StudentProfile, obligation: StudentObligation) -> ObligationApplicability:
     aud = obligation.audience
@@ -56,6 +62,7 @@ def get_for_you(
     profile: StudentProfile,
     repo: OfficialStructuredRepository = Depends(get_structured_repository),
     conn: sqlite3.Connection = Depends(get_db_connection),
+    current_time: datetime = Depends(get_actionability_now),
 ):
     obligations_out = []
     temp_resolver = TemporalResolver()
@@ -85,6 +92,10 @@ def get_for_you(
                 location=obs.location.text if obs.location else None,
                 applicability=applicability,
                 temporal_status=temporal_validity.name,
+                actionability_status=resolve_actionability(
+                    deadline=obs.deadline,
+                    now=current_time,
+                ),
                 notice_id=notice_id,
                 version_id=version_id,
                 title=annotation.title or f"Notice {notice_id}",

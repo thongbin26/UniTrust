@@ -2,6 +2,7 @@ from typing import List, Optional, Any, Dict
 from pydantic import BaseModel, Field
 from app.verification.models import OverallVerdict, AbstentionReason, OfficialProvenance, FieldMatchState
 from app.temporal.models import TemporalValidity
+from app.actionability.models import ActionabilityStatus
 
 class VerifyRequest(BaseModel):
     text: str = Field(..., min_length=1, description="The claim text to verify")
@@ -76,6 +77,7 @@ class ForYouObligationItem(BaseModel):
     location: Optional[str]
     applicability: ObligationApplicability
     temporal_status: str # "CURRENT", "SUPERSEDED_OUTDATED", "UNKNOWN"
+    actionability_status: ActionabilityStatus
     notice_id: int
     version_id: int
     title: str

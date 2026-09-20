@@ -14,7 +14,10 @@ from app.db.database import get_connection, init_database
 from app.crawler.repository import init_notice_tables
 from app.annotations.repository import init_annotation_tables
 from app.models.obligation import CanonicalNoticeAnnotation
+from app.actionability import DUT_TIMEZONE
+from app.api.routes.for_you import get_actionability_now
 from app.sources.repository import seed_sources
+from datetime import datetime
 
 
 @pytest.fixture
@@ -53,6 +56,9 @@ def phase1_client(tmp_path, monkeypatch):
     app = FastAPI()
     app.include_router(evidence_router)
     app.include_router(for_you_router)
+    app.dependency_overrides[get_actionability_now] = lambda: datetime(
+        2026, 9, 20, 12, 0, tzinfo=DUT_TIMEZONE
+    )
     app.state.repository = SimpleNamespace(cache={
         (a.notice_id, a.version_id): a for a in annotations
     })
