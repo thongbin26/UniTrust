@@ -16,7 +16,16 @@ def test_home_is_student_facing_and_has_real_page_links():
     assert "Backend URL" not in text
     assert "Chi tiết kỹ thuật" not in text
     assert [button.label for button in page.button] == ["Xác minh thông tin"]
-    assert len(page.get("page_link")) == 1
+    assert [link.label for link in page.get("page_link")] == [
+        "Tra cứu thông báo",
+        "Xác minh  →",
+        "Tra cứu  →",
+        "Dành cho bạn  →",
+        "Trang chủ",
+        "Xác minh",
+        "Tra cứu thông báo",
+        "Dành cho bạn",
+    ]
 
 
 def test_verify_page_renders_translated_hierarchy_and_escapes_dynamic_text(monkeypatch):
@@ -55,7 +64,7 @@ def test_verify_page_renders_translated_hierarchy_and_escapes_dynamic_text(monke
     assert not page.exception and not page.error
     text = "\n".join(element.value for element in page.markdown)
     assert "Có thông tin mâu thuẫn" in text
-    assert "Bạn nhận được:" in text and "Nguồn chính thức:" in text
+    assert "Bạn nhận được" in text and "Nguồn chính thức" in text
     assert "&lt;script&gt;" in text and "<script>" not in text
     assert "&lt;b&gt;chính thức&lt;/b&gt;" in text
     assert "CONFLICT" not in text and "CURRENT" not in text

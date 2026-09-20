@@ -15,11 +15,12 @@ from frontend.profile_state import (
     save_profile,
     sync_profile_state,
 )
-from frontend.ui_style import apply_global_styles, page_header
+from frontend.ui_style import apply_global_styles, page_header, page_marker
 from frontend.ui_translations import get_field_name_vi, get_temporal_state_vi
 
 
 apply_global_styles()
+page_marker("for-you")
 page_header(
     "Nghĩa vụ theo hồ sơ",
     "Dành cho bạn",
@@ -36,7 +37,7 @@ def _html_text(value) -> str:
 
 def render_provisional_note() -> None:
     st.markdown(
-        '<div class="ut-card-flat" style="background:#fffbeb;border-color:#fde7a7;color:#71520d;margin-bottom:1rem;">Thông tin đơn vị quản lý đang chờ đối chiếu thêm với nguồn chính thức mới.</div>',
+        '<div class="ut-empty" style="background:var(--ut-warning-soft);border-color:#eadcb7;margin-bottom:1rem;"><strong>Đang tiếp tục đối chiếu</strong>Thông tin đơn vị quản lý đang chờ đối chiếu thêm với nguồn chính thức mới.</div>',
         unsafe_allow_html=True,
     )
 
@@ -52,6 +53,10 @@ def render_obligation(obligation: dict, status_class: str) -> None:
         details.append(
             f'<div class="ut-meta"><strong>{get_field_name_vi("location")}:</strong> {escape(str(obligation["location"]))}</div>'
         )
+    if obligation.get("amount"):
+        details.append(
+            f'<div class="ut-meta"><strong>{get_field_name_vi("amount")}:</strong> {escape(str(obligation["amount"]))}</div>'
+        )
     documents = obligation.get("required_documents") or []
     if documents:
         details.append(
@@ -59,7 +64,8 @@ def render_obligation(obligation: dict, status_class: str) -> None:
         )
     details_html = "".join(details)
     title = _html_text(obligation.get("title") or "Thông báo chính thức")
-    action = _html_text(obligation.get("action_text"))
+    raw_action = obligation.get("action_text")
+    action = _html_text(raw_action) if raw_action and raw_action != "Unknown" else ""
     canonical_url = obligation.get("canonical_url")
     link_html = (
         f'<a href="{escape(str(canonical_url), quote=True)}" target="_blank" rel="noopener noreferrer" style="color:#1d4ed8;font-weight:650;text-decoration:none;">Xem thông báo chính thức →</a>'
@@ -67,11 +73,11 @@ def render_obligation(obligation: dict, status_class: str) -> None:
     )
     st.markdown(
         f"""
-        <div class="ut-card" style="box-shadow:none;border-left:4px solid var(--ut-{'success' if status_class == 'applies' else 'warning' if status_class == 'unknown' else 'border'});">
-            <h3 style="font-size:1.08rem;line-height:1.5;margin:0 0 .75rem;">{action}</h3>
+        <div class="ut-card-flat ut-obligation ut-obligation--{status_class}" style="border-left:3px solid var(--ut-{'official' if status_class == 'applies' else 'border-strong'});">
+            {f'<h3 style="font-size:1.08rem;line-height:1.5;margin:0 0 .75rem;">{action}</h3>' if action else ''}
             <div style="display:grid;gap:.35rem;">{details_html}</div>
             <hr class="ut-divider">
-            <div class="ut-meta"><strong>Thông báo:</strong> {title}</div>
+            <div class="ut-meta"><strong>Nguồn:</strong> {title}</div>
             <div class="ut-meta" style="margin:.3rem 0 .7rem;"><strong>Trạng thái:</strong> {escape(temporal_label)}</div>
             {link_html}
         </div>
@@ -98,8 +104,8 @@ if profile and not st.session_state.edit_mode:
     cohort_label = escape(COHORT_LABELS.get(profile.get("cohort"), "Không xác định"))
     st.markdown(
         f"""
-        <div class="ut-card" style="box-shadow:none;background:#ffffff;">
-            <div class="ut-eyebrow">Hồ sơ đã lưu</div>
+        <div class="ut-profile-summary">
+            <div class="ut-section-kicker">Hồ sơ sinh viên</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;">
                 <div><div class="ut-meta">Khoa</div><strong>{faculty_label}</strong></div>
                 <div><div class="ut-meta">Ngành / Chuyên ngành</div><strong>{major_label}</strong></div>
@@ -120,8 +126,13 @@ if profile and not st.session_state.edit_mode:
         clear_profile(st.session_state, st.query_params)
         st.rerun()
 else:
-    st.markdown('<div class="ut-section-title" style="margin-top:.5rem;">Thông tin hồ sơ</div>', unsafe_allow_html=True)
-    with st.container(border=True):
+    st.markdown('<div class="ut-section-title" style="margin-top:.35rem;">Thiết lập hồ sơ của bạn</div>', unsafe_allow_html=True)
+    form_column, _ = st.columns([0.86, 0.14])
+    with form_column.container(border=True):
+        st.markdown(
+            '<div class="ut-helper" style="margin-top:0;"><span class="ut-helper-mark" aria-hidden="true">i</span><span>Chọn những thông tin bạn biết. Bạn có thể để “Không xác định” nếu chưa chắc chắn.</span></div>',
+            unsafe_allow_html=True,
+        )
         faculty_names = [None] + [faculty["display_name"] for faculty in catalog["faculties"]]
         if st.session_state.get("profile_faculty") not in faculty_names:
             st.session_state.profile_faculty = None
@@ -133,6 +144,7 @@ else:
                 options=faculty_names,
                 key="profile_faculty",
                 format_func=lambda value: value or "Không xác định",
+                placeholder="Không xác định",
             )
 
         majors = [None] + major_options(catalog, selected_faculty)
@@ -144,6 +156,7 @@ else:
                 options=majors,
                 key="profile_major",
                 format_func=lambda value: value or "Không xác định / Khác",
+                placeholder="Không xác định / Khác",
             )
 
         selected_cohort = st.selectbox(
@@ -151,6 +164,7 @@ else:
             options=[None] + [cohort for cohort in COHORT_LABELS if cohort is not None],
             key="profile_cohort",
             format_func=lambda value: COHORT_LABELS[value],
+            placeholder="Không xác định",
         )
         if selected_faculty and len(majors) == 1:
             st.caption("Danh mục ngành của khoa này đang được xác minh theo cơ cấu tổ chức mới.")
@@ -165,7 +179,7 @@ else:
 
     if not profile:
         st.markdown(
-            '<div class="ut-empty"><strong>Chưa có hồ sơ được lưu</strong>Chọn những thông tin bạn biết. Các trường chưa rõ có thể để “Không xác định”.</div>',
+            '<div class="ut-empty"><strong>Sau khi lưu hồ sơ</strong>UniTrust sẽ phân nhóm thông báo thành: có thể áp dụng cho bạn, chưa đủ thông tin để xác định và không áp dụng theo hồ sơ hiện tại.</div>',
             unsafe_allow_html=True,
         )
 
@@ -178,7 +192,7 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
             unknown = [item for item in obligations if item["applicability"]["status"] == "UNKNOWN"]
             not_applies = [item for item in obligations if item["applicability"]["status"] == "DOES_NOT_APPLY"]
 
-            st.markdown(f'<div class="ut-section-title">Có thể áp dụng cho bạn <span class="ut-badge ut-badge--applies">{len(applies)}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ut-section-title">Có thể áp dụng cho bạn <span class="ut-count">{len(applies)}</span></div>', unsafe_allow_html=True)
             if applies:
                 render_obligation_list(applies, "applies")
             else:
@@ -187,7 +201,7 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
                     unsafe_allow_html=True,
                 )
 
-            st.markdown(f'<div class="ut-section-title">Chưa đủ thông tin để xác định <span class="ut-badge ut-badge--unknown">{len(unknown)}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ut-section-title">Chưa đủ thông tin để xác định <span class="ut-count">{len(unknown)}</span></div>', unsafe_allow_html=True)
             if unknown:
                 st.caption("Hồ sơ hiện chưa có đủ thông tin để xác định các thông báo dưới đây có áp dụng cho bạn hay không.")
                 render_obligation_list(unknown, "unknown", initially_visible=4)

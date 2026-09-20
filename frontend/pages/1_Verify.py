@@ -4,7 +4,7 @@ from html import escape
 import streamlit as st
 
 from frontend.api_client import api_client
-from frontend.ui_style import apply_global_styles, page_header
+from frontend.ui_style import apply_global_styles, page_header, page_marker
 from frontend.ui_translations import (
     get_abstention_reason_vi,
     get_explanation_vi,
@@ -17,6 +17,7 @@ from frontend.ui_translations import (
 
 
 apply_global_styles()
+page_marker("verify")
 page_header(
     "Đối chiếu với nguồn chính thức",
     "Xác minh thông tin",
@@ -37,16 +38,27 @@ def _status_class(verdict: str) -> str:
     }.get(verdict, "insufficient")
 
 
+def _status_icon(status_class: str) -> str:
+    return {
+        "verified": "✓",
+        "partial": "◐",
+        "conflict": "!",
+        "insufficient": "?",
+    }.get(status_class, "?")
+
+
+def render_temporal_note(temporal_label: str) -> None:
+    st.markdown('<div class="ut-section-title">Điều cần lưu ý</div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="ut-empty"><strong>Trạng thái của thông báo</strong>{temporal_label}. UniTrust giữ riêng trạng thái thời gian để tránh coi nguồn cũ là thông tin hiện hành.</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def render_verification_result(claim_result: dict) -> None:
     verdict = claim_result.get("verdict", "INSUFFICIENT_EVIDENCE")
     temporal_status = claim_result.get("temporal_status") or "UNKNOWN"
     status_class = _status_class(verdict)
-    accent = {
-        "verified": "success",
-        "partial": "warning",
-        "conflict": "conflict",
-        "insufficient": "muted",
-    }[status_class]
     trust_label = escape(get_trust_state_vi(verdict))
     temporal_label = escape(get_temporal_state_vi(temporal_status))
     explanation = escape(get_explanation_vi(verdict))
@@ -54,12 +66,11 @@ def render_verification_result(claim_result: dict) -> None:
 
     st.markdown(
         f"""
-        <div class="ut-card" style="border-top:4px solid var(--ut-{accent});">
-            <div class="ut-badge ut-badge--{status_class}">{trust_label}</div>
-            <h2 style="font-size:1.55rem;margin:.9rem 0 .55rem;">Kết luận</h2>
-            <p style="color:#334155;font-size:1.02rem;margin:0 0 .9rem;">{explanation}</p>
-            <div style="background:#f8fafc;border-radius:10px;color:#475569;padding:.85rem 1rem;">“{claim_text}”</div>
-            <div class="ut-meta" style="margin-top:.85rem;"><strong>Trạng thái thông báo:</strong> {temporal_label}</div>
+        <div class="ut-section-title">Kết luận</div>
+        <div class="ut-status-panel ut-status-panel--{status_class}">
+            <div class="ut-badge ut-badge--{status_class}"><span class="ut-status-icon" aria-hidden="true">{_status_icon(status_class)}</span>{trust_label}</div>
+            <p style="color:var(--ut-ink-soft);font-size:1.02rem;margin:.8rem 0 .9rem;">{explanation}</p>
+            <div style="background:var(--ut-surface-subtle);border-radius:8px;color:var(--ut-ink-soft);padding:.8rem .9rem;">“{claim_text}”</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -67,33 +78,33 @@ def render_verification_result(claim_result: dict) -> None:
 
     if verdict == "INSUFFICIENT_EVIDENCE":
         reason = get_abstention_reason_vi(claim_result.get("abstention_reason"))
-        st.info(f"Lý do: {reason}")
+        st.markdown(
+            f'<div class="ut-empty"><strong>Vì sao chưa thể kết luận?</strong>{escape(reason)}</div>',
+            unsafe_allow_html=True,
+        )
 
     field_results = claim_result.get("field_results") or {}
     if field_results:
-        st.markdown('<div class="ut-section-title">Các nội dung được đối chiếu</div>', unsafe_allow_html=True)
+        st.markdown('<div class="ut-section-title">Điều đã đối chiếu</div>', unsafe_allow_html=True)
+        comparison_rows = []
         for field_name, field_value in field_results.items():
             state = field_value.get("state", "INSUFFICIENT_EVIDENCE")
             state_class = _status_class("VERIFIED" if state == "MATCH" else state)
             claimed = field_value.get("claimed_text")
             official = field_value.get("official_text")
-            rows = []
-            if claimed:
-                rows.append(f'<div class="ut-meta"><strong>Bạn nhận được:</strong> {_html_text(claimed)}</div>')
-            if official:
-                rows.append(f'<div class="ut-meta"><strong>Nguồn chính thức:</strong> {_html_text(official)}</div>')
-            st.markdown(
-                f"""
-                <div class="ut-card-flat" style="margin-bottom:.75rem;">
-                    <div style="display:flex;gap:.75rem;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;">
-                        <strong>{escape(get_field_name_vi(field_name))}</strong>
-                        <span class="ut-badge ut-badge--{state_class}">{escape(get_field_state_vi(state))}</span>
-                    </div>
-                    <div style="display:grid;gap:.35rem;margin-top:.75rem;">{''.join(rows)}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
+            claimed_html = _html_text(claimed) if claimed else "—"
+            official_html = _html_text(official) if official else "—"
+            comparison_rows.append(
+                f'<div class="ut-comparison-row">'
+                f'<div class="ut-comparison-heading"><strong>{escape(get_field_name_vi(field_name))}</strong>'
+                f'<span class="ut-badge ut-badge--{state_class}"><span class="ut-status-icon" aria-hidden="true">{_status_icon(state_class)}</span>{escape(get_field_state_vi(state))}</span></div>'
+                f'<div class="ut-comparison"><div></div><div class="ut-comparison-label">Bạn nhận được</div><div class="ut-comparison-label">Nguồn chính thức</div>'
+                f'<div></div><div>{claimed_html}</div><div>{official_html}</div></div></div>'
             )
+        st.markdown(
+            f'<div class="ut-card-flat">{"".join(comparison_rows)}</div>',
+            unsafe_allow_html=True,
+        )
 
     st.markdown('<div class="ut-section-title">Nguồn chính thức</div>', unsafe_allow_html=True)
     provenance = claim_result.get("primary_provenance")
@@ -102,6 +113,7 @@ def render_verification_result(claim_result: dict) -> None:
             '<div class="ut-empty"><strong>Chưa có nguồn cụ thể để hiển thị</strong>UniTrust chưa tìm thấy đoạn thông báo chính thức đủ liên quan cho nội dung này.</div>',
             unsafe_allow_html=True,
         )
+        render_temporal_note(temporal_label)
         return
 
     source_title = _html_text(provenance.get("title") or "Thông báo chính thức")
@@ -112,9 +124,9 @@ def render_verification_result(claim_result: dict) -> None:
         if publication_date else ""
     )
     source_card = (
-        f'<div class="ut-card" style="box-shadow:none;border-color:#bdebdc;">'
+        f'<div class="ut-card-flat" style="border-color:#cfe5df;">'
         f'<h3 style="font-size:1.12rem;margin:0;">{source_title}</h3>{date_row}'
-        f'<div style="background:#f8fafc;border-left:3px solid #94a3b8;border-radius:8px;color:#334155;line-height:1.65;margin-top:1rem;padding:1rem;">{source_excerpt}</div>'
+        f'<div class="ut-citation">{source_excerpt}</div>'
         '</div>'
     )
     st.markdown(source_card, unsafe_allow_html=True)
@@ -122,15 +134,22 @@ def render_verification_result(claim_result: dict) -> None:
     if canonical_url:
         st.link_button("Xem thông báo chính thức", canonical_url, icon=":material/open_in_new:")
 
+    render_temporal_note(temporal_label)
 
-st.markdown('<div class="ut-section-title" style="margin-top:.5rem;">Nội dung cần kiểm tra</div>', unsafe_allow_html=True)
-text_input = st.text_area(
-    "Nội dung cần xác minh",
-    height=170,
-    placeholder="Ví dụ: Sinh viên phải hoàn thành đánh giá rèn luyện trước ngày...",
-    label_visibility="collapsed",
-)
-submitted = st.button("Xác minh thông tin", type="primary", icon=":material/verified_user:")
+
+with st.container(border=True):
+    st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Nội dung cần kiểm tra</div>', unsafe_allow_html=True)
+    text_input = st.text_area(
+        "Nội dung cần xác minh",
+        height=138,
+        placeholder="Dán tin nhắn, bài đăng hoặc đoạn thông báo bạn muốn kiểm tra...",
+        label_visibility="collapsed",
+    )
+    st.markdown(
+        '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust sẽ đối chiếu từng chi tiết với dữ liệu chính thức hiện có và ghi rõ khi chưa đủ bằng chứng.</span></div>',
+        unsafe_allow_html=True,
+    )
+    submitted = st.button("Xác minh thông tin", type="primary", icon=":material/verified_user:")
 
 if submitted:
     if not text_input.strip():
@@ -153,6 +172,6 @@ if submitted:
                 st.error("Không thể xác minh thông tin lúc này. Vui lòng thử lại.")
 else:
     st.markdown(
-        '<div class="ut-empty"><strong>Bắt đầu từ nội dung bạn đang phân vân</strong>Dán tin nhắn, bài đăng hoặc đoạn thông báo vào ô trên để kiểm tra.</div>',
+        '<div class="ut-empty"><strong>Bạn sẽ nhận được kết quả gì?</strong>UniTrust nêu kết luận, chỉ ra từng chi tiết đã đối chiếu, dẫn nguồn chính thức và giữ rõ những phần chưa chắc chắn.</div>',
         unsafe_allow_html=True,
     )

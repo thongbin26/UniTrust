@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 # Maps backend canonical enums to Vietnamese presentation strings
 
@@ -54,6 +55,8 @@ SOURCE_NAMES_VI = {
     "dut_it_faculty": "Khoa Công nghệ Thông tin DUT",
 }
 
+NOTICE_PRESENTATION_SUFFIX = re.compile(r"\s+(?:Hot|New)\s*$", re.IGNORECASE)
+
 def get_field_name_vi(field: str) -> str:
     return FIELD_NAMES_VI.get(field, field.title())
 
@@ -62,6 +65,10 @@ def get_field_state_vi(state: str) -> str:
 
 def get_source_name_vi(source_id: str, source_name: str) -> str:
     return SOURCE_NAMES_VI.get(source_id, source_name or "Nguồn chính thức DUT")
+
+def get_notice_title_vi(title: str | None) -> str:
+    """Remove source-site visual badges that were flattened into title text."""
+    return NOTICE_PRESENTATION_SUFFIX.sub("", str(title or "")).strip()
 
 def format_date_vi(value: str | None) -> str:
     if not value:

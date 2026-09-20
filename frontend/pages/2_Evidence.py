@@ -6,11 +6,12 @@ from streamlit_searchbox import st_searchbox
 
 from frontend.api_client import api_client
 from frontend.evidence_search import rank_notices
-from frontend.ui_style import apply_global_styles, page_header
-from frontend.ui_translations import format_date_vi, get_source_name_vi
+from frontend.ui_style import apply_global_styles, page_header, page_marker
+from frontend.ui_translations import format_date_vi, get_notice_title_vi, get_source_name_vi
 
 
 apply_global_styles()
+page_marker("evidence")
 page_header(
     "Kho thông báo chính thức",
     "Tra cứu thông báo",
@@ -63,7 +64,29 @@ def fetch_search_index() -> list[dict]:
 
 
 def suggestion_label(notice: dict) -> str:
-    return f"[{notice['category']}] {notice['title']} · {notice['source_display_name']}"
+    return f"[{notice['category']}] {get_notice_title_vi(notice['title'])} · {notice['source_display_name']}"
+
+
+def render_browse_state(notices: list[dict]) -> None:
+    """Show real index metadata without loading full notice details."""
+    rows = []
+    for notice in notices[:6]:
+        rows.append(
+            '<div class="ut-notice-item">'
+            f'<div class="ut-section-kicker">{escape(notice["category"])}</div>'
+            f'<strong style="display:block;line-height:1.45;">{escape(get_notice_title_vi(notice["title"]))}</strong>'
+            f'<div class="ut-meta" style="margin-top:.25rem;">{escape(notice["source_display_name"])}</div>'
+            '</div>'
+        )
+    st.markdown(
+        '<div class="ut-section-title">Thông báo gần đây</div>'
+        '<div class="ut-card-flat">'
+        f'{"".join(rows)}'
+        '</div>'
+        '<div class="ut-helper" style="margin-top:.65rem;"><span class="ut-helper-mark" aria-hidden="true">i</span>'
+        '<span>Mở ô tìm kiếm để duyệt toàn bộ danh sách hoặc gõ từ khóa để lọc ngay.</span></div>',
+        unsafe_allow_html=True,
+    )
 
 
 try:
@@ -74,7 +97,7 @@ try:
             unsafe_allow_html=True,
         )
     else:
-        st.markdown('<div class="ut-section-title" style="margin-top:.5rem;">Tìm kiếm hoặc duyệt danh sách</div>', unsafe_allow_html=True)
+        st.markdown('<div class="ut-section-title" style="margin-top:.35rem;">Tìm kiếm hoặc duyệt thông báo</div>', unsafe_allow_html=True)
 
         def search_notices(searchterm: str):
             ranked = notices if not searchterm else rank_notices(notices, searchterm)
@@ -88,10 +111,7 @@ try:
         )
 
         if not selected_id:
-            st.markdown(
-                '<div class="ut-empty"><strong>Chọn một thông báo để xem nội dung</strong>Bạn có thể mở danh sách để duyệt hoặc gõ từ khóa; không cần nhấn Enter.</div>',
-                unsafe_allow_html=True,
-            )
+            render_browse_state(notices)
         else:
             notice_meta = next((item for item in notices if item["notice_id"] == selected_id), None)
             if not notice_meta:
@@ -100,25 +120,26 @@ try:
                 with st.spinner("Đang tải nội dung thông báo..."):
                     notice = api_client.get_notice(selected_id)
 
-                title = _html_text(notice.get("title") or "Thông báo chính thức")
+                title = _html_text(get_notice_title_vi(notice.get("title")) or "Thông báo chính thức")
                 source_name = escape(notice_meta["source_display_name"])
                 category = escape(notice_meta["category"])
                 publication_date = escape(format_date_vi(notice.get("publication_date")))
-                raw_text = _html_text(notice.get("raw_text"))
+                raw_text = str(notice.get("raw_text") or "")
                 st.markdown(
                     f"""
-                    <div class="ut-card" style="margin-top:1.25rem;">
-                        <span class="ut-badge ut-badge--insufficient">{category}</span>
-                        <h2 style="font-size:1.55rem;line-height:1.35;margin:.9rem 0 .8rem;">{title}</h2>
+                    <div style="margin-top:1.5rem;">
+                        <div class="ut-section-kicker">{category}</div>
+                        <h2 style="font-size:1.65rem;line-height:1.35;margin:.3rem 0 .75rem;max-width:760px;">{title}</h2>
                         <div class="ut-meta"><strong>Nguồn:</strong> {source_name}</div>
-                        <div class="ut-meta" style="margin-top:.3rem;"><strong>Ngày ban hành:</strong> {publication_date}</div>
-                        <hr class="ut-divider">
-                        <h3 style="font-size:1.05rem;margin:0 0 .75rem;">Nội dung thông báo</h3>
-                        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;color:#334155;line-height:1.68;max-height:420px;overflow-y:auto;padding:1rem;white-space:pre-wrap;">{raw_text}</div>
+                        <div class="ut-meta" style="margin-top:.25rem;"><strong>Ngày ban hành:</strong> {publication_date}</div>
+                        <hr class="ut-divider" style="margin:1.2rem 0;">
+                        <h3 style="font-size:1.08rem;margin:0 0 .7rem;">Nội dung thông báo</h3>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
+                with st.container(border=True):
+                    st.markdown(raw_text, unsafe_allow_html=False)
                 canonical_url = notice.get("canonical_url")
                 if canonical_url:
                     st.link_button("Xem thông báo chính thức", canonical_url, icon=":material/open_in_new:")

@@ -7,6 +7,7 @@ from frontend.ui_translations import (
     get_abstention_reason_vi,
     get_explanation_vi,
     get_field_state_vi,
+    get_notice_title_vi,
     get_source_name_vi,
     format_date_vi,
 )
@@ -45,6 +46,12 @@ def test_field_state_and_source_names_vi():
     assert format_date_vi("2026-09-14T15:58:00+07:00") == "14/09/2026"
     assert format_date_vi(None) == "Chưa xác định"
     assert format_date_vi("Học kỳ I") == "Học kỳ I"
+
+def test_notice_title_hides_flattened_source_badges_only_at_suffix():
+    assert get_notice_title_vi("Thông báo tuyển sinh Hot") == "Thông báo tuyển sinh"
+    assert get_notice_title_vi("Thông báo mới New") == "Thông báo mới"
+    assert get_notice_title_vi("Hot topic trong học thuật") == "Hot topic trong học thuật"
+    assert get_notice_title_vi("New Zealand scholarship") == "New Zealand scholarship"
 
 def test_demo_cases_schema_unchanged():
     assert isinstance(DEMO_CASES, list)
