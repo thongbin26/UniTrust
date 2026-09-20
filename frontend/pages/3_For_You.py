@@ -38,7 +38,7 @@ def _html_text(value) -> str:
 
 def render_provisional_note() -> None:
     st.markdown(
-        '<div class="ut-empty" style="background:var(--ut-warning-soft);border-color:#eadcb7;margin-bottom:1rem;"><strong>Đang tiếp tục đối chiếu</strong>Thông tin đơn vị quản lý đang chờ đối chiếu thêm với nguồn chính thức mới.</div>',
+        '<div class="ut-empty" style="background:var(--ut-warning-soft);border-color:#eadcb7;margin-bottom:1rem;"><strong>Đang tiếp tục đối chiếu</strong>Quan hệ khoa/ngành đang được UniTrust tiếp tục đối chiếu nguồn chính thức.</div>',
         unsafe_allow_html=True,
     )
 
