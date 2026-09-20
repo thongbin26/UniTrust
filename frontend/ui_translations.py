@@ -51,8 +51,12 @@ FIELD_NAMES_VI = {
 
 SOURCE_NAMES_VI = {
     "dut_academic": "Thông báo đào tạo và khảo thí DUT",
-    "dut_ctsv": "Công tác sinh viên DUT",
-    "dut_it_faculty": "Khoa Công nghệ Thông tin DUT",
+    "dut_ctsv": "Phòng Công tác Sinh viên",
+    "dut_it_faculty": "Khoa Công nghệ Thông tin",
+    "dut_sv_portal": "Trang Sinh viên DUT",
+    "dut_finance": "Thông báo học phí và tài chính DUT",
+    "dut_training_quality": "Phòng Đào tạo và Bảo đảm chất lượng",
+    "dut_transport_energy_faculty": "Khoa Cơ khí Giao thông và Năng lượng",
 }
 
 NOTICE_PRESENTATION_SUFFIX = re.compile(r"\s+(?:Hot|New)\s*$", re.IGNORECASE)

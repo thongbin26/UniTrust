@@ -11,6 +11,7 @@ from app.api.routes.for_you import router as for_you_router
 from app.core.config import settings
 from app.db.database import init_database
 from app.sources.repository import seed_sources
+from app.sources.seed import BASELINE_SOURCES
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -28,7 +29,10 @@ async def lifespan(app: FastAPI):
     with startup_step("database initialization"):
         init_database()
     with startup_step("source registry"):
-        seed_sources()
+        # Phase A must not migrate or update the production source registry.
+        # A fresh demo DB may receive the three baseline rows, but existing rows
+        # remain byte-stable until production ingestion is explicitly approved.
+        seed_sources(sources=BASELINE_SOURCES, update_existing=False)
 
     # Initialize expensive singletons once
     with startup_step("retrieval imports"):

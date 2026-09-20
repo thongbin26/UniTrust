@@ -17,6 +17,11 @@ DATE_RE = re.compile(
     r"\b\d{2}/\d{2}/\d{4}\s+\d{2}:\d{2}\b"
 )
 
+PRESENTATION_BADGE_RE = re.compile(
+    r"(?:\s+(?:Hot|New))+\s*$",
+    re.IGNORECASE,
+)
+
 NOTICE_ID_RE = re.compile(
     r"/Thongbao/id/(\d+)",
     re.IGNORECASE,
@@ -42,6 +47,10 @@ ATTACHMENT_EXTENSIONS = (
 
 def clean_text(value: str) -> str:
     return " ".join(value.split())
+
+
+def clean_title(value: str) -> str:
+    return PRESENTATION_BADGE_RE.sub("", clean_text(value)).strip()
 
 
 def official_hostname(
@@ -79,10 +88,16 @@ def extract_notice_links(
     results: list[NoticeLink] = []
     seen: set[str] = set()
 
-    for anchor in soup.find_all(
-        "a",
-        href=True,
-    ):
+    list_containers = soup.select(
+        ".wd-list-content .wd-list-report"
+    )
+    roots = list_containers or [soup]
+
+    anchors = []
+    for root in roots:
+        anchors.extend(root.find_all("a", href=True))
+
+    for anchor in anchors:
         absolute_url = urljoin(
             listing_url,
             anchor["href"],
@@ -167,7 +182,7 @@ def extract_title(
         )
 
         if heading:
-            title = clean_text(
+            title = clean_title(
                 heading.get_text(
                     " ",
                     strip=True,
@@ -178,7 +193,7 @@ def extract_title(
                 return title
 
     if soup.title:
-        return clean_text(
+        return clean_title(
             soup.title.get_text(
                 " ",
                 strip=True,
