@@ -1,6 +1,6 @@
 from enum import StrEnum
 from pydantic import BaseModel, Field
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Literal
 from app.temporal.models import TemporalValidity
 
 class FieldMatchState(StrEnum):
@@ -28,12 +28,22 @@ class TypedUserField(BaseModel):
     text: str
     start_char: int
     end_char: int
+    raw_text: Optional[str] = None
+    normalized_value: str | int | None = None
+    extraction_method: Literal["deterministic"] = "deterministic"
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.raw_text is None:
+            self.raw_text = self.text
+        elif self.raw_text != self.text:
+            raise ValueError("raw_text must equal the exact grounded text")
 
 class DecomposedUserClaim(BaseModel):
     claim_id: str
     raw_claim_text: str
     start_char: int
     end_char: int
+    normalized_text: Optional[str] = None
     
     action: Optional[TypedUserField] = None
     deadline: Optional[TypedUserField] = None
@@ -41,6 +51,7 @@ class DecomposedUserClaim(BaseModel):
     audience: Optional[TypedUserField] = None
     location: Optional[TypedUserField] = None
     required_documents: List[TypedUserField] = Field(default_factory=list)
+    exceptions: List[TypedUserField] = Field(default_factory=list)
 
 class OfficialProvenance(BaseModel):
     chunk_id: str

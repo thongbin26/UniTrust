@@ -133,9 +133,9 @@ def ground_action(
 
 FULL_DATE_RE = re.compile(
     r"(?P<day>\d{1,2})"
-    r"\s*/\s*"
+    r"\s*[./-]\s*"
     r"(?P<month>\d{1,2})"
-    r"\s*/\s*"
+    r"\s*[./-]\s*"
     r"(?P<year>\d{4})"
 )
 
@@ -149,16 +149,21 @@ TIME_RE = re.compile(
 MILLION_VND_RE = re.compile(
     r"(?P<number>\d+(?:[.,]\d+)?)"
     r"\s*triệu"
-    r"(?:\s*(?:đồng|vnd|đ))?",
+    r"(?:\s*(?:đồng|vnđ|vnd|đ))?",
     re.IGNORECASE,
 )
 
 VND_RE = re.compile(
     r"(?P<number>"
-    r"\d{1,3}(?:[.\s]\d{3})+"
+    r"\d{1,3}(?:[.,\s]\d{3})+"
     r"|\d+"
     r")"
-    r"\s*(?:đồng|vnd|đ)\b",
+    r"\s*(?:đồng|vnđ|vnd|đ)\b",
+    re.IGNORECASE,
+)
+
+THOUSAND_VND_RE = re.compile(
+    r"\b(?P<number>\d+)\s*k\b",
     re.IGNORECASE,
 )
 
@@ -366,6 +371,11 @@ def parse_vnd(
     - 34 triệu đồng
     - 1,5 triệu đồng
     """
+
+    thousand_match = THOUSAND_VND_RE.search(grounded_text)
+
+    if thousand_match:
+        return int(thousand_match.group("number")) * 1_000
 
     million_match = (
         MILLION_VND_RE.search(
