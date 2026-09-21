@@ -2,7 +2,10 @@ import time
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Dict, Any
 
-from app.api.schemas import VerifyRequest, VerifyResponse, VerifyResponseItem, FieldComparisonResponse
+from app.api.schemas import (
+    VerifyRequest, VerifyResponse, VerifyResponseItem, FieldComparisonResponse,
+    ReceivedFieldProvenanceResponse,
+)
 from app.api.deps import get_verification_service
 from app.verification.service import VerificationService
 
@@ -20,7 +23,7 @@ def verify_claim(request: VerifyRequest, service: VerificationService = Depends(
     # the Decomposer should accept it dynamically. For Batch C, we keep it simple.
     
     try:
-        results = service.verify(request.text)
+        results = service.verify(request.text, top_k=request.top_k)
     except Exception as e:
         import traceback
         import logging
@@ -38,7 +41,12 @@ def verify_claim(request: VerifyRequest, service: VerificationService = Depends(
                     state=v.state.name,
                     claimed_text=v.claimed_text,
                     official_text=v.official_text,
-                    explanation=v.explanation
+                    explanation=v.explanation,
+                    received_provenance=(
+                        ReceivedFieldProvenanceResponse(**v.received_provenance.model_dump())
+                        if v.received_provenance
+                        else None
+                    ),
                 )
                 
         from app.verification.models import OverallVerdict

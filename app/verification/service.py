@@ -3,7 +3,8 @@ import uuid
 from typing import List, Optional
 
 from app.verification.models import (
-    VerificationResult, OverallVerdict, AbstentionReason, OfficialProvenance, FieldMatchState, FieldComparisonResult
+    VerificationResult, OverallVerdict, AbstentionReason, OfficialProvenance, FieldMatchState,
+    FieldComparisonResult, ReceivedFieldProvenance, TypedUserField,
 )
 from app.verification.decomposer import ClaimDecomposer
 from app.verification.repository import OfficialStructuredRepository
@@ -21,7 +22,25 @@ class VerificationService:
         self.abstention_policy = abstention_policy
         self.temporal_resolver = TemporalResolver()
 
-    def verify(self, text: str) -> List[VerificationResult]:
+    @staticmethod
+    def _received_provenance(field: TypedUserField) -> ReceivedFieldProvenance:
+        return ReceivedFieldProvenance(
+            text=field.raw_text or field.text,
+            start_char=field.start_char,
+            end_char=field.end_char,
+            normalized_value=field.normalized_value,
+            extraction_method=field.extraction_method,
+        )
+
+    @staticmethod
+    def _insufficient_field(field: TypedUserField, explanation: str) -> FieldComparisonResult:
+        return FieldComparisonResult(
+            state=FieldMatchState.INSUFFICIENT_EVIDENCE,
+            claimed_text=field.raw_text or field.text,
+            explanation=explanation,
+        )
+
+    def verify(self, text: str, top_k: int = 5) -> List[VerificationResult]:
         results = []
 
         # 1. Decomposition
@@ -29,7 +48,9 @@ class VerificationService:
 
         for claim in decomposed_claims:
             # 2. Retrieval
-            retrieved_results = self.retriever.search(claim.raw_claim_text, top_k=5)
+            # Keep raw claim text as the retrieval fallback; normalized values are
+            # used only for deterministic field comparison below.
+            retrieved_results = self.retriever.search(claim.raw_claim_text, top_k=top_k)
 
             # Hard early exit for NO_RETRIEVAL_EVIDENCE
             # Convert RetrievalResult list back to RetrievalChunk list for abstention_policy (which expects chunks or results)
@@ -70,30 +91,63 @@ class VerificationService:
             for official_obligation in obligations:
                 current_field_results = {}
                 if claim.action:
-                    current_field_results["action"] = FieldComparator.compare_action(claim.action.text, official_obligation.action.action_type)
-                    current_field_results["action"].provenance = provenance
+                    current_field_results["action"] = FieldComparator.compare_action(
+                        claim.action.text,
+                        official_obligation.action.action_type,
+                        normalized_claimed=(
+                            claim.action.normalized_value
+                            if isinstance(claim.action.normalized_value, str)
+                            else None
+                        ),
+                        claimed_text=claim.action.raw_text,
+                    )
 
                 if claim.deadline:
-                    if official_obligation.deadline:
-                        current_field_results["deadline"] = FieldComparator.compare_deadline(claim.deadline.text, official_obligation.deadline.raw_text)
-                    else:
-                        current_field_results["deadline"] = FieldComparisonResult(
-                            state=FieldMatchState.INSUFFICIENT_EVIDENCE,
-                            claimed_text=claim.deadline.text,
-                            explanation="No official deadline found."
+                    if official_obligation.deadline and claim.deadline.normalized_value:
+                        current_field_results["deadline"] = FieldComparator.compare_deadline(
+                            claim.deadline.text,
+                            official_obligation.deadline.raw_text,
+                            normalized_claimed=(
+                                claim.deadline.normalized_value
+                                if isinstance(claim.deadline.normalized_value, str)
+                                else None
+                            ),
+                            claimed_text=claim.deadline.raw_text,
                         )
-                    current_field_results["deadline"].provenance = provenance
+                    else:
+                        current_field_results["deadline"] = self._insufficient_field(
+                            claim.deadline,
+                            "No comparable official deadline found.",
+                        )
 
                 if claim.amount:
                     if official_obligation.amount:
-                        current_field_results["amount"] = FieldComparator.compare_amount(claim.amount.text, str(official_obligation.amount.value_vnd))
-                    else:
-                        current_field_results["amount"] = FieldComparisonResult(
-                            state=FieldMatchState.INSUFFICIENT_EVIDENCE,
-                            claimed_text=claim.amount.text,
-                            explanation="No official amount found."
+                        current_field_results["amount"] = FieldComparator.compare_amount(
+                            claim.amount.text,
+                            str(official_obligation.amount.value_vnd),
+                            normalized_claimed=(
+                                claim.amount.normalized_value
+                                if isinstance(claim.amount.normalized_value, int)
+                                else None
+                            ),
+                            claimed_text=claim.amount.raw_text,
                         )
-                    current_field_results["amount"].provenance = provenance
+                    else:
+                        current_field_results["amount"] = self._insufficient_field(
+                            claim.amount,
+                            "No official amount found.",
+                        )
+
+                received_fields = {
+                    "action": claim.action,
+                    "deadline": claim.deadline,
+                    "amount": claim.amount,
+                }
+                for name, comparison in current_field_results.items():
+                    comparison.provenance = provenance
+                    received = received_fields.get(name)
+                    if received:
+                        comparison.received_provenance = self._received_provenance(received)
 
                 match_count = sum(1 for r in current_field_results.values() if r.state == FieldMatchState.MATCH)
                 if match_count > best_match_count:

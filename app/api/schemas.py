@@ -14,6 +14,15 @@ class FieldComparisonResponse(BaseModel):
     claimed_text: str
     official_text: Optional[str] = None
     explanation: str
+    received_provenance: Optional["ReceivedFieldProvenanceResponse"] = None
+
+
+class ReceivedFieldProvenanceResponse(BaseModel):
+    text: str
+    start_char: int
+    end_char: int
+    normalized_value: str | int | None = None
+    extraction_method: str
 
 class VerifyResponseItem(BaseModel):
     claim_id: str

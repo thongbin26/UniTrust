@@ -38,6 +38,16 @@ class TypedUserField(BaseModel):
         elif self.raw_text != self.text:
             raise ValueError("raw_text must equal the exact grounded text")
 
+
+class ReceivedFieldProvenance(BaseModel):
+    """Exact received-text evidence for one deterministically extracted field."""
+
+    text: str
+    start_char: int
+    end_char: int
+    normalized_value: str | int | None = None
+    extraction_method: Literal["deterministic"] = "deterministic"
+
 class DecomposedUserClaim(BaseModel):
     claim_id: str
     raw_claim_text: str
@@ -70,6 +80,7 @@ class FieldComparisonResult(BaseModel):
     official_text: Optional[str] = None
     explanation: str = ""
     provenance: Optional[OfficialProvenance] = None
+    received_provenance: Optional[ReceivedFieldProvenance] = None
 
 class VerificationResult(BaseModel):
     claim_id: str

@@ -1,3 +1,5 @@
+import pytest
+
 from app.verification.comparator import FieldComparator
 from app.verification.models import FieldMatchState
 from app.models.obligation import ActionType
@@ -5,6 +7,17 @@ from app.models.obligation import ActionType
 def test_compare_deadline():
     assert FieldComparator.compare_deadline("20/09/2026", "2026-09-20").state == FieldMatchState.MATCH
     assert FieldComparator.compare_deadline("25/09/2026", "2026-09-20").state == FieldMatchState.CONFLICT
+
+def test_compare_normalized_iso_deadline():
+    assert FieldComparator.compare_deadline("2026-09-30", "2026-09-30").state == FieldMatchState.MATCH
+    assert FieldComparator.compare_deadline("2026-09-30", "2026-10-01").state == FieldMatchState.CONFLICT
+
+@pytest.mark.parametrize("invalid", ["2026-99-99", "2026-13-01", "2026-04-31", "2026-02-29"])
+def test_invalid_iso_deadlines_do_not_match(invalid):
+    assert FieldComparator.compare_deadline(invalid, invalid).state == FieldMatchState.INSUFFICIENT_EVIDENCE
+
+def test_leap_day_requires_a_real_leap_year():
+    assert FieldComparator.compare_deadline("2024-02-29", "2024-02-29").state == FieldMatchState.MATCH
 
 def test_compare_amount():
     assert FieldComparator.compare_amount("1.000.000 vnd", "1000000").state == FieldMatchState.MATCH
