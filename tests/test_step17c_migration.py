@@ -56,24 +56,132 @@ def test_migrate_real_legacy_database_twice_preserves_notice_and_versions(
     monkeypatch.setattr(settings, "database_url", f"sqlite:///{staging}")
 
     with sqlite3.connect(staging) as connection:
-        notice_ids_before = [row[0] for row in connection.execute("SELECT notice_id FROM notices ORDER BY notice_id")]
-        versions_before = list(connection.execute("SELECT * FROM notice_versions ORDER BY version_id"))
+        # The accepted production fixture is already migrated. Remove only the
+        # additive Step 17C table from the disposable copy to recreate the
+        # legacy schema without making assumptions about corpus size.
+        connection.execute("DROP TABLE IF EXISTS notice_discoveries")
+        connection.commit()
+        notices_before = list(
+            connection.execute("SELECT * FROM notices ORDER BY notice_id")
+        )
+        versions_before = list(
+            connection.execute(
+                "SELECT * FROM notice_versions ORDER BY version_id"
+            )
+        )
+        counts_before = {
+            "sources": connection.execute(
+                "SELECT COUNT(*) FROM sources"
+            ).fetchone()[0],
+            "notices": len(notices_before),
+            "notice_versions": len(versions_before),
+        }
+        assert connection.execute(
+            """
+            SELECT 1
+            FROM sqlite_master
+            WHERE type = 'table' AND name = 'notice_discoveries'
+            """
+        ).fetchone() is None
 
-    migrate_notice_discoveries()
     migrate_notice_discoveries()
 
     with sqlite3.connect(staging) as connection:
-        notice_ids_after = [row[0] for row in connection.execute("SELECT notice_id FROM notices ORDER BY notice_id")]
-        versions_after = list(connection.execute("SELECT * FROM notice_versions ORDER BY version_id"))
-        tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-        integrity = connection.execute("PRAGMA integrity_check").fetchone()[0]
-        foreign_keys = connection.execute("PRAGMA foreign_key_check").fetchall()
+        notices_after_first = list(
+            connection.execute("SELECT * FROM notices ORDER BY notice_id")
+        )
+        versions_after_first = list(
+            connection.execute(
+                "SELECT * FROM notice_versions ORDER BY version_id"
+            )
+        )
+        counts_after_first = {
+            "sources": connection.execute(
+                "SELECT COUNT(*) FROM sources"
+            ).fetchone()[0],
+            "notices": len(notices_after_first),
+            "notice_versions": len(versions_after_first),
+        }
+        discovery_count_after_first = connection.execute(
+            "SELECT COUNT(*) FROM notice_discoveries"
+        ).fetchone()[0]
+        indexes_after_first = {
+            row[1]
+            for row in connection.execute(
+                "PRAGMA index_list('notice_discoveries')"
+            )
+        }
+        unique_index_columns = {
+            tuple(
+                column[2]
+                for column in connection.execute(
+                    f"PRAGMA index_info('{index[1]}')"
+                )
+            )
+            for index in connection.execute(
+                "PRAGMA index_list('notice_discoveries')"
+            )
+            if index[2]
+        }
+        integrity_after_first = connection.execute(
+            "PRAGMA integrity_check"
+        ).fetchone()[0]
+        foreign_keys_after_first = connection.execute(
+            "PRAGMA foreign_key_check"
+        ).fetchall()
 
-    assert notice_ids_before == notice_ids_after == list(range(1, 31))
-    assert versions_before == versions_after
-    assert "notice_discoveries" in tables
-    assert integrity == "ok"
-    assert foreign_keys == []
+    migrate_notice_discoveries()
+
+    with sqlite3.connect(staging) as connection:
+        notices_after_second = list(
+            connection.execute("SELECT * FROM notices ORDER BY notice_id")
+        )
+        versions_after_second = list(
+            connection.execute(
+                "SELECT * FROM notice_versions ORDER BY version_id"
+            )
+        )
+        counts_after_second = {
+            "sources": connection.execute(
+                "SELECT COUNT(*) FROM sources"
+            ).fetchone()[0],
+            "notices": len(notices_after_second),
+            "notice_versions": len(versions_after_second),
+        }
+        discovery_count_after_second = connection.execute(
+            "SELECT COUNT(*) FROM notice_discoveries"
+        ).fetchone()[0]
+        indexes_after_second = {
+            row[1]
+            for row in connection.execute(
+                "PRAGMA index_list('notice_discoveries')"
+            )
+        }
+        integrity_after_second = connection.execute(
+            "PRAGMA integrity_check"
+        ).fetchone()[0]
+        foreign_keys_after_second = connection.execute(
+            "PRAGMA foreign_key_check"
+        ).fetchall()
+
+    expected_indexes = {
+        "idx_notice_discoveries_notice_id",
+        "idx_notice_discoveries_source_id",
+        "idx_notice_discoveries_normalized_url",
+    }
+    assert notices_after_first == notices_after_second == notices_before
+    assert versions_after_first == versions_after_second == versions_before
+    assert counts_after_first == counts_after_second == counts_before
+    assert discovery_count_after_first == discovery_count_after_second == 0
+    assert expected_indexes <= indexes_after_first
+    assert indexes_after_second == indexes_after_first
+    assert (
+        "notice_id",
+        "source_id",
+        "normalized_discovery_url",
+    ) in unique_index_columns
+    assert integrity_after_first == integrity_after_second == "ok"
+    assert foreign_keys_after_first == foreign_keys_after_second == []
 
 
 def test_shared_id_collapses_mirror_and_keeps_two_discoveries(monkeypatch, tmp_path):
@@ -93,6 +201,15 @@ def test_shared_id_collapses_mirror_and_keeps_two_discoveries(monkeypatch, tmp_p
         assert connection.execute("SELECT COUNT(*) FROM notices").fetchone()[0] == 1
         assert connection.execute("SELECT COUNT(*) FROM notice_versions").fetchone()[0] == 1
         assert connection.execute("SELECT COUNT(*) FROM notice_discoveries").fetchone()[0] == 2
+
+
+def test_stable_identity_is_scoped_to_exact_dut_host():
+    assert official_notice_id(
+        "https://dut.udn.vn/Thongbao/id/9001"
+    ) == "dut.udn.vn:thongbao:9001"
+    assert official_notice_id(
+        "https://sv1.dut.udn.vn/Thongbao/id/9001"
+    ) is None
 
 
 def test_same_numeric_id_in_different_resource_namespace_does_not_merge(
