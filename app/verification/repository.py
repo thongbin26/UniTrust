@@ -2,7 +2,7 @@ import json
 import glob
 from pathlib import Path
 from typing import Optional, List
-from app.models.obligation import CanonicalNoticeAnnotation, StudentObligation
+from app.models.obligation import AnnotationStatus, CanonicalNoticeAnnotation, StudentObligation
 
 class OfficialStructuredRepository:
     def __init__(self, annotations_dir: str = "data/annotations/batch_001"):
@@ -33,5 +33,19 @@ class OfficialStructuredRepository:
         """
         annotation = self.cache.get((notice_id, version_id))
         if annotation:
+            return annotation.obligations
+        return []
+
+    def get_reviewed_official_obligations(
+        self,
+        notice_id: int,
+        version_id: int,
+    ) -> List[StudentObligation]:
+        """Return only human-reviewed or gold structured evidence."""
+        annotation = self.cache.get((notice_id, version_id))
+        if annotation and annotation.annotation_status in {
+            AnnotationStatus.REVIEWED,
+            AnnotationStatus.GOLD,
+        }:
             return annotation.obligations
         return []

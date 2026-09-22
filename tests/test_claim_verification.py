@@ -19,7 +19,7 @@ def test_decomposer_multiple_claims():
     original_extracted_2 = text[claims[1].start_char:claims[1].end_char]
     assert original_extracted_2 == claims[1].raw_claim_text
 
-def test_diagnostic_verified_synthetic_fixture():
+def test_diagnostic_verified_synthetic_fixture(monkeypatch):
     # SYNTHETIC DIAGNOSTIC FIXTURE
     # This example explicitly uses mocked in-memory official evidence
     # It does NOT read from unitrust.db or represent real DUT notices
@@ -29,6 +29,7 @@ def test_diagnostic_verified_synthetic_fixture():
     from app.verification.repository import OfficialStructuredRepository
     from app.verification.abstention import AbstentionPolicy
     from app.models.obligation import StudentObligation, ActionValue, ActionType, DeadlineValue, TemporalPrecision
+    from app.temporal.models import TemporalValidity
 
     class MockRetriever(HybridRetriever):
         def search(self, query: str, top_k: int = 5):
@@ -40,7 +41,7 @@ def test_diagnostic_verified_synthetic_fixture():
             )
             return [RetrievalResult(chunk=chunk, score=1.0, rank=1, retrieval_method="hybrid")]
     class MockRepo(OfficialStructuredRepository):
-        def get_official_obligations(self, notice_id, version_id):
+        def get_reviewed_official_obligations(self, notice_id, version_id):
             return [StudentObligation(
                 obligation_id="synthetic_obl_1",
                 action=ActionValue(action_type=ActionType.PAY, text="Nộp học phí"),
@@ -48,10 +49,15 @@ def test_diagnostic_verified_synthetic_fixture():
             )]
 
     service = VerificationService(MockRetriever(None, None), ClaimDecomposer(), MockRepo(), AbstentionPolicy())
+    monkeypatch.setattr(
+        service.temporal_resolver,
+        "resolve_validity",
+        lambda *_: TemporalValidity.CURRENT,
+    )
     results = service.verify("Sinh viên đóng học phí trước ngày 20/09/2026.")
     assert results[0].verdict.name == "VERIFIED"
 
-def test_diagnostic_conflict_synthetic_fixture():
+def test_diagnostic_conflict_synthetic_fixture(monkeypatch):
     # SYNTHETIC DIAGNOSTIC FIXTURE
     # This example explicitly uses mocked in-memory official evidence
     # It does NOT read from unitrust.db or represent real DUT notices
@@ -61,6 +67,7 @@ def test_diagnostic_conflict_synthetic_fixture():
     from app.verification.repository import OfficialStructuredRepository
     from app.verification.abstention import AbstentionPolicy
     from app.models.obligation import StudentObligation, ActionValue, ActionType, DeadlineValue, TemporalPrecision
+    from app.temporal.models import TemporalValidity
 
     class MockRetriever(HybridRetriever):
         def search(self, query: str, top_k: int = 5):
@@ -72,7 +79,7 @@ def test_diagnostic_conflict_synthetic_fixture():
             )
             return [RetrievalResult(chunk=chunk, score=1.0, rank=1, retrieval_method="hybrid")]
     class MockRepo(OfficialStructuredRepository):
-        def get_official_obligations(self, notice_id, version_id):
+        def get_reviewed_official_obligations(self, notice_id, version_id):
             return [StudentObligation(
                 obligation_id="synthetic_obl_1",
                 action=ActionValue(action_type=ActionType.PAY, text="Nộp học phí"),
@@ -80,5 +87,10 @@ def test_diagnostic_conflict_synthetic_fixture():
             )]
 
     service = VerificationService(MockRetriever(None, None), ClaimDecomposer(), MockRepo(), AbstentionPolicy())
+    monkeypatch.setattr(
+        service.temporal_resolver,
+        "resolve_validity",
+        lambda *_: TemporalValidity.CURRENT,
+    )
     results = service.verify("Sinh viên đóng học phí trước ngày 25/09/2026.")
     assert results[0].verdict.name == "CONFLICT"

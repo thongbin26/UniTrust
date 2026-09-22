@@ -45,7 +45,7 @@ class StructuredRepository(OfficialStructuredRepository):
     def __init__(self):
         pass
 
-    def get_official_obligations(self, notice_id: int, version_id: int):
+    def get_reviewed_official_obligations(self, notice_id: int, version_id: int):
         return [
             StudentObligation(
                 obligation_id="structured-obligation",
@@ -122,8 +122,10 @@ def test_api_forwards_top_k_and_preserves_additive_received_provenance():
     assert_received_span(payload["original_input"], type("P", (), amount["received_provenance"])(), "450k", 450_000)
 
 
-def test_audience_and_location_are_extracted_but_not_verdict_bearing():
+def test_audience_and_location_are_extracted_but_not_verdict_bearing(monkeypatch):
     service, _ = build_service()
+    from app.temporal.models import TemporalValidity
+    monkeypatch.setattr(service.temporal_resolver, "resolve_validity", lambda *_: TemporalValidity.CURRENT)
     text = "Sinh viên K26 cần đóng học phí tại Phòng CTSV trước ngày 30/09/2026 với mức 450k."
 
     result = service.verify(text)[0]
@@ -133,8 +135,10 @@ def test_audience_and_location_are_extracted_but_not_verdict_bearing():
     assert result.verdict.name == "VERIFIED"
 
 
-def test_amount_conflict_remains_verdict_bearing():
+def test_amount_conflict_remains_verdict_bearing(monkeypatch):
     service, _ = build_service()
+    from app.temporal.models import TemporalValidity
+    monkeypatch.setattr(service.temporal_resolver, "resolve_validity", lambda *_: TemporalValidity.CURRENT)
     result = service.verify("Sinh viên cần đóng học phí trước ngày 30/09/2026 với mức 650k.")[0]
 
     assert result.field_results["amount"].state.name == "CONFLICT"
