@@ -42,6 +42,7 @@ FIELD_STATE_VI = {
 FIELD_NAMES_VI = {
     "audience": "Đối tượng",
     "action": "Việc cần làm",
+    "object_hint": "Nội dung",
     "deadline": "Hạn chót",
     "amount": "Số tiền",
     "location": "Địa điểm",

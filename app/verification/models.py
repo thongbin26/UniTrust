@@ -30,7 +30,8 @@ class TypedUserField(BaseModel):
     end_char: int
     raw_text: Optional[str] = None
     normalized_value: str | int | None = None
-    extraction_method: Literal["deterministic"] = "deterministic"
+    extraction_method: Literal["deterministic", "ai_assisted", "hybrid"] = "deterministic"
+    confidence: float | None = Field(default=None, ge=0, le=1)
 
     def model_post_init(self, __context: Any) -> None:
         if self.raw_text is None:
@@ -54,6 +55,9 @@ class DecomposedUserClaim(BaseModel):
     start_char: int
     end_char: int
     normalized_text: Optional[str] = None
+    extraction_method: Literal["deterministic", "ai_assisted", "hybrid"] = "deterministic"
+    claim_confidence: float | None = Field(default=None, ge=0, le=1)
+    object_hint: Optional[TypedUserField] = None
     
     action: Optional[TypedUserField] = None
     deadline: Optional[TypedUserField] = None
@@ -90,3 +94,6 @@ class VerificationResult(BaseModel):
     temporal_status: Optional[TemporalValidity] = None
     field_results: dict[str, FieldComparisonResult] = Field(default_factory=dict)
     primary_provenance: Optional[OfficialProvenance] = None
+    # These are grounded fields extracted from the received input, not
+    # official evidence or comparison results.
+    understood_fields: dict[str, TypedUserField | list[TypedUserField]] = Field(default_factory=dict)

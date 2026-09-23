@@ -4,7 +4,7 @@ from typing import List, Optional
 
 from app.verification.models import (
     VerificationResult, OverallVerdict, AbstentionReason, OfficialProvenance, FieldMatchState,
-    FieldComparisonResult, ReceivedFieldProvenance, TypedUserField,
+    FieldComparisonResult, ReceivedFieldProvenance, TypedUserField, DecomposedUserClaim,
 )
 from app.verification.decomposer import ClaimDecomposer
 from app.verification.repository import OfficialStructuredRepository
@@ -171,6 +171,7 @@ class VerificationService:
         decomposed_claims = self.decomposer.decompose(text)
 
         for claim in decomposed_claims:
+            understood_fields = self._understood_fields(claim)
             has_supported_field = any((claim.action, claim.deadline, claim.amount))
 
             # 2. Retrieval
@@ -184,6 +185,7 @@ class VerificationService:
                     raw_claim_text=claim.raw_claim_text,
                     verdict=OverallVerdict.ABSTAINED,
                     abstention_reason=AbstentionReason.UNSUPPORTED_CLAIM_FIELD,
+                    understood_fields=understood_fields,
                 ))
                 continue
 
@@ -197,6 +199,7 @@ class VerificationService:
                     raw_claim_text=claim.raw_claim_text,
                     verdict=OverallVerdict.ABSTAINED,
                     abstention_reason=reason
+                    ,understood_fields=understood_fields
                 ))
                 continue
 
@@ -249,6 +252,7 @@ class VerificationService:
                     abstention_reason=reason,
                     primary_provenance=provenance,
                     temporal_status=temporal_status
+                    ,understood_fields=understood_fields
                 ))
                 continue
 
@@ -264,6 +268,7 @@ class VerificationService:
                     verdict=OverallVerdict.ABSTAINED,
                     abstention_reason=AbstentionReason.AMBIGUOUS_OFFICIAL_EVIDENCE,
                     temporal_status=temporal_status,
+                    understood_fields=understood_fields,
                 ))
                 continue
 
@@ -283,6 +288,20 @@ class VerificationService:
                 temporal_status=temporal_status,
                 field_results=field_results,
                 primary_provenance=provenance
+                ,understood_fields=understood_fields
             ))
 
         return results
+
+    @staticmethod
+    def _understood_fields(claim: DecomposedUserClaim) -> dict[str, TypedUserField | list[TypedUserField]]:
+        fields: dict[str, TypedUserField | list[TypedUserField]] = {}
+        for name in ("audience", "action", "object_hint", "deadline", "amount", "location"):
+            value = getattr(claim, name)
+            if value is not None:
+                fields[name] = value
+        for name in ("required_documents", "exceptions"):
+            values = getattr(claim, name)
+            if values:
+                fields[name] = values
+        return fields

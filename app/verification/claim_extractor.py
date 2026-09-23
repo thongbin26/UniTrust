@@ -21,7 +21,7 @@ _FULL_DATE_RE = re.compile(
     re.IGNORECASE,
 )
 _MISSING_YEAR_DATE_RE = re.compile(
-    r"(?:(?:trước|đến)\s+(?:hết\s+)?ngày\s+|hạn\s+cuối\s*:?[ \t]*)"
+    r"(?:(?:trước|đến)\s+(?:hết\s+)?(?:ngày\s+)?|hạn\s+cuối\s*:?[ \t]*)"
     r"(?P<date>\d{1,2}[./-]\d{1,2})(?![./-]\d)",
     re.IGNORECASE,
 )
@@ -32,6 +32,7 @@ _MONEY_RE = re.compile(
 )
 
 _AUDIENCE_PATTERNS = (
+    re.compile(r"\bk\s*(?P<year>\d{2})\b", re.IGNORECASE),
     re.compile(r"\b(?:sinh\s+viên|sv)\s+k\s*(?P<year>\d{2})\b", re.IGNORECASE),
     re.compile(r"\b(?:sinh\s+viên|sv)\s+khóa\s*(?P<year>\d{2})\b", re.IGNORECASE),
     re.compile(
@@ -57,6 +58,13 @@ _DOCUMENT_RE = re.compile(
 )
 _EXCEPTION_RE = re.compile(
     r"\b(?:trừ|ngoại\s+trừ|không\s+áp\s+dụng\s+cho)\s+[^.;\r\n]+",
+    re.IGNORECASE,
+)
+_COORDINATED_ACTION_RE = re.compile(
+    r"(?:\s+và\s+|,\s*)(?=(?:đăng\s+k[ýí]\b|"
+    r"đóng\s+(?:học\s*phí|lệ\s*phí|phí|tiền)\b|đóng\s+\d|"
+    r"nộp\b|tham\s+gia\b|nhận\b|cập\s+nhật\b|kiểm\s+tra\b|"
+    r"sinh\s+viên\s+K\d{2}\s+(?:đăng\s+k[ýí]|nộp)\b))",
     re.IGNORECASE,
 )
 
@@ -100,7 +108,20 @@ def _claim_spans(text: str) -> list[tuple[int, int]]:
             local_start = boundary.end()
         span = _trimmed_span(text, block_start + local_start, block_end)
         if span:
-            claims.append(span)
+            # Only split coordinated clauses when the following clause starts
+            # with a known obligation action. This preserves ordinary commas
+            # and makes each independently checkable action its own claim.
+            clause_start, clause_end = span
+            cursor = clause_start
+            for separator in _COORDINATED_ACTION_RE.finditer(text[clause_start:clause_end]):
+                boundary = clause_start + separator.start()
+                part = _trimmed_span(text, cursor, boundary)
+                if part:
+                    claims.append(part)
+                cursor = clause_start + separator.end()
+            part = _trimmed_span(text, cursor, clause_end)
+            if part:
+                claims.append(part)
     return claims
 
 
@@ -130,6 +151,15 @@ def _extract_action(source: str, start: int, end: int) -> TypedUserField | None:
             re.compile(
                 r"\b(?P<verb>đóng)\s+(?:học\s*phí|lệ\s*phí|phí|tiền|"
                 r"BHYT|bảo\s+hiểm|khoản\s+phí)\b",
+                re.IGNORECASE,
+            ),
+        ),
+        # A currency-qualified amount is equally explicit payment context;
+        # bare "đóng" remains intentionally unsupported.
+        (
+            ActionType.PAY,
+            re.compile(
+                r"\b(?P<verb>đóng)\s+\d[\d.,\s]*(?:đồng|vnđ|vnd|đ)\b",
                 re.IGNORECASE,
             ),
         ),
@@ -209,6 +239,22 @@ def _extract_audience(source: str, start: int, end: int) -> TypedUserField | Non
     return _field(source, start + match.start(), start + match.end(), cohort)
 
 
+def _extract_object_hint(source: str, start: int, end: int, action: TypedUserField | None) -> TypedUserField | None:
+    """Ground only the short phrase immediately following a supported action."""
+    if action is None:
+        return None
+    local_start = action.end_char
+    tail = source[local_start:end]
+    match = re.match(r"\s+(?P<object>[^,.;\r\n]+?)\s*(?=(?:trước|đến|hạn\s+cuối)\b|$)", tail, re.IGNORECASE)
+    if not match:
+        return None
+    value = match.group("object").strip()
+    if not value or re.fullmatch(r"(?:\d[\d.,\s]*(?:đồng|vnđ|vnd|đ)|học\s*phí|lệ\s*phí|phí|tiền)", value, re.IGNORECASE):
+        return None
+    start_at = local_start + match.start("object") + (len(match.group("object")) - len(match.group("object").lstrip()))
+    return _field(source, start_at, start_at + len(value), " ".join(value.split()))
+
+
 def _extract_location(source: str, start: int, end: int) -> TypedUserField | None:
     match = _LOCATION_RE.search(source[start:end])
     if not match:
@@ -251,6 +297,7 @@ class DeterministicTextClaimExtractor:
         claims = []
         for start, end in _claim_spans(text):
             raw_claim = text[start:end]
+            action = _extract_action(text, start, end)
             claims.append(
                 DecomposedUserClaim(
                     claim_id=str(uuid.uuid4()),
@@ -258,7 +305,8 @@ class DeterministicTextClaimExtractor:
                     start_char=start,
                     end_char=end,
                     normalized_text=" ".join(unicodedata.normalize("NFC", raw_claim).split()),
-                    action=_extract_action(text, start, end),
+                    action=action,
+                    object_hint=_extract_object_hint(text, start, end, action),
                     deadline=_extract_deadline(text, start, end),
                     amount=_extract_amount(text, start, end),
                     audience=_extract_audience(text, start, end),

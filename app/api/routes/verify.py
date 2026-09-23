@@ -8,6 +8,7 @@ from app.api.schemas import (
 )
 from app.api.deps import get_verification_service
 from app.verification.service import VerificationService
+from app.verification.verdict import VerdictAggregator
 
 router = APIRouter(prefix="/verify", tags=["Verify"])
 
@@ -55,6 +56,10 @@ def verify_claim(request: VerifyRequest, service: VerificationService = Depends(
         if res.verdict == OverallVerdict.ABSTAINED:
             public_verdict = OverallVerdict.INSUFFICIENT_EVIDENCE.name
             
+        understood = {
+            name: value.model_dump() if hasattr(value, "model_dump") else [item.model_dump() for item in value]
+            for name, value in res.understood_fields.items()
+        }
         mapped_results.append(VerifyResponseItem(
             claim_id=res.claim_id,
             raw_claim_text=res.raw_claim_text,
@@ -63,11 +68,14 @@ def verify_claim(request: VerifyRequest, service: VerificationService = Depends(
             abstention_reason=res.abstention_reason.name if res.abstention_reason else None,
             field_results=field_res,
             primary_provenance=res.primary_provenance
+            ,understood_fields=understood
         ))
         
     latency = (time.time() - start_time) * 1000
     return VerifyResponse(
         original_input=request.text,
         results=mapped_results,
+        message_verdict=VerdictAggregator.aggregate_claim_verdicts([res.verdict for res in results]).name if results else None,
+        extraction_method="deterministic",
         latency_ms=latency
     )

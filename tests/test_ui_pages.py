@@ -210,7 +210,9 @@ def test_verify_page_keeps_text_flow_and_declares_the_image_ocr_flow():
     assert all(label in source for label in ("Văn bản", "Ảnh chụp", "Đường link"))
     assert "Nội dung hệ thống đọc được từ đường link" in source
     assert "Nội dung hệ thống đọc được" in source
-    assert source.count("render_verification_result(item)") == 3
+    assert source.count("render_message_results(response)") == 3
+    assert "Kết luận toàn bộ" in source
+    assert "Nội dung {position}/{total}" in source
 
 
 def _url_abstention_response():

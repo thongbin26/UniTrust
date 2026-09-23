@@ -51,3 +51,17 @@ def test_verify_api_insufficient_evidence_reason(isolated_app_client):
     result = data["results"][0]
     assert result["verdict"] == "INSUFFICIENT_EVIDENCE"
     assert result["abstention_reason"] == "UNSUPPORTED_CLAIM_FIELD"
+
+
+def test_verify_api_preserves_understood_payment_without_official_comparison(isolated_app_client):
+    response = isolated_app_client.post("/verify", json={
+        "text": "đóng 450.000 đồng",
+        "use_llm": False,
+        "top_k": 5,
+    })
+    assert response.status_code == 200
+    result = response.json()["results"][0]
+    assert result["understood_fields"]["action"]["normalized_value"] == "pay"
+    assert result["understood_fields"]["amount"]["normalized_value"] == 450000
+    # Understanding received input does not fabricate an official comparison.
+    assert "amount" not in result["field_results"]

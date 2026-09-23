@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     monitoring_raw_data_dir: str = "data/v2-monitoring/raw"
     monitoring_recent_window_hours: int = 48
 
+    # V2.2A remains deterministic/offline by default. A future provider must
+    # be explicitly enabled and is never required for verification.
+    structured_ai_enabled: bool = False
+
     # Step 2 chưa sử dụng AI.
     llm_api_key: str = ""
 

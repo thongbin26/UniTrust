@@ -42,10 +42,13 @@ class VerifyResponseItem(BaseModel):
     abstention_reason: Optional[str] = None
     field_results: Dict[str, FieldComparisonResponse] = {}
     primary_provenance: Optional[OfficialProvenance] = None
+    understood_fields: Dict[str, Any] = Field(default_factory=dict)
 
 class VerifyResponse(BaseModel):
     original_input: str
     results: List[VerifyResponseItem]
+    message_verdict: Optional[str] = None
+    extraction_method: str = "deterministic"
     latency_ms: float
 
 

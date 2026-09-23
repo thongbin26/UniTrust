@@ -1,0 +1,13 @@
+{
+  "dataset_id": "unitrust-v22a-structured-claims-v1",
+  "cases_sha256": "93f7e782e825db46976ffc9297a918f13c5bc72e86126f96334f3fac2e67e703",
+  "split_policy": "Development and held-out cases are evaluated in separate invocations. Held-out cases must not be used for parser tuning.",
+  "total_cases": 5,
+  "development_cases": 3,
+  "held_out_cases": 2,
+  "source_derived_cases": 0,
+  "controlled_synthetic_cases": 3,
+  "paraphrase_cases": 2,
+  "prior_step18h_identity_overlap": 0,
+  "provider_status": "REAL_PROVIDER_EVALUATION_PENDING"
+}

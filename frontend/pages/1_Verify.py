@@ -33,6 +33,19 @@ def _html_text(value) -> str:
     return escape(str(value or "")).replace("\n", "<br>")
 
 
+def _recognized_field_text(name: str, value: object) -> str:
+    values = value if isinstance(value, list) else [value]
+    rendered = []
+    for item in values:
+        if not isinstance(item, dict):
+            continue
+        text = item.get("text") or ""
+        if name == "action":
+            text = get_action_value_vi(item.get("normalized_value")) or text
+        rendered.append(_html_text(text))
+    return ", ".join(rendered)
+
+
 def _status_class(verdict: str) -> str:
     return {
         "VERIFIED": "verified",
@@ -59,7 +72,36 @@ def render_temporal_note(temporal_label: str) -> None:
     )
 
 
-def render_verification_result(claim_result: dict) -> None:
+def render_message_results(response: dict) -> None:
+    """Render one message-level summary before independently verified claims."""
+    results = response.get("results", [])
+    if len(results) > 1:
+        verdict = response.get("message_verdict", "INSUFFICIENT_EVIDENCE")
+        counts = {
+            state: sum(item.get("verdict") == state for item in results)
+            for state in ("VERIFIED", "PARTIALLY_VERIFIED", "CONFLICT", "INSUFFICIENT_EVIDENCE")
+        }
+        summary_parts = []
+        if counts["VERIFIED"]:
+            summary_parts.append(f'{counts["VERIFIED"]} nội dung đã được xác minh')
+        if counts["PARTIALLY_VERIFIED"]:
+            summary_parts.append(f'{counts["PARTIALLY_VERIFIED"]} nội dung xác minh được một phần')
+        if counts["CONFLICT"]:
+            summary_parts.append(f'{counts["CONFLICT"]} nội dung có mâu thuẫn')
+        if counts["INSUFFICIENT_EVIDENCE"]:
+            summary_parts.append(f'{counts["INSUFFICIENT_EVIDENCE"]} nội dung chưa đủ bằng chứng')
+        st.markdown('<div class="ut-section-title">Kết luận toàn bộ</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="ut-card-flat"><strong>{escape(get_trust_state_vi(verdict))}</strong><br>'
+            f'UniTrust nhận diện {len(results)} nội dung cần kiểm chứng: '
+            f'{"; ".join(summary_parts)}.</div>',
+            unsafe_allow_html=True,
+        )
+    for index, item in enumerate(results, start=1):
+        render_verification_result(item, index if len(results) > 1 else None, len(results) if len(results) > 1 else None)
+
+
+def render_verification_result(claim_result: dict, position: int | None = None, total: int | None = None) -> None:
     verdict = claim_result.get("verdict", "INSUFFICIENT_EVIDENCE")
     temporal_status = claim_result.get("temporal_status") or "UNKNOWN"
     status_class = _status_class(verdict)
@@ -67,10 +109,12 @@ def render_verification_result(claim_result: dict) -> None:
     temporal_label = escape(get_temporal_state_vi(temporal_status))
     explanation = escape(get_explanation_vi(verdict))
     claim_text = _html_text(claim_result.get("raw_claim_text"))
+    compact = position is not None and total is not None
+    heading = "Kết luận" if not compact else f"Nội dung {position}/{total}"
 
     st.markdown(
         f"""
-        <div class="ut-section-title">Kết luận</div>
+        <div class="ut-section-title">{heading}</div>
         <div class="ut-status-panel ut-status-panel--{status_class}">
             <div class="ut-badge ut-badge--{status_class}"><span class="ut-status-icon" aria-hidden="true">{_status_icon(status_class)}</span>{trust_label}</div>
             <p style="color:var(--ut-ink-soft);font-size:1.02rem;margin:.8rem 0 .9rem;">{explanation}</p>
@@ -88,7 +132,18 @@ def render_verification_result(claim_result: dict) -> None:
         )
 
     field_results = claim_result.get("field_results") or {}
-    if field_results:
+    understood = claim_result.get("understood_fields") or {}
+    if understood:
+        st.markdown('<div class="ut-section-title">Nội dung được nhận diện</div>', unsafe_allow_html=True)
+        labels = [
+            f'<strong>{escape(get_field_name_vi(name))}:</strong> {_recognized_field_text(name, value)}'
+            for name, value in understood.items()
+        ]
+        st.markdown(f'<div class="ut-card-flat">{"<br>".join(labels)}</div>', unsafe_allow_html=True)
+
+    def render_comparisons() -> None:
+        if not field_results:
+            return
         st.markdown('<div class="ut-section-title">Điều đã đối chiếu</div>', unsafe_allow_html=True)
         comparison_rows = []
         for field_name, field_value in field_results.items():
@@ -108,48 +163,50 @@ def render_verification_result(claim_result: dict) -> None:
                 f'<div class="ut-comparison"><div></div><div class="ut-comparison-label">Bạn nhận được</div><div class="ut-comparison-label">Nguồn chính thức</div>'
                 f'<div></div><div>{claimed_html}</div><div>{official_html}</div></div></div>'
             )
-        st.markdown(
-            f'<div class="ut-card-flat">{"".join(comparison_rows)}</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown(f'<div class="ut-card-flat">{"".join(comparison_rows)}</div>', unsafe_allow_html=True)
 
-    provenance = claim_result.get("primary_provenance")
-    if not should_render_official_evidence(claim_result):
+    def render_evidence() -> None:
+        provenance = claim_result.get("primary_provenance")
+        if not should_render_official_evidence(claim_result):
+            if verdict != "INSUFFICIENT_EVIDENCE":
+                st.markdown(
+                    '<div class="ut-empty"><strong>Bằng chứng chính thức phù hợp</strong>Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này.</div>',
+                    unsafe_allow_html=True,
+                )
+            render_temporal_note(temporal_label)
+            return
+        st.markdown('<div class="ut-section-title">Nguồn chính thức</div>', unsafe_allow_html=True)
+        if not provenance:
+            st.markdown(
+                '<div class="ut-empty"><strong>Chưa có nguồn cụ thể để hiển thị</strong>UniTrust chưa tìm thấy đoạn thông báo chính thức đủ liên quan cho nội dung này.</div>',
+                unsafe_allow_html=True,
+            )
+            render_temporal_note(temporal_label)
+            return
+        source_title = _html_text(provenance.get("title") or "Thông báo chính thức")
+        source_excerpt = escape(" ".join(str(provenance.get("exact_chunk_text") or "").split()))
+        publication_date = provenance.get("publication_date")
+        date_row = (
+            f'<div class="ut-meta" style="margin-top:.35rem;"><strong>Ngày ban hành:</strong> {escape(format_date_vi(publication_date))}</div>'
+            if publication_date else ""
+        )
         st.markdown(
-            '<div class="ut-empty"><strong>Bằng chứng chính thức phù hợp</strong>Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này.</div>',
+            f'<div class="ut-card-flat" style="border-color:#cfe5df;"><h3 style="font-size:1.12rem;margin:0;">{source_title}</h3>{date_row}<div class="ut-citation">{source_excerpt}</div></div>',
             unsafe_allow_html=True,
         )
+        canonical_url = provenance.get("canonical_url")
+        if canonical_url:
+            st.link_button("Xem thông báo chính thức", canonical_url, icon=":material/open_in_new:")
         render_temporal_note(temporal_label)
+
+    if compact:
+        with st.expander("Xem đối chiếu chi tiết", expanded=False):
+            render_comparisons()
+            render_evidence()
         return
 
-    st.markdown('<div class="ut-section-title">Nguồn chính thức</div>', unsafe_allow_html=True)
-    if not provenance:
-        st.markdown(
-            '<div class="ut-empty"><strong>Chưa có nguồn cụ thể để hiển thị</strong>UniTrust chưa tìm thấy đoạn thông báo chính thức đủ liên quan cho nội dung này.</div>',
-            unsafe_allow_html=True,
-        )
-        render_temporal_note(temporal_label)
-        return
-
-    source_title = _html_text(provenance.get("title") or "Thông báo chính thức")
-    source_excerpt = escape(" ".join(str(provenance.get("exact_chunk_text") or "").split()))
-    publication_date = provenance.get("publication_date")
-    date_row = (
-        f'<div class="ut-meta" style="margin-top:.35rem;"><strong>Ngày ban hành:</strong> {escape(format_date_vi(publication_date))}</div>'
-        if publication_date else ""
-    )
-    source_card = (
-        f'<div class="ut-card-flat" style="border-color:#cfe5df;">'
-        f'<h3 style="font-size:1.12rem;margin:0;">{source_title}</h3>{date_row}'
-        f'<div class="ut-citation">{source_excerpt}</div>'
-        '</div>'
-    )
-    st.markdown(source_card, unsafe_allow_html=True)
-    canonical_url = provenance.get("canonical_url")
-    if canonical_url:
-        st.link_button("Xem thông báo chính thức", canonical_url, icon=":material/open_in_new:")
-
-    render_temporal_note(temporal_label)
+    render_comparisons()
+    render_evidence()
 
 
 input_mode = st.radio(
@@ -208,8 +265,7 @@ if submitted:
                 response = api_client.verify_claim(text_input, use_llm=False, top_k=5)
                 results = response.get("results", [])
                 if results:
-                    for item in results:
-                        render_verification_result(item)
+                    render_message_results(response)
                 else:
                     st.markdown(
                         '<div class="ut-empty"><strong>Chưa có kết quả</strong>Hãy thử diễn đạt rõ hơn nội dung hoặc bổ sung chi tiết cần kiểm tra.</div>',
@@ -243,8 +299,7 @@ elif submitted_image:
                     '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>Nội dung được nhận dạng tự động từ ảnh. Nếu ảnh mờ hoặc ký tự khó đọc, kết quả nhận dạng có thể chưa chính xác.</span></div>',
                     unsafe_allow_html=True,
                 )
-                for item in response.get("results", []):
-                    render_verification_result(item)
+                render_message_results(response)
             except Exception:
                 logging.getLogger(__name__).exception("Image verification request or rendering failed")
                 st.error("Không thể nhận dạng hoặc xác minh ảnh lúc này. Vui lòng thử lại.")
@@ -275,8 +330,7 @@ elif submitted_url:
                 )
                 for warning in response.get("warnings", []):
                     st.info(get_url_fetch_warning_vi(warning))
-                for item in response.get("results", []):
-                    render_verification_result(item)
+                render_message_results(response)
             except URLVerificationRequestError as exc:
                 st.error(get_url_fetch_error_vi(exc.code))
             except Exception:

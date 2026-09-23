@@ -29,3 +29,15 @@ class VerdictAggregator:
             return OverallVerdict.PARTIALLY_VERIFIED
             
         return OverallVerdict.INSUFFICIENT_EVIDENCE
+
+    @staticmethod
+    def aggregate_claim_verdicts(verdicts: list[OverallVerdict]) -> OverallVerdict:
+        """Conservative message summary; individual claim verdicts stay primary."""
+        public = [OverallVerdict.INSUFFICIENT_EVIDENCE if value == OverallVerdict.ABSTAINED else value for value in verdicts]
+        if any(value == OverallVerdict.CONFLICT for value in public):
+            return OverallVerdict.CONFLICT
+        if public and all(value == OverallVerdict.VERIFIED for value in public):
+            return OverallVerdict.VERIFIED
+        if any(value in {OverallVerdict.VERIFIED, OverallVerdict.PARTIALLY_VERIFIED} for value in public):
+            return OverallVerdict.PARTIALLY_VERIFIED
+        return OverallVerdict.INSUFFICIENT_EVIDENCE
