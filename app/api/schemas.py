@@ -38,6 +38,18 @@ class VerifyResponse(BaseModel):
     results: List[VerifyResponseItem]
     latency_ms: float
 
+
+class OCRResponse(BaseModel):
+    text: str
+    engine: str
+    warnings: List[str] = Field(default_factory=list)
+    mean_confidence: float | None = None
+
+
+class VerifyImageResponse(VerifyResponse):
+    input_type: str = "IMAGE"
+    ocr: OCRResponse
+
 class EvidenceCoverageStatus(BaseModel):
     has_structured_obligations: bool
     structured_coverage: str  # "REVIEWED", "MACHINE", "NONE"

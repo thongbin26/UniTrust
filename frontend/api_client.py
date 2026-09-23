@@ -9,6 +9,8 @@ class APIClient:
         self.std_timeout = float(os.getenv("API_STD_TIMEOUT", "10.0"))
         # Local LLMs can be slow (e.g. Qwen3 4B takes 100s+)
         self.llm_timeout = float(os.getenv("API_LLM_TIMEOUT", "120.0"))
+        # Local CPU OCR plus verification needs more time than ordinary API calls.
+        self.image_timeout = float(os.getenv("API_IMAGE_TIMEOUT", "120.0"))
 
     def _get(self, path: str, timeout: float = None) -> Dict[str, Any] | List[Dict[str, Any]]:
         try:
@@ -26,6 +28,19 @@ class APIClient:
         except httpx.HTTPError as e:
             raise RuntimeError(f"API Request failed: {e}")
 
+    def _post_multipart(self, path: str, files: dict, data: dict, timeout: float = None) -> Dict[str, Any]:
+        try:
+            resp = httpx.post(
+                f"{self.base_url}{path}",
+                files=files,
+                data=data,
+                timeout=timeout or self.std_timeout,
+            )
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            raise RuntimeError(f"API Request failed: {e}")
+
     def verify_claim(self, text: str, use_llm: bool = False, top_k: int = 5) -> Dict[str, Any]:
         timeout = self.llm_timeout if use_llm else self.std_timeout
         payload = {
@@ -34,6 +49,22 @@ class APIClient:
             "top_k": top_k
         }
         return self._post("/verify", json=payload, timeout=timeout)
+
+    def verify_image(
+        self,
+        image_bytes: bytes,
+        filename: str,
+        content_type: str | None,
+        use_llm: bool = False,
+        top_k: int = 5,
+    ) -> Dict[str, Any]:
+        timeout = max(self.image_timeout, self.llm_timeout) if use_llm else self.image_timeout
+        return self._post_multipart(
+            "/verify/image",
+            files={"image": (filename, image_bytes, content_type or "application/octet-stream")},
+            data={"top_k": str(top_k), "use_llm": str(use_llm).lower()},
+            timeout=timeout,
+        )
 
     def list_notices(self) -> List[Dict[str, Any]]:
         return self._get("/evidence/notices")

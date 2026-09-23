@@ -31,7 +31,9 @@ def test_applicability_vi():
     assert get_applicability_vi("UNKNOWN") == "Chưa đủ thông tin để xác định"
 
 def test_abstention_reasons_vi():
-    assert get_abstention_reason_vi("NO_OFFICIAL_FIELD") == "Chưa có bằng chứng chính thức cho loại thông tin này."
+    assert get_abstention_reason_vi("NO_OFFICIAL_FIELD") == (
+        "Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này."
+    )
     assert get_abstention_reason_vi(None) == "Không có"
 
 def test_explanation_vi():

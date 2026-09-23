@@ -5,6 +5,7 @@ import streamlit as st
 
 from frontend.api_client import api_client
 from frontend.ui_style import apply_global_styles, page_header, page_marker
+from frontend.verification_presentation import should_render_official_evidence
 from frontend.ui_translations import (
     get_abstention_reason_vi,
     get_explanation_vi,
@@ -106,8 +107,16 @@ def render_verification_result(claim_result: dict) -> None:
             unsafe_allow_html=True,
         )
 
-    st.markdown('<div class="ut-section-title">Nguồn chính thức</div>', unsafe_allow_html=True)
     provenance = claim_result.get("primary_provenance")
+    if not should_render_official_evidence(claim_result):
+        st.markdown(
+            '<div class="ut-empty"><strong>Bằng chứng chính thức phù hợp</strong>Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này.</div>',
+            unsafe_allow_html=True,
+        )
+        render_temporal_note(temporal_label)
+        return
+
+    st.markdown('<div class="ut-section-title">Nguồn chính thức</div>', unsafe_allow_html=True)
     if not provenance:
         st.markdown(
             '<div class="ut-empty"><strong>Chưa có nguồn cụ thể để hiển thị</strong>UniTrust chưa tìm thấy đoạn thông báo chính thức đủ liên quan cho nội dung này.</div>',
@@ -151,6 +160,17 @@ with st.container(border=True):
     )
     submitted = st.button("Xác minh thông tin", type="primary", icon=":material/verified_user:")
 
+with st.container(border=True):
+    st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Kiểm chứng ảnh chụp</div>', unsafe_allow_html=True)
+    uploaded_image = st.file_uploader(
+        "Ảnh chụp thông tin cần kiểm tra",
+        type=["png", "jpg", "jpeg", "webp"],
+        help="Hỗ trợ PNG, JPEG và WEBP. Ảnh không được lưu lại.",
+    )
+    if uploaded_image is not None:
+        st.image(uploaded_image.getvalue(), caption="Ảnh bạn đã chọn", width="stretch")
+    submitted_image = st.button("Kiểm chứng ảnh", icon=":material/image_search:")
+
 if submitted:
     if not text_input.strip():
         st.error("Vui lòng nhập nội dung cần xác minh.")
@@ -170,6 +190,36 @@ if submitted:
             except Exception:
                 logging.getLogger(__name__).exception("Verification request or rendering failed")
                 st.error("Không thể xác minh thông tin lúc này. Vui lòng thử lại.")
+elif submitted_image:
+    if uploaded_image is None:
+        st.error("Vui lòng chọn ảnh cần kiểm chứng.")
+    else:
+        with st.spinner("Đang nhận dạng chữ và đối chiếu với nguồn chính thức..."):
+            try:
+                response = api_client.verify_image(
+                    uploaded_image.getvalue(),
+                    uploaded_image.name,
+                    uploaded_image.type,
+                    use_llm=False,
+                    top_k=5,
+                )
+                ocr = response.get("ocr", {})
+                st.markdown('<div class="ut-section-title">Nội dung hệ thống đọc được</div>', unsafe_allow_html=True)
+                st.text_area(
+                    "Nội dung nhận dạng từ ảnh",
+                    value=ocr.get("text", ""),
+                    height=160,
+                    disabled=True,
+                )
+                st.markdown(
+                    '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>Nội dung được nhận dạng tự động từ ảnh. Nếu ảnh mờ hoặc ký tự khó đọc, kết quả nhận dạng có thể chưa chính xác.</span></div>',
+                    unsafe_allow_html=True,
+                )
+                for item in response.get("results", []):
+                    render_verification_result(item)
+            except Exception:
+                logging.getLogger(__name__).exception("Image verification request or rendering failed")
+                st.error("Không thể nhận dạng hoặc xác minh ảnh lúc này. Vui lòng thử lại.")
 else:
     st.markdown(
         '<div class="ut-empty"><strong>Bạn sẽ nhận được kết quả gì?</strong>UniTrust nêu kết luận, chỉ ra từng chi tiết đã đối chiếu, dẫn nguồn chính thức và giữ rõ những phần chưa chắc chắn.</div>',

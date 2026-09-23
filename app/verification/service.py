@@ -74,20 +74,28 @@ class VerificationService:
         official_obligation,
         provenance: OfficialProvenance,
     ) -> tuple[dict[str, FieldComparisonResult], int, int, tuple]:
-        field_results = {}
-        canonical_values = {}
-        if claim.action:
-            field_results["action"] = FieldComparator.compare_action(
-                claim.action.text,
-                official_obligation.action.action_type,
-                normalized_claimed=(
-                    claim.action.normalized_value
-                    if isinstance(claim.action.normalized_value, str)
-                    else None
-                ),
-                claimed_text=claim.action.raw_text,
-            )
-            canonical_values["action"] = official_obligation.action.action_type.value
+        # Deadlines and amounts only describe an obligation after its action is
+        # established. Retrieval similarity alone must not authorize a related
+        # but different obligation to verify or contradict those dependent fields.
+        official_action = getattr(official_obligation, "action", None)
+        if claim.action is None or official_action is None:
+            return {}, 0, 0, (("applicability", "UNESTABLISHED"),)
+
+        action_result = FieldComparator.compare_action(
+            claim.action.text,
+            official_action.action_type,
+            normalized_claimed=(
+                claim.action.normalized_value
+                if isinstance(claim.action.normalized_value, str)
+                else None
+            ),
+            claimed_text=claim.action.raw_text,
+        )
+        if action_result.state != FieldMatchState.MATCH:
+            return {}, 0, 0, (("applicability", "INCOMPATIBLE"),)
+
+        field_results = {"action": action_result}
+        canonical_values = {"action": official_action.action_type.value}
 
         if claim.deadline:
             if official_obligation.deadline and claim.deadline.normalized_value:

@@ -1,4 +1,11 @@
-from app.models.obligation import ActionType, ActionValue, MoneyValue, StudentObligation
+from app.models.obligation import (
+    ActionType,
+    ActionValue,
+    DeadlineValue,
+    MoneyValue,
+    StudentObligation,
+    TemporalPrecision,
+)
 from app.retrieval.base import RetrievalChunk, RetrievalResult
 from app.temporal.models import TemporalValidity
 from app.verification.abstention import AbstentionPolicy
@@ -32,6 +39,20 @@ def obligation(action=ActionType.PAY, amount=None, suffix=""):
         action=ActionValue(action_type=action, text=action.value),
         amount=MoneyValue(raw_text=f"{amount} dong", value_vnd=amount) if amount is not None else None,
     )
+
+
+def obligation_without_action(amount=None, suffix=""):
+    return obligation(amount=amount, suffix=suffix).model_copy(update={"action": None})
+
+
+def with_deadline(item, value):
+    return item.model_copy(update={
+        "deadline": DeadlineValue(
+            raw_text=value,
+            normalized=value,
+            precision=TemporalPrecision.DATE,
+        )
+    })
 
 
 class StaticRetriever:
@@ -131,7 +152,7 @@ def test_materially_different_obligation_tie_abstains():
         [result(top, 1)],
         {(1, 1): [
             obligation(ActionType.PAY, 450_000, "payment"),
-            obligation(ActionType.REGISTER, 650_000, "registration"),
+            obligation(ActionType.PAY, 550_000, "other-payment"),
         ]},
     )
 
@@ -139,6 +160,111 @@ def test_materially_different_obligation_tie_abstains():
 
     assert verified.verdict == OverallVerdict.ABSTAINED
     assert verified.abstention_reason == AbstentionReason.AMBIGUOUS_OFFICIAL_EVIDENCE
+    assert not verified.field_results
+
+
+def test_explicit_action_mismatch_cannot_authorize_dependent_conflicts():
+    top = chunk(1)
+    official = with_deadline(obligation(ActionType.SUBMIT), "2026-09-10")
+    verified_service = service([result(top, 1)], {(1, 1): [official]})
+
+    verified = verified_service.verify(
+        "Sinh viên đóng học phí 450.000 đồng trước ngày 30/09/2026."
+    )[0]
+
+    assert verified.verdict == OverallVerdict.ABSTAINED
+    assert verified.abstention_reason == AbstentionReason.NO_OFFICIAL_FIELD
+    assert not verified.field_results
+
+
+def test_degraded_ocr_without_action_cannot_authorize_deadline_conflict():
+    top = chunk(1)
+    official = with_deadline(obligation(ActionType.SUBMIT), "2026-09-10")
+    verified_service = service([result(top, 1)], {(1, 1): [official]})
+    text = (
+        "THÔNG BÁO HOC PHÍ\n"
+        "Sinh viên K26 đóng hc phí 450.000 đồng.\n"
+        "Han cui: 30/09/2026\n"
+        "Liên h: Phòng Công tác Sinh viên - DUT"
+    )
+
+    verified = verified_service.verify(text)[0]
+
+    assert ClaimDecomposer().decompose(text)[0].action is None
+    assert verified.verdict == OverallVerdict.ABSTAINED
+    assert verified.abstention_reason == AbstentionReason.NO_OFFICIAL_FIELD
+    assert not verified.field_results
+
+
+def test_same_action_deadline_conflict_remains_authoritative():
+    top = chunk(1)
+    official = with_deadline(obligation(ActionType.PAY), "2026-09-10")
+    verified_service = service([result(top, 1)], {(1, 1): [official]})
+
+    verified = verified_service.verify(
+        "Sinh viên đóng học phí trước ngày 30/09/2026."
+    )[0]
+
+    assert verified.verdict == OverallVerdict.CONFLICT
+    assert verified.field_results["action"].state.value == "MATCH"
+    assert verified.field_results["deadline"].state.value == "CONFLICT"
+
+
+def test_same_action_fields_still_verify():
+    top = chunk(1)
+    official = with_deadline(obligation(ActionType.PAY, 450_000), "2026-09-30")
+    verified_service = service([result(top, 1)], {(1, 1): [official]})
+
+    verified = verified_service.verify(
+        "Sinh viên đóng học phí 450.000 đồng trước ngày 30/09/2026."
+    )[0]
+
+    assert verified.verdict == OverallVerdict.VERIFIED
+    assert all(item.state.value == "MATCH" for item in verified.field_results.values())
+
+
+def test_missing_official_action_cannot_authorize_deadline_conflict():
+    top = chunk(1)
+    official = with_deadline(obligation_without_action(), "2026-09-10")
+    verified_service = service([result(top, 1)], {(1, 1): [official]})
+
+    verified = verified_service.verify(
+        "Sinh viên đóng học phí trước ngày 30/09/2026."
+    )[0]
+
+    assert verified.verdict == OverallVerdict.ABSTAINED
+    assert verified.abstention_reason == AbstentionReason.NO_OFFICIAL_FIELD
+    assert not verified.field_results
+
+
+def test_missing_actions_on_both_sides_cannot_authorize_deadline_conflict():
+    top = chunk(1)
+    official = with_deadline(obligation_without_action(), "2026-09-10")
+    verified_service = service([result(top, 1)], {(1, 1): [official]})
+
+    verified = verified_service.verify("Hạn cuối: 30/09/2026.")[0]
+
+    assert verified.verdict == OverallVerdict.ABSTAINED
+    assert verified.abstention_reason == AbstentionReason.NO_OFFICIAL_FIELD
+    assert not verified.field_results
+
+
+def test_inapplicable_top_candidate_does_not_fall_back_to_lower_candidate():
+    top = chunk(1, chunk_id="top-submit")
+    lower = chunk(2, chunk_id="lower-pay")
+    verified_service = service(
+        [result(top, 1), result(lower, 2)],
+        {
+            (1, 1): [obligation(ActionType.SUBMIT)],
+            (2, 1): [obligation(ActionType.PAY)],
+        },
+    )
+
+    verified = verified_service.verify("Sinh viên đóng học phí.")[0]
+
+    assert verified.verdict == OverallVerdict.ABSTAINED
+    assert verified.abstention_reason == AbstentionReason.NO_OFFICIAL_FIELD
+    assert verified.primary_provenance.notice_id == 1
     assert not verified.field_results
 
 
@@ -161,14 +287,17 @@ def test_outdated_conflict_becomes_insufficient_evidence():
     top = chunk(1)
     verified_service = service(
         [result(top, 1)],
-        {(1, 1): [obligation()]},
+        {(1, 1): [with_deadline(obligation(), "2026-09-10")]},
         TemporalValidity.SUPERSEDED_OUTDATED,
     )
 
-    verified = verified_service.verify("Sinh viên đăng ký học phí.")[0]
+    verified = verified_service.verify(
+        "Sinh viên đóng học phí trước ngày 30/09/2026."
+    )[0]
 
     assert verified.verdict == OverallVerdict.INSUFFICIENT_EVIDENCE
-    assert verified.field_results["action"].state.value == "CONFLICT"
+    assert verified.field_results["action"].state.value == "MATCH"
+    assert verified.field_results["deadline"].state.value == "CONFLICT"
 
 
 def test_current_and_unknown_do_not_change_the_raw_aggregate():

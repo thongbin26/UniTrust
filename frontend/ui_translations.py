@@ -24,7 +24,7 @@ APPLICABILITY_VI = {
 
 ABSTENTION_REASONS_VI = {
     "NO_RETRIEVAL_EVIDENCE": "Không tìm thấy thông báo chính thức liên quan.",
-    "NO_OFFICIAL_FIELD": "Chưa có bằng chứng chính thức cho loại thông tin này.",
+    "NO_OFFICIAL_FIELD": "Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này.",
     "INSUFFICIENT_FIELD_COVERAGE": "Nguồn hiện có chưa bao quát đủ các chi tiết cần kiểm tra.",
     "UNSUPPORTED_CLAIM_FIELD": "Nội dung này nằm ngoài các trường thông tin hiện được đối chiếu.",
     "AMBIGUOUS_OFFICIAL_EVIDENCE": "Bằng chứng chính thức chưa đủ rõ ràng để kết luận.",
