@@ -1,0 +1,296 @@
+{
+  "run_id": "18h-v1-postfix-dev",
+  "benchmark_input_version": "18h-v1",
+  "comparison_type": "SAME_SET_DEVELOPMENT_COMPARISON",
+  "pre_fix_commit": "37ef617bc1a84e5acc8094d84f4757064340930d",
+  "post_fix_commit": "70f5fd6f174663ee697d0fae91009f120e192d9e",
+  "generated_at": "2026-09-23T07:43:36.004062+00:00",
+  "frozen_v1_hashes": {
+    "evaluation/step18h/cases/controlled_deadline_conflict.jsonl": "c561eb0b3720819d9e91dd963c593012166b49eeeef00b1a6f02a94cd457758e",
+    "evaluation/step18h/cases/cross_obligation_safety.jsonl": "84aa40ea2fffb96cd684ed82ac5f1f305ac3614c0675b720a70868876ddf4e9c",
+    "evaluation/step18h/cases/source_derived_positive.jsonl": "a8dd66a37fa24e2a45736271203d5c96b379d50c044c75fe31505b2f7113d0ef",
+    "evaluation/step18h/cases/unsupported_diagnostic.jsonl": "76f01697620f68ef9f771171352a37ee51b2eeda42c4a9e81f57d4e5d9e7de59",
+    "evaluation/step18h/reports/step18h_v1_metrics.json": "d14ee8504dc628adc0227953faf3f072fd5e68a53c1376c0a7678a9d09c88b3b",
+    "evaluation/step18h/reports/step18h_v1_cases.jsonl": "f94ac6a548e49ff721c29ed0c657fb456ccef7acd354fd7ad1dae13bd45e3189",
+    "evaluation/step18h/reports/STEP18H_EVALUATION_REPORT.md": "0bc3720810db37f11b8aaf3b01d5a7d5a8ea9d35c7cce6313e62f918927ad8cd",
+    "evaluation/step18h/README.md": "35a0231fce05463a4929a57b342a70f99ef9d4a8bc58c2ee04b8c5a6f99c3cb7"
+  },
+  "pre_fix_metrics": {
+    "benchmark_version": "18h-v1",
+    "git_commit": "6763369ec42ba10696c7df126118670d15075f26",
+    "generated_at": "2026-09-23T06:49:49.553604+00:00",
+    "dataset_composition": {
+      "source_derived_positive_n": 18,
+      "controlled_conflict_n": 15,
+      "unsupported_n": 9,
+      "cross_obligation_safety_n": 7
+    },
+    "integrity": {
+      "case_count": 49,
+      "exact_step13_duplicates": [],
+      "full_title_leaks": [],
+      "target_identity_overlap_count": 10
+    },
+    "retrieval": {
+      "n": 18,
+      "hit_at_1": 0.8888888888888888,
+      "hit_at_3": 1.0,
+      "mrr": 0.9444444444444444
+    },
+    "source_positive": {
+      "n": 18,
+      "expected_verified_count": 11,
+      "expected_outcome_rate": 0.6111111111111112,
+      "outcome_distribution": {
+        "VERIFIED": 11,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 5,
+        "INSUFFICIENT_EVIDENCE": 2
+      }
+    },
+    "controlled_conflict": {
+      "n": 15,
+      "expected_conflict_count": 9,
+      "expected_outcome_rate": 0.6,
+      "outcome_distribution": {
+        "VERIFIED": 0,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 9,
+        "INSUFFICIENT_EVIDENCE": 6
+      },
+      "dataset_label": "CONTROLLED SYNTHETIC"
+    },
+    "unsupported": {
+      "n": 9,
+      "safe_abstention_rate": 0.8888888888888888,
+      "false_verified_rate": 0.0,
+      "false_conflict_rate": 0.0,
+      "outcome_distribution": {
+        "VERIFIED": 0,
+        "PARTIALLY_VERIFIED": 1,
+        "CONFLICT": 0,
+        "INSUFFICIENT_EVIDENCE": 8
+      }
+    },
+    "cross_obligation_safety": {
+      "n": 7,
+      "false_conflict_count": 0,
+      "false_conflict_rate": 0.0,
+      "safe_abstention_count": 7,
+      "other_non_conflict_count": 0,
+      "outcome_distribution": {
+        "VERIFIED": 0,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 0,
+        "INSUFFICIENT_EVIDENCE": 7
+      },
+      "dataset_label": "SAFETY STRESS"
+    },
+    "extraction": {
+      "action": {
+        "n": 18,
+        "correct": 18,
+        "accuracy": 1.0
+      },
+      "deadline": {
+        "n": 12,
+        "correct": 12,
+        "accuracy": 1.0
+      },
+      "amount": {
+        "n": 0,
+        "status": "NOT_AVAILABLE",
+        "reason": "Zero reviewed amount annotations."
+      }
+    },
+    "latency": {
+      "measurement_scope": "warmed local text verification; initialization and one warm-up excluded",
+      "n": 54,
+      "p50_ms": 26.92789997672662,
+      "p95_ms": 41.14848005119711,
+      "min_ms": 19.913400057703257,
+      "max_ms": 42.05370007548481,
+      "cold_initialization_ms": null
+    },
+    "limitations": [
+      "No temporal accuracy: zero confirmed real transitions.",
+      "No OCR accuracy benchmark.",
+      "No public-web URL accuracy benchmark.",
+      "No amount extraction metric: reviewed amount N=0.",
+      "No independent PARTIALLY_VERIFIED benchmark."
+    ],
+    "case_file_sha256": {
+      "controlled_deadline_conflict.jsonl": "c561eb0b3720819d9e91dd963c593012166b49eeeef00b1a6f02a94cd457758e",
+      "cross_obligation_safety.jsonl": "84aa40ea2fffb96cd684ed82ac5f1f305ac3614c0675b720a70868876ddf4e9c",
+      "source_derived_positive.jsonl": "a8dd66a37fa24e2a45736271203d5c96b379d50c044c75fe31505b2f7113d0ef",
+      "unsupported_diagnostic.jsonl": "76f01697620f68ef9f771171352a37ee51b2eeda42c4a9e81f57d4e5d9e7de59"
+    }
+  },
+  "post_fix_metrics": {
+    "dataset_composition": {
+      "source_derived_positive_n": 18,
+      "controlled_conflict_n": 15,
+      "unsupported_n": 9,
+      "cross_obligation_safety_n": 7
+    },
+    "retrieval": {
+      "n": 18,
+      "hit_at_1": 0.8888888888888888,
+      "hit_at_3": 1.0,
+      "mrr": 0.9444444444444444
+    },
+    "source_positive": {
+      "n": 18,
+      "expected_outcome_rate": 0.8888888888888888,
+      "outcome_distribution": {
+        "VERIFIED": 16,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 0,
+        "INSUFFICIENT_EVIDENCE": 2
+      }
+    },
+    "controlled_conflict": {
+      "n": 15,
+      "expected_outcome_rate": 0.6,
+      "outcome_distribution": {
+        "VERIFIED": 0,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 9,
+        "INSUFFICIENT_EVIDENCE": 6
+      }
+    },
+    "unsupported": {
+      "n": 9,
+      "safe_abstention_rate": 1.0,
+      "false_verified_rate": 0.0,
+      "false_partially_verified_count": 0,
+      "false_partially_verified_rate": 0.0,
+      "false_conflict_rate": 0.0,
+      "outcome_distribution": {
+        "VERIFIED": 0,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 0,
+        "INSUFFICIENT_EVIDENCE": 9
+      }
+    },
+    "cross_obligation_safety": {
+      "n": 7,
+      "false_conflict_count": 0,
+      "false_conflict_rate": 0.0,
+      "safe_abstention_count": 7,
+      "other_outcomes": {
+        "VERIFIED": 0,
+        "PARTIALLY_VERIFIED": 0,
+        "CONFLICT": 0,
+        "INSUFFICIENT_EVIDENCE": 7
+      }
+    },
+    "extraction": {
+      "action": {
+        "n": 18,
+        "correct": 18,
+        "accuracy": 1.0
+      },
+      "deadline": {
+        "n": 12,
+        "correct": 12,
+        "accuracy": 1.0
+      }
+    },
+    "latency": {
+      "measurement_scope": "warmed local text verification; three samples per source-derived case",
+      "samples_ms": [
+        23.71620002668351,
+        21.99030003976077,
+        21.798399975523353,
+        23.490099934861064,
+        22.470500087365508,
+        27.56499999668449,
+        20.551800029352307,
+        20.519500016234815,
+        20.884400000795722,
+        25.51449998281896,
+        23.27569993212819,
+        21.281399996951222,
+        28.202999965287745,
+        24.875700008124113,
+        26.414699968881905,
+        28.07190001476556,
+        28.365699923597276,
+        27.289099991321564,
+        27.706900029443204,
+        26.59319993108511,
+        22.60919997934252,
+        26.456700055859983,
+        23.73979997355491,
+        26.42869995906949,
+        27.475700015202165,
+        29.124199994839728,
+        26.835599914193153,
+        20.339100039564073,
+        24.13389994762838,
+        23.072400013916194,
+        28.262199950404465,
+        22.118199965916574,
+        23.698700009845197,
+        29.58450000733137,
+        31.341099995188415,
+        24.57689994480461,
+        25.76240000780672,
+        29.778099968098104,
+        28.51340000052005,
+        27.97249995637685,
+        29.066600021906197,
+        25.179299991577864,
+        22.8463999228552,
+        26.414299965836108,
+        25.922000058926642,
+        25.581899913959205,
+        31.520599965006113,
+        33.26940000988543,
+        25.804599979892373,
+        24.078699992969632,
+        26.90289996098727,
+        20.185000030323863,
+        25.886100018396974,
+        24.48339993134141
+      ],
+      "n": 54,
+      "p50_ms": 25.783499993849546,
+      "p95_ms": 30.325149977579706
+    }
+  },
+  "deltas": {
+    "positive_expected_outcome_rate": 0.2777777777777777,
+    "unsupported_safe_abstention_rate": 0.11111111111111116,
+    "unsupported_partially_verified": -1
+  },
+  "fix_validation": {
+    "range_end_cases": {
+      "step18h-positive-001": "VERIFIED",
+      "step18h-positive-002": "VERIFIED",
+      "step18h-positive-003": "VERIFIED",
+      "step18h-positive-005": "VERIFIED",
+      "step18h-positive-016": "VERIFIED"
+    },
+    "unsupported_false_assertion": "INSUFFICIENT_EVIDENCE"
+  },
+  "deferred_limitations": {
+    "top1_cases": [
+      "step18h-positive-009",
+      "step18h-positive-012"
+    ],
+    "ambiguity_cases": [
+      "step18h-conflict-011",
+      "step18h-conflict-012",
+      "step18h-conflict-013",
+      "step18h-conflict-015"
+    ]
+  },
+  "new_regression_count": 0,
+  "new_regression_case_ids": [],
+  "limitations": [
+    "Same-set development comparison, not independent evidence.",
+    "Frozen v1 limitations are retained unless explicitly fixed."
+  ]
+}
