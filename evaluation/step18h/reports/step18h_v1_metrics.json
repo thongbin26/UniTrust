@@ -1,0 +1,111 @@
+{
+  "benchmark_version": "18h-v1",
+  "git_commit": "6763369ec42ba10696c7df126118670d15075f26",
+  "generated_at": "2026-09-23T06:49:49.553604+00:00",
+  "dataset_composition": {
+    "source_derived_positive_n": 18,
+    "controlled_conflict_n": 15,
+    "unsupported_n": 9,
+    "cross_obligation_safety_n": 7
+  },
+  "integrity": {
+    "case_count": 49,
+    "exact_step13_duplicates": [],
+    "full_title_leaks": [],
+    "target_identity_overlap_count": 10
+  },
+  "retrieval": {
+    "n": 18,
+    "hit_at_1": 0.8888888888888888,
+    "hit_at_3": 1.0,
+    "mrr": 0.9444444444444444
+  },
+  "source_positive": {
+    "n": 18,
+    "expected_verified_count": 11,
+    "expected_outcome_rate": 0.6111111111111112,
+    "outcome_distribution": {
+      "VERIFIED": 11,
+      "PARTIALLY_VERIFIED": 0,
+      "CONFLICT": 5,
+      "INSUFFICIENT_EVIDENCE": 2
+    }
+  },
+  "controlled_conflict": {
+    "n": 15,
+    "expected_conflict_count": 9,
+    "expected_outcome_rate": 0.6,
+    "outcome_distribution": {
+      "VERIFIED": 0,
+      "PARTIALLY_VERIFIED": 0,
+      "CONFLICT": 9,
+      "INSUFFICIENT_EVIDENCE": 6
+    },
+    "dataset_label": "CONTROLLED SYNTHETIC"
+  },
+  "unsupported": {
+    "n": 9,
+    "safe_abstention_rate": 0.8888888888888888,
+    "false_verified_rate": 0.0,
+    "false_conflict_rate": 0.0,
+    "outcome_distribution": {
+      "VERIFIED": 0,
+      "PARTIALLY_VERIFIED": 1,
+      "CONFLICT": 0,
+      "INSUFFICIENT_EVIDENCE": 8
+    }
+  },
+  "cross_obligation_safety": {
+    "n": 7,
+    "false_conflict_count": 0,
+    "false_conflict_rate": 0.0,
+    "safe_abstention_count": 7,
+    "other_non_conflict_count": 0,
+    "outcome_distribution": {
+      "VERIFIED": 0,
+      "PARTIALLY_VERIFIED": 0,
+      "CONFLICT": 0,
+      "INSUFFICIENT_EVIDENCE": 7
+    },
+    "dataset_label": "SAFETY STRESS"
+  },
+  "extraction": {
+    "action": {
+      "n": 18,
+      "correct": 18,
+      "accuracy": 1.0
+    },
+    "deadline": {
+      "n": 12,
+      "correct": 12,
+      "accuracy": 1.0
+    },
+    "amount": {
+      "n": 0,
+      "status": "NOT_AVAILABLE",
+      "reason": "Zero reviewed amount annotations."
+    }
+  },
+  "latency": {
+    "measurement_scope": "warmed local text verification; initialization and one warm-up excluded",
+    "n": 54,
+    "p50_ms": 26.92789997672662,
+    "p95_ms": 41.14848005119711,
+    "min_ms": 19.913400057703257,
+    "max_ms": 42.05370007548481,
+    "cold_initialization_ms": null
+  },
+  "limitations": [
+    "No temporal accuracy: zero confirmed real transitions.",
+    "No OCR accuracy benchmark.",
+    "No public-web URL accuracy benchmark.",
+    "No amount extraction metric: reviewed amount N=0.",
+    "No independent PARTIALLY_VERIFIED benchmark."
+  ],
+  "case_file_sha256": {
+    "controlled_deadline_conflict.jsonl": "c561eb0b3720819d9e91dd963c593012166b49eeeef00b1a6f02a94cd457758e",
+    "cross_obligation_safety.jsonl": "84aa40ea2fffb96cd684ed82ac5f1f305ac3614c0675b720a70868876ddf4e9c",
+    "source_derived_positive.jsonl": "a8dd66a37fa24e2a45736271203d5c96b379d50c044c75fe31505b2f7113d0ef",
+    "unsupported_diagnostic.jsonl": "76f01697620f68ef9f771171352a37ee51b2eeda42c4a9e81f57d4e5d9e7de59"
+  }
+}
