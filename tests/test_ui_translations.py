@@ -25,7 +25,7 @@ def test_trust_state_vi():
 
 def test_temporal_state_vi():
     assert get_temporal_state_vi("CURRENT") == "Phiên bản hiện hành"
-    assert get_temporal_state_vi("SUPERSEDED_OUTDATED") == "Đã bị thay thế / lỗi thời"
+    assert get_temporal_state_vi("SUPERSEDED_OUTDATED") == "Đã có phiên bản mới hơn"
     assert get_temporal_state_vi("UNKNOWN") == "Chưa xác định phiên bản"
 
 def test_applicability_vi():

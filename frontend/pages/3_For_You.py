@@ -25,7 +25,7 @@ page_marker("for-you")
 page_header(
     "Nghĩa vụ theo hồ sơ",
     "Dành cho bạn",
-    "Lưu một hồ sơ ngắn để nhận biết thông báo nào có thể áp dụng, thông báo nào còn thiếu dữ liệu và thông báo nào không phù hợp với hồ sơ hiện tại.",
+    "Lưu một hồ sơ ngắn để xem những thông báo có thể cần quan tâm, những mục còn thiếu dữ liệu và các thông báo không phù hợp với bạn.",
 )
 
 catalog = load_catalog()

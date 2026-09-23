@@ -53,7 +53,7 @@ def _status_icon(status_class: str) -> str:
 def render_temporal_note(temporal_label: str) -> None:
     st.markdown('<div class="ut-section-title">Điều cần lưu ý</div>', unsafe_allow_html=True)
     st.markdown(
-        f'<div class="ut-empty"><strong>Trạng thái của thông báo</strong>{temporal_label}. UniTrust giữ riêng trạng thái thời gian để tránh coi nguồn cũ là thông tin hiện hành.</div>',
+        f'<div class="ut-empty"><strong>Trạng thái của thông báo</strong>{temporal_label}. UniTrust hiển thị trạng thái này để bạn biết nguồn có còn hiện hành trước khi hành động.</div>',
         unsafe_allow_html=True,
     )
 
@@ -73,7 +73,7 @@ def render_verification_result(claim_result: dict) -> None:
         <div class="ut-status-panel ut-status-panel--{status_class}">
             <div class="ut-badge ut-badge--{status_class}"><span class="ut-status-icon" aria-hidden="true">{_status_icon(status_class)}</span>{trust_label}</div>
             <p style="color:var(--ut-ink-soft);font-size:1.02rem;margin:.8rem 0 .9rem;">{explanation}</p>
-            <div style="background:var(--ut-surface-subtle);border-radius:8px;color:var(--ut-ink-soft);padding:.8rem .9rem;">“{claim_text}”</div>
+            <div style="background:var(--ut-surface-subtle);border-radius:8px;color:var(--ut-ink-soft);padding:.8rem .9rem;"><div class="ut-meta" style="font-weight:700;margin:0 0 .35rem;">Nội dung đang được đối chiếu</div>“{claim_text}”</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -148,43 +148,52 @@ def render_verification_result(claim_result: dict) -> None:
     render_temporal_note(temporal_label)
 
 
-with st.container(border=True):
-    st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Nội dung cần kiểm tra</div>', unsafe_allow_html=True)
-    text_input = st.text_area(
-        "Nội dung cần xác minh",
-        height=138,
-        placeholder="Dán tin nhắn, bài đăng hoặc đoạn thông báo bạn muốn kiểm tra...",
-        label_visibility="collapsed",
-    )
-    st.markdown(
-        '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust sẽ đối chiếu từng chi tiết với dữ liệu chính thức hiện có và ghi rõ khi chưa đủ bằng chứng.</span></div>',
-        unsafe_allow_html=True,
-    )
-    submitted = st.button("Xác minh thông tin", type="primary", icon=":material/verified_user:")
+input_mode = st.radio(
+    "Bạn nhận được thông tin từ đâu?",
+    ("Văn bản", "Ảnh chụp", "Đường link"),
+    horizontal=True,
+)
+submitted = submitted_image = submitted_url = False
+text_input = ""
+uploaded_image = None
+url_input = ""
 
 with st.container(border=True):
-    st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Kiểm chứng ảnh chụp</div>', unsafe_allow_html=True)
-    uploaded_image = st.file_uploader(
-        "Ảnh chụp thông tin cần kiểm tra",
-        type=["png", "jpg", "jpeg", "webp"],
-        help="Hỗ trợ PNG, JPEG và WEBP. Ảnh không được lưu lại.",
-    )
-    if uploaded_image is not None:
-        st.image(uploaded_image.getvalue(), caption="Ảnh bạn đã chọn", width="stretch")
-    submitted_image = st.button("Kiểm chứng ảnh", icon=":material/image_search:")
-
-with st.container(border=True):
-    st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Kiểm chứng đường link</div>', unsafe_allow_html=True)
-    url_input = st.text_input(
-        "Đường link cần kiểm chứng",
-        placeholder="https://...",
-        label_visibility="collapsed",
-    )
-    st.markdown(
-        '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust sẽ đọc nội dung từ đường link bạn cung cấp rồi đối chiếu với nguồn chính thức hiện có.</span></div>',
-        unsafe_allow_html=True,
-    )
-    submitted_url = st.button("Kiểm chứng đường link", icon=":material/link:")
+    if input_mode == "Văn bản":
+        st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Dán nội dung bạn nhận được</div>', unsafe_allow_html=True)
+        text_input = st.text_area(
+            "Nội dung cần xác minh",
+            height=138,
+            placeholder="Dán tin nhắn, bài đăng hoặc đoạn thông báo bạn muốn kiểm tra...",
+            label_visibility="collapsed",
+        )
+        st.markdown(
+            '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust đối chiếu những chi tiết có thể kiểm tra và nói rõ khi chưa đủ bằng chứng.</span></div>',
+            unsafe_allow_html=True,
+        )
+        submitted = st.button("Kiểm chứng nội dung", type="primary", icon=":material/verified_user:")
+    elif input_mode == "Ảnh chụp":
+        st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Tải ảnh chụp thông tin</div>', unsafe_allow_html=True)
+        uploaded_image = st.file_uploader(
+            "Ảnh chụp thông tin cần kiểm tra",
+            type=["png", "jpg", "jpeg", "webp"],
+            help="Hỗ trợ PNG, JPEG và WEBP. Ảnh không được lưu lại.",
+        )
+        if uploaded_image is not None:
+            st.image(uploaded_image.getvalue(), caption="Ảnh bạn đã chọn", width="stretch")
+        submitted_image = st.button("Kiểm chứng ảnh", type="primary", icon=":material/image_search:")
+    else:
+        st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Dán đường link cần kiểm chứng</div>', unsafe_allow_html=True)
+        url_input = st.text_input(
+            "Đường link cần kiểm chứng",
+            placeholder="https://...",
+            label_visibility="collapsed",
+        )
+        st.markdown(
+            '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust đọc nội dung từ đường link bạn gửi rồi đối chiếu với nguồn chính thức hiện có.</span></div>',
+            unsafe_allow_html=True,
+        )
+        submitted_url = st.button("Kiểm chứng đường link", type="primary", icon=":material/link:")
 
 if submitted:
     if not text_input.strip():

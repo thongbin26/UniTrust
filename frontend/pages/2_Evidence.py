@@ -15,7 +15,7 @@ page_marker("evidence")
 page_header(
     "Kho thông báo chính thức",
     "Tra cứu thông báo",
-    "Gõ từ khóa để tìm nhanh hoặc mở danh sách để duyệt. Kết quả được xếp hạng ổn định theo mức độ liên quan.",
+    "Tìm thông báo chính thức theo từ khóa, rồi mở nguồn để đọc đầy đủ nội dung và ngày ban hành.",
 )
 
 
@@ -97,7 +97,7 @@ try:
             unsafe_allow_html=True,
         )
     else:
-        st.markdown('<div class="ut-section-title" style="margin-top:.35rem;">Tìm kiếm hoặc duyệt thông báo</div>', unsafe_allow_html=True)
+        st.markdown('<div class="ut-section-title" style="margin-top:.35rem;">Tìm thông báo chính thức</div>', unsafe_allow_html=True)
 
         def search_notices(searchterm: str):
             ranked = notices if not searchterm else rank_notices(notices, searchterm)

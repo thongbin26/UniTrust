@@ -18,8 +18,8 @@ def test_home_is_student_facing_and_has_real_page_links():
     assert "Chi tiết kỹ thuật" not in text
     assert [button.label for button in page.button] == ["Xác minh thông tin"]
     assert [link.label for link in page.get("page_link")] == [
-        "Tra cứu thông báo",
-        "Xác minh  →",
+        "Tra cứu thông báo chính thức",
+        "Kiểm chứng  →",
         "Tra cứu  →",
         "Dành cho bạn  →",
         "Trang chủ",
@@ -153,6 +153,8 @@ def test_verify_page_keeps_text_flow_and_declares_the_image_ocr_flow():
     assert "api_client.verify_image(" in source
     assert "api_client.verify_url(" in source
     assert "Kiểm chứng đường link" in source
+    assert "Bạn nhận được thông tin từ đâu?" in source
+    assert all(label in source for label in ("Văn bản", "Ảnh chụp", "Đường link"))
     assert "Nội dung hệ thống đọc được từ đường link" in source
     assert "Nội dung hệ thống đọc được" in source
     assert source.count("render_verification_result(item)") == 3
@@ -191,8 +193,9 @@ def test_verify_page_url_abstention_hides_retrieved_only_source_and_keeps_input_
 
     monkeypatch.setattr(api_client, "verify_url", verify_url)
     page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.radio[0].set_value("Đường link").run()
     page.text_input[0].input(" https://official-looking.example/dut-notice ").run()
-    page.button[2].click().run()
+    page.button[0].click().run()
 
     assert not page.exception and not page.error
     text = "\n".join(element.value for element in page.markdown)
@@ -211,7 +214,7 @@ def test_verify_page_url_abstention_hides_retrieved_only_source_and_keeps_input_
     assert "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN" not in text
     assert "10/09/2026" not in text
     assert "Có thông tin mâu thuẫn" not in text
-    assert page.text_area[1].value == _url_abstention_response()["extracted_text"]
+    assert page.text_area[0].value == _url_abstention_response()["extracted_text"]
     assert not page.get("link_button")
 
 
@@ -244,8 +247,9 @@ def test_verify_page_url_keeps_applicable_official_source(monkeypatch, verdict):
     )
 
     page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.radio[0].set_value("Đường link").run()
     page.text_input[0].input("https://example.org/received").run()
-    page.button[2].click().run()
+    page.button[0].click().run()
 
     assert not page.exception and not page.error
     text = "\n".join(element.value for element in page.markdown)
@@ -259,8 +263,9 @@ def test_verify_page_url_empty_input_does_not_call_api(monkeypatch):
     calls = []
     monkeypatch.setattr(api_client, "verify_url", lambda *_args, **_kwargs: calls.append(True))
     page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.radio[0].set_value("Đường link").run()
     page.text_input[0].input("   ").run()
-    page.button[2].click().run()
+    page.button[0].click().run()
 
     assert not page.exception
     assert calls == []
@@ -274,8 +279,9 @@ def test_verify_page_url_renders_safe_fetch_error(monkeypatch):
         lambda *_args, **_kwargs: (_ for _ in ()).throw(URLVerificationRequestError("UNSAFE_URL")),
     )
     page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.radio[0].set_value("Đường link").run()
     page.text_input[0].input("https://127.0.0.1/private").run()
-    page.button[2].click().run()
+    page.button[0].click().run()
 
     assert not page.exception
     assert [error.value for error in page.error] == [

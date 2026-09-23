@@ -12,7 +12,7 @@ TRUST_STATE_VI = {
 
 TEMPORAL_STATE_VI = {
     "CURRENT": "Phiên bản hiện hành",
-    "SUPERSEDED_OUTDATED": "Đã bị thay thế / lỗi thời",
+    "SUPERSEDED_OUTDATED": "Đã có phiên bản mới hơn",
     "UNKNOWN": "Chưa xác định phiên bản"
 }
 
@@ -124,7 +124,7 @@ def get_explanation_vi(verdict: str) -> str:
     elif verdict == "PARTIALLY_VERIFIED":
         return "Một số phần của thông tin khớp, nhưng một số phần khác chưa được xác minh rõ ràng."
     elif verdict == "CONFLICT":
-        return "Một hoặc nhiều chi tiết trong nội dung không khớp với thông báo chính thức."
+        return "Một số thông tin không khớp với bằng chứng chính thức."
     elif verdict == "INSUFFICIENT_EVIDENCE":
-        return "Chưa có đủ bằng chứng chính thống để đưa ra kết luận chắc chắn."
+        return "Chưa tìm thấy đủ bằng chứng chính thức phù hợp để đưa ra kết luận chắc chắn."
     return ""
