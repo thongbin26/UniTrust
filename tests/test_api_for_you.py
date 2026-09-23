@@ -114,11 +114,11 @@ def test_for_you_page_renders_real_response(frontend_http, phase1_client):
         if item["actionability_status"] == "EXPIRED"
     ]
     assert expired_actions
-    assert all(action not in text for action in expired_actions)
+    assert any("Yêu cầu đã hết hạn" in item.label for item in page.expander)
     assert "Công nghệ thông tin" in text
-    assert "Có thể áp dụng cho bạn" in text
+    assert "Đang áp dụng cho bạn" in text
     assert "Chưa đủ thông tin để xác định" in text
-    assert "Có thể áp dụng cho bạn <span class=\"ut-count\">0</span>" in text
+    assert "Đang áp dụng cho bạn <span class=\"ut-count\">0</span>" in text
     assert "Trong dữ liệu UniTrust hiện có" in text
 
 
@@ -132,3 +132,71 @@ def test_for_you_page_hides_request_errors(frontend_http, monkeypatch):
     page.run()
     assert not page.exception
     assert [error.value for error in page.error] == ["Không thể tải thông tin dành cho bạn lúc này. Vui lòng thử lại."]
+
+
+def test_for_you_unknown_applicability_hides_direct_action_brief(monkeypatch):
+    monkeypatch.setattr(api_client, "for_you", lambda _profile: {
+        "obligations": [{
+            "obligation_id": "unknown", "action_text": "nộp hồ sơ", "deadline": None,
+            "required_documents": [], "location": None,
+            "applicability": {"status": "UNKNOWN", "explanation": "Profile is missing: cohort"},
+            "temporal_status": "CURRENT", "actionability_status": "NO_DEADLINE",
+            "notice_id": 1, "version_id": 1, "title": "Thông báo", "canonical_url": "https://dut.udn.vn/n/1",
+            "action_brief": {"action": "submit", "deadline": None, "deadline_status": "NO_DEADLINE", "missing_information": ["Hạn chót"]},
+        }],
+        "monitoring": {"enabled": True, "last_global_check": "2026-09-23T10:05:42Z", "recent_new": 1, "recent_updated": 1},
+    })
+    page = AppTest.from_file(Path(__file__).resolve().parents[1] / "frontend/pages/3_For_You.py")
+    page.session_state["student_profile"] = cntt_profile()
+    page.session_state["edit_mode"] = False
+    page.run()
+    text = "\n".join(element.value for element in page.markdown)
+    captions = "\n".join(element.value for element in page.caption)
+    assert "Bạn cần làm gì" not in text
+    assert "NO_DEADLINE" not in text
+    assert "23/09/2026, 17:05" in captions
+    assert "Nguồn chính thức trong lần quét gần nhất" in captions
+
+
+def test_for_you_confirmed_applicability_renders_grounded_brief(monkeypatch):
+    monkeypatch.setattr(api_client, "for_you", lambda _profile: {
+        "obligations": [{
+            "obligation_id": "applies", "action_text": "đóng học phí", "deadline": "30/09/2026",
+            "required_documents": [], "location": None,
+            "applicability": {"status": "APPLIES", "explanation": "Applies to all students"},
+            "temporal_status": "CURRENT", "actionability_status": "ACTIVE",
+            "notice_id": 1, "version_id": 1, "title": "Thông báo học phí", "canonical_url": "https://dut.udn.vn/n/1",
+            "action_brief": {"action": "pay", "deadline": "30/09/2026", "deadline_status": "ACTIVE", "missing_information": ["Địa điểm"]},
+        }],
+        "monitoring": None,
+    })
+    page = AppTest.from_file(Path(__file__).resolve().parents[1] / "frontend/pages/3_For_You.py")
+    page.session_state["student_profile"] = cntt_profile()
+    page.session_state["edit_mode"] = False
+    page.run()
+    text = "\n".join(element.value for element in page.markdown)
+    assert "Bạn cần làm gì" in text
+    assert "Thanh toán" in text
+    assert "Còn hiệu lực" in text
+    assert "NO_DEADLINE" not in text
+
+
+def test_for_you_expired_confirmed_brief_is_historical_not_urgent(monkeypatch):
+    monkeypatch.setattr(api_client, "for_you", lambda _profile: {
+        "obligations": [{
+            "obligation_id": "expired", "action_text": "nộp hồ sơ", "deadline": "30/06/2026",
+            "required_documents": [], "location": None,
+            "applicability": {"status": "APPLIES", "explanation": "Applies to all students"},
+            "temporal_status": "CURRENT", "actionability_status": "EXPIRED",
+            "notice_id": 1, "version_id": 1, "title": "Thông báo", "canonical_url": "https://dut.udn.vn/n/1",
+            "action_brief": {"action": "submit", "deadline": "30/06/2026", "deadline_status": "EXPIRED", "missing_information": []},
+        }],
+    })
+    page = AppTest.from_file(Path(__file__).resolve().parents[1] / "frontend/pages/3_For_You.py")
+    page.session_state["student_profile"] = cntt_profile()
+    page.session_state["edit_mode"] = False
+    page.run()
+    text = "\n".join(element.value for element in page.markdown)
+    assert "Yêu cầu trong thông báo" in text
+    assert "Bạn cần làm gì" not in text
+    assert "Đã hết hạn" in text

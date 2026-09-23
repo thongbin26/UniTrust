@@ -10,6 +10,7 @@ from app.api.routes.verify_image import router as verify_image_router
 from app.api.routes.verify_url import router as verify_url_router
 from app.api.routes.evidence import router as evidence_router
 from app.api.routes.for_you import router as for_you_router
+from app.api.routes.monitoring import router as monitoring_router
 from app.core.config import settings
 from app.db.database import init_database
 from app.sources.repository import seed_sources
@@ -90,6 +91,7 @@ app.include_router(verify_image_router)
 app.include_router(verify_url_router)
 app.include_router(evidence_router)
 app.include_router(for_you_router)
+app.include_router(monitoring_router)
 
 
 @app.get("/")

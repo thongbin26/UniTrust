@@ -15,6 +15,14 @@ class Settings(BaseSettings):
     # The demo launcher requires local files; development can download a missing model.
     dense_local_files_only: bool = False
 
+    # V2.1 monitoring is deliberately opt-in.  The frozen competition runtime
+    # never creates monitoring state or writes a crawl/retrieval cache merely
+    # because an API route is imported.
+    monitoring_enabled: bool = False
+    monitoring_interval_seconds: int = 600
+    monitoring_raw_data_dir: str = "data/v2-monitoring/raw"
+    monitoring_recent_window_hours: int = 48
+
     # Step 2 chưa sử dụng AI.
     llm_api_key: str = ""
 

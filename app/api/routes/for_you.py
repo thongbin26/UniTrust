@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
 from datetime import datetime
 import sqlite3
 
@@ -8,6 +9,9 @@ from app.verification.repository import OfficialStructuredRepository
 from app.temporal.resolver import TemporalResolver
 from app.models.obligation import StudentObligation
 from app.actionability import DUT_TIMEZONE, resolve_actionability
+from app.action_brief import build_action_brief
+from app.core.config import settings
+from app.monitoring.repository import get_status
 
 router = APIRouter(prefix="/for-you", tags=["For You"])
 
@@ -84,7 +88,7 @@ def get_for_you(
         for obs in annotation.obligations:
             applicability = evaluate_applicability(profile, obs)
             
-            obligations_out.append(ForYouObligationItem(
+            item = ForYouObligationItem(
                 obligation_id=obs.obligation_id,
                 action_text=obs.action.text if obs.action else "Unknown",
                 deadline=obs.deadline.raw_text if obs.deadline else None,
@@ -100,7 +104,17 @@ def get_for_you(
                 version_id=version_id,
                 title=annotation.title or f"Notice {notice_id}",
                 canonical_url=canonical_urls.get(notice_id),
-            ))
+            )
+            item.action_brief = build_action_brief(
+                notice_id=notice_id,
+                version_id=version_id,
+                headline=item.title,
+                obligation=obs,
+                applies_to_user=applicability.status,
+                applicability_reason=applicability.explanation,
+                canonical_url=item.canonical_url,
+            ).model_dump(mode="json")
+            obligations_out.append(item)
             
     # Sort by deadline availability (those with deadlines first), then by APPLIES first
     # For now, just sort by APPLIES first.
@@ -111,4 +125,12 @@ def get_for_you(
         
     obligations_out.sort(key=sort_key)
     
-    return ForYouResponse(obligations=obligations_out)
+    monitoring = (
+        get_status(enabled=True).model_dump(mode="json")
+        if settings.monitoring_enabled
+        else None
+    )
+    if monitoring is None:
+        # Preserve the frozen API response shape when the V2 monitor is off.
+        return JSONResponse({"obligations": [item.model_dump(mode="json") for item in obligations_out]})
+    return ForYouResponse(obligations=obligations_out, monitoring=monitoring)

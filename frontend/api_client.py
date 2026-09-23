@@ -125,4 +125,7 @@ class APIClient:
         """Canonical method used by For You page."""
         return self._post("/for-you", json=profile)
 
+    def monitoring_status(self) -> Dict[str, Any]:
+        return self._get("/monitoring/status")
+
 api_client = APIClient()

@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import re
 
 # Maps backend canonical enums to Vietnamese presentation strings
@@ -71,6 +72,14 @@ ACTION_VALUES_VI = {
     "other": "Thực hiện",
 }
 
+ACTIONABILITY_VI = {
+    "UPCOMING": "Sắp đến hạn",
+    "ACTIVE": "Còn hiệu lực",
+    "EXPIRED": "Đã hết hạn",
+    "UNKNOWN": "Chưa xác định",
+    "NO_DEADLINE": "",
+}
+
 URL_FETCH_ERRORS_VI = {
     "INVALID_URL": "Đường link không hợp lệ.",
     "UNSAFE_URL": "Đường link này không thể được truy cập vì lý do an toàn.",
@@ -117,6 +126,23 @@ def format_date_vi(value: str | None) -> str:
     except ValueError:
         return str(value)
     return parsed.strftime("%d/%m/%Y")
+
+
+def format_datetime_vi(value: object | None) -> str:
+    """Render optional API timestamps in the student's local time safely."""
+    if not value:
+        return "Chưa có dữ liệu"
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            return "Chưa có dữ liệu"
+        return parsed.astimezone(ZoneInfo("Asia/Ho_Chi_Minh")).strftime("%d/%m/%Y, %H:%M")
+    except (TypeError, ValueError, OverflowError):
+        return "Chưa có dữ liệu"
+
+
+def get_actionability_vi(value: str | None) -> str:
+    return ACTIONABILITY_VI.get(str(value or ""), "Chưa xác định")
 
 def get_trust_state_vi(verdict: str) -> str:
     return TRUST_STATE_VI.get(verdict, verdict)

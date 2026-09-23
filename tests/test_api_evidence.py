@@ -31,7 +31,7 @@ def test_search_index_client_and_contract(phase1_client, frontend_http):
     assert len(items) == 2
     for item in items:
         assert set(item) == set(NoticeSearchIndexItem.model_fields)
-        assert set(item) == {"notice_id", "title", "source_id", "source_display_name", "searchable_text"}
+        assert set(item) == {"notice_id", "title", "source_id", "source_display_name", "searchable_text", "monitoring_activity"}
         NoticeSearchIndexItem.model_validate(item)
         detail = phase1_client.get(f"/evidence/notices/{item['notice_id']}").json()
         assert item["searchable_text"] == detail["raw_text"]
@@ -57,7 +57,7 @@ def test_evidence_page_browses_searches_then_fetches_selected_detail(frontend_ht
     page.run()
     assert not page.exception and not page.error
     assert [call[1] for call in frontend_http] == [
-        "/evidence/search-index", "/evidence/notices/13", "/evidence/notices/13/changes",
+        "/evidence/search-index", "/evidence/notices/13", "/evidence/notices/13/changes", "/evidence/notices/13/versions",
     ]
     # Index has no coverage fields; exercise real page rendering without them.
     assert any("THÔNG BÁO THỜI GIAN" in element.value for element in page.markdown)

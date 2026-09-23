@@ -325,6 +325,25 @@ def test_verify_page_url_empty_input_does_not_call_api(monkeypatch):
     assert [warning.value for warning in page.warning] == ["Vui lòng nhập đường link cần kiểm chứng."]
 
 
+@pytest.mark.parametrize(("activity", "label"), [("NEW", "Mới"), ("UPDATED", "Vừa cập nhật")])
+def test_evidence_page_shows_monitor_badge_only_for_persisted_activity(monkeypatch, activity, label):
+    import streamlit as st
+    st.cache_data.clear()
+    monkeypatch.setattr(api_client, "get_search_index", lambda: [{
+        "notice_id": 999, "title": "Thông báo thử nghiệm", "source_id": "dut_academic",
+        "source_display_name": "Nguồn DUT", "searchable_text": "Nội dung", "monitoring_activity": activity,
+    }])
+    page = AppTest.from_file(ROOT / "frontend/pages/2_Evidence.py").run()
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert label in text
+
+
+def test_for_you_page_imports_with_monitoring_datetime_formatter():
+    page = AppTest.from_file(ROOT / "frontend/pages/3_For_You.py").run()
+    assert not page.exception and not page.error
+
+
 def test_verify_page_url_renders_safe_fetch_error(monkeypatch):
     monkeypatch.setattr(
         api_client,

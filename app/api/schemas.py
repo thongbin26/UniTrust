@@ -91,6 +91,7 @@ class NoticeSearchIndexItem(BaseModel):
     source_id: str
     source_display_name: str
     searchable_text: str
+    monitoring_activity: Optional[str] = None
 
 class NoticeVersionChange(BaseModel):
     field_name: str
@@ -125,6 +126,10 @@ class ForYouObligationItem(BaseModel):
     version_id: int
     title: str
     canonical_url: Optional[str]
+    # Additive V2.1 presentation data.  The factual values are produced only
+    # from reviewed StudentObligation fields.
+    action_brief: Optional[Dict[str, Any]] = None
 
 class ForYouResponse(BaseModel):
     obligations: List[ForYouObligationItem]
+    monitoring: Optional[Dict[str, Any]] = None

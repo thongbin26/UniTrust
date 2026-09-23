@@ -13,6 +13,7 @@ from frontend.ui_translations import (
     get_url_fetch_error_vi,
     get_url_fetch_warning_vi,
     format_date_vi,
+    format_datetime_vi,
 )
 from frontend.demo_cases import DEMO_CASES
 
@@ -66,6 +67,12 @@ def test_field_state_and_source_names_vi():
     assert format_date_vi("2026-09-14T15:58:00+07:00") == "14/09/2026"
     assert format_date_vi(None) == "Chưa xác định"
     assert format_date_vi("Học kỳ I") == "Học kỳ I"
+
+
+def test_monitoring_datetime_is_exposed_and_localized_safely():
+    assert format_datetime_vi("2026-09-23T10:05:00Z") == "23/09/2026, 17:05"
+    assert format_datetime_vi(None) == "Chưa có dữ liệu"
+    assert format_datetime_vi("not-a-timestamp") == "Chưa có dữ liệu"
 
 def test_notice_title_hides_flattened_source_badges_only_at_suffix():
     assert get_notice_title_vi("Thông báo tuyển sinh Hot") == "Thông báo tuyển sinh"
