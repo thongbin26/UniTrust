@@ -59,6 +59,21 @@ SOURCE_NAMES_VI = {
     "dut_transport_energy_faculty": "Khoa Cơ khí Giao thông và Năng lượng",
 }
 
+URL_FETCH_ERRORS_VI = {
+    "INVALID_URL": "Đường link không hợp lệ.",
+    "UNSAFE_URL": "Đường link này không thể được truy cập vì lý do an toàn.",
+    "FETCH_TIMEOUT": "Trang phản hồi quá chậm. Vui lòng thử lại.",
+    "FETCH_FAILED": "Không thể đọc nội dung từ đường link này.",
+    "TOO_LARGE": "Nội dung trang vượt quá giới hạn xử lý.",
+    "UNSUPPORTED_CONTENT_TYPE": "Loại nội dung của đường link này chưa được hỗ trợ.",
+    "EMPTY_CONTENT": "Không tìm thấy nội dung văn bản phù hợp để kiểm chứng.",
+    "TOO_MANY_REDIRECTS": "Đường link chuyển hướng quá nhiều lần.",
+}
+
+URL_FETCH_WARNINGS_VI = {
+    "CONTENT_TRUNCATED": "Nội dung trang quá dài nên hệ thống chỉ sử dụng phần văn bản cần thiết trong giới hạn xử lý.",
+}
+
 NOTICE_PRESENTATION_SUFFIX = re.compile(r"\s+(?:Hot|New)\s*$", re.IGNORECASE)
 
 def get_field_name_vi(field: str) -> str:
@@ -96,6 +111,12 @@ def get_abstention_reason_vi(reason: str) -> str:
     if not reason:
         return "Không có"
     return ABSTENTION_REASONS_VI.get(reason, reason)
+
+def get_url_fetch_error_vi(code: str | None) -> str:
+    return URL_FETCH_ERRORS_VI.get(code, "Không thể đọc nội dung từ đường link này.")
+
+def get_url_fetch_warning_vi(code: str) -> str:
+    return URL_FETCH_WARNINGS_VI.get(code, "Trang có một lưu ý khi xử lý nội dung.")
 
 def get_explanation_vi(verdict: str) -> str:
     if verdict == "VERIFIED":

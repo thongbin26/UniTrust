@@ -3,7 +3,7 @@ from html import escape
 
 import streamlit as st
 
-from frontend.api_client import api_client
+from frontend.api_client import URLVerificationRequestError, api_client
 from frontend.ui_style import apply_global_styles, page_header, page_marker
 from frontend.verification_presentation import should_render_official_evidence
 from frontend.ui_translations import (
@@ -14,6 +14,8 @@ from frontend.ui_translations import (
     format_date_vi,
     get_temporal_state_vi,
     get_trust_state_vi,
+    get_url_fetch_error_vi,
+    get_url_fetch_warning_vi,
 )
 
 
@@ -171,6 +173,19 @@ with st.container(border=True):
         st.image(uploaded_image.getvalue(), caption="Ảnh bạn đã chọn", width="stretch")
     submitted_image = st.button("Kiểm chứng ảnh", icon=":material/image_search:")
 
+with st.container(border=True):
+    st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Kiểm chứng đường link</div>', unsafe_allow_html=True)
+    url_input = st.text_input(
+        "Đường link cần kiểm chứng",
+        placeholder="https://...",
+        label_visibility="collapsed",
+    )
+    st.markdown(
+        '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust sẽ đọc nội dung từ đường link bạn cung cấp rồi đối chiếu với nguồn chính thức hiện có.</span></div>',
+        unsafe_allow_html=True,
+    )
+    submitted_url = st.button("Kiểm chứng đường link", icon=":material/link:")
+
 if submitted:
     if not text_input.strip():
         st.error("Vui lòng nhập nội dung cần xác minh.")
@@ -220,6 +235,40 @@ elif submitted_image:
             except Exception:
                 logging.getLogger(__name__).exception("Image verification request or rendering failed")
                 st.error("Không thể nhận dạng hoặc xác minh ảnh lúc này. Vui lòng thử lại.")
+elif submitted_url:
+    url = url_input.strip()
+    if not url:
+        st.warning("Vui lòng nhập đường link cần kiểm chứng.")
+    else:
+        with st.spinner("Đang đọc nội dung và đối chiếu với nguồn chính thức..."):
+            try:
+                response = api_client.verify_url(url, top_k=5, use_llm=False)
+                st.markdown('<div class="ut-section-title">Nội dung hệ thống đọc được từ đường link</div>', unsafe_allow_html=True)
+                title = response.get("page_title")
+                if title:
+                    st.markdown(f'<div class="ut-meta"><strong>Tiêu đề trang:</strong> {_html_text(title)}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="ut-meta"><strong>Đường link đã gửi:</strong> {_html_text(response.get("requested_url"))}</div>', unsafe_allow_html=True)
+                if response.get("final_url") and response.get("final_url") != response.get("requested_url"):
+                    st.markdown(f'<div class="ut-meta"><strong>Đường link sau chuyển hướng:</strong> {_html_text(response.get("final_url"))}</div>', unsafe_allow_html=True)
+                st.text_area(
+                    "Nội dung đọc từ đường link",
+                    value=response.get("extracted_text", ""),
+                    height=180,
+                    disabled=True,
+                )
+                st.markdown(
+                    '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>Nội dung này được lấy từ đường link bạn cung cấp và chưa được xem là bằng chứng chính thức. UniTrust đối chiếu nội dung này với các nguồn chính thống trong hệ thống.</span></div>',
+                    unsafe_allow_html=True,
+                )
+                for warning in response.get("warnings", []):
+                    st.info(get_url_fetch_warning_vi(warning))
+                for item in response.get("results", []):
+                    render_verification_result(item)
+            except URLVerificationRequestError as exc:
+                st.error(get_url_fetch_error_vi(exc.code))
+            except Exception:
+                logging.getLogger(__name__).exception("URL verification request or rendering failed")
+                st.error("Không thể đọc nội dung từ đường link này.")
 else:
     st.markdown(
         '<div class="ut-empty"><strong>Bạn sẽ nhận được kết quả gì?</strong>UniTrust nêu kết luận, chỉ ra từng chi tiết đã đối chiếu, dẫn nguồn chính thức và giữ rõ những phần chưa chắc chắn.</div>',

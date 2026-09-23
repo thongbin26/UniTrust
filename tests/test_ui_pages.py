@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from streamlit.testing.v1 import AppTest
 
-from frontend.api_client import api_client
+from frontend.api_client import URLVerificationRequestError, api_client
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -151,5 +151,133 @@ def test_verify_page_keeps_text_flow_and_declares_the_image_ocr_flow():
     assert "st.file_uploader(" in source
     assert 'type=["png", "jpg", "jpeg", "webp"]' in source
     assert "api_client.verify_image(" in source
+    assert "api_client.verify_url(" in source
+    assert "Kiểm chứng đường link" in source
+    assert "Nội dung hệ thống đọc được từ đường link" in source
     assert "Nội dung hệ thống đọc được" in source
-    assert source.count("render_verification_result(item)") == 2
+    assert source.count("render_verification_result(item)") == 3
+
+
+def _url_abstention_response():
+    return {
+        "requested_url": "https://official-looking.example/dut-notice",
+        "final_url": "https://official-looking.example/final-notice",
+        "page_title": "Thông báo học phí",
+        "extracted_text": "Sinh viên K26 đóng học phí 450.000 đồng. Hạn cuối: 30/09/2026.",
+        "warnings": ["CONTENT_TRUNCATED"],
+        "results": [
+            {
+                "raw_claim_text": "Sinh viên K26 đóng học phí 450.000 đồng trước 30/09/2026.",
+                "verdict": "INSUFFICIENT_EVIDENCE",
+                "temporal_status": "CURRENT",
+                "abstention_reason": "NO_OFFICIAL_FIELD",
+                "field_results": {},
+                "primary_provenance": {
+                    "title": "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN, GIẢM HỌC PHÍ",
+                    "exact_chunk_text": "Nộp hồ sơ trước ngày 10/09/2026.",
+                    "canonical_url": "https://dut.udn.vn/notice/24",
+                },
+            }
+        ],
+    }
+
+
+def test_verify_page_url_abstention_hides_retrieved_only_source_and_keeps_input_untrusted(monkeypatch):
+    calls = []
+
+    def verify_url(*args, **kwargs):
+        calls.append((args, kwargs))
+        return _url_abstention_response()
+
+    monkeypatch.setattr(api_client, "verify_url", verify_url)
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_input[0].input(" https://official-looking.example/dut-notice ").run()
+    page.button[2].click().run()
+
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert calls == [(("https://official-looking.example/dut-notice",), {"top_k": 5, "use_llm": False})]
+    assert "Nội dung hệ thống đọc được từ đường link" in text
+    assert "Thông báo học phí" in text
+    assert "https://official-looking.example/dut-notice" in text
+    assert "https://official-looking.example/final-notice" in text
+    assert "chưa được xem là bằng chứng chính thức" in text
+    assert "CONTENT_TRUNCATED" not in text
+    assert [info.value for info in page.info] == [
+        "Nội dung trang quá dài nên hệ thống chỉ sử dụng phần văn bản cần thiết trong giới hạn xử lý."
+    ]
+    assert "Chưa đủ bằng chứng" in text
+    assert "Nguồn chính thức" not in text
+    assert "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN" not in text
+    assert "10/09/2026" not in text
+    assert "Có thông tin mâu thuẫn" not in text
+    assert page.text_area[1].value == _url_abstention_response()["extracted_text"]
+    assert not page.get("link_button")
+
+
+@pytest.mark.parametrize("verdict", ["VERIFIED", "PARTIALLY_VERIFIED", "CONFLICT"])
+def test_verify_page_url_keeps_applicable_official_source(monkeypatch, verdict):
+    source_title = f"Nguồn URL phù hợp {verdict}"
+    monkeypatch.setattr(
+        api_client,
+        "verify_url",
+        lambda *_args, **_kwargs: {
+            "requested_url": "https://example.org/received",
+            "final_url": "https://example.org/received",
+            "page_title": "Nội dung nhận được",
+            "extracted_text": "Sinh viên cần đóng học phí.",
+            "warnings": [],
+            "results": [
+                {
+                    "raw_claim_text": "Sinh viên cần đóng học phí.",
+                    "verdict": verdict,
+                    "temporal_status": "CURRENT",
+                    "field_results": {},
+                    "primary_provenance": {
+                        "title": source_title,
+                        "exact_chunk_text": "Thông báo chính thức có thể áp dụng.",
+                        "canonical_url": "https://dut.udn.vn/notice/applicable",
+                    },
+                }
+            ],
+        },
+    )
+
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_input[0].input("https://example.org/received").run()
+    page.button[2].click().run()
+
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert "chưa được xem là bằng chứng chính thức" in text
+    assert "Nguồn chính thức" in text
+    assert source_title in text
+    assert page.get("link_button")[0].label == "Xem thông báo chính thức"
+
+
+def test_verify_page_url_empty_input_does_not_call_api(monkeypatch):
+    calls = []
+    monkeypatch.setattr(api_client, "verify_url", lambda *_args, **_kwargs: calls.append(True))
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_input[0].input("   ").run()
+    page.button[2].click().run()
+
+    assert not page.exception
+    assert calls == []
+    assert [warning.value for warning in page.warning] == ["Vui lòng nhập đường link cần kiểm chứng."]
+
+
+def test_verify_page_url_renders_safe_fetch_error(monkeypatch):
+    monkeypatch.setattr(
+        api_client,
+        "verify_url",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(URLVerificationRequestError("UNSAFE_URL")),
+    )
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_input[0].input("https://127.0.0.1/private").run()
+    page.button[2].click().run()
+
+    assert not page.exception
+    assert [error.value for error in page.error] == [
+        "Đường link này không thể được truy cập vì lý do an toàn."
+    ]

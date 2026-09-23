@@ -1,5 +1,6 @@
 import os
 import json
+import pytest
 from frontend.ui_translations import (
     get_trust_state_vi,
     get_temporal_state_vi,
@@ -9,6 +10,8 @@ from frontend.ui_translations import (
     get_field_state_vi,
     get_notice_title_vi,
     get_source_name_vi,
+    get_url_fetch_error_vi,
+    get_url_fetch_warning_vi,
     format_date_vi,
 )
 from frontend.demo_cases import DEMO_CASES
@@ -35,6 +38,21 @@ def test_abstention_reasons_vi():
         "Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này."
     )
     assert get_abstention_reason_vi(None) == "Không có"
+
+@pytest.mark.parametrize("code", [
+    "INVALID_URL", "UNSAFE_URL", "FETCH_TIMEOUT", "FETCH_FAILED", "TOO_LARGE",
+    "UNSUPPORTED_CONTENT_TYPE", "EMPTY_CONTENT", "TOO_MANY_REDIRECTS",
+])
+def test_url_fetch_errors_are_safe_and_vietnamese(code):
+    message = get_url_fetch_error_vi(code)
+    assert message
+    assert code not in message
+
+
+def test_url_fetch_messages_have_expected_fallback_and_warning():
+    assert get_url_fetch_error_vi("UNSAFE_URL") == "Đường link này không thể được truy cập vì lý do an toàn."
+    assert get_url_fetch_error_vi("UNKNOWN") == "Không thể đọc nội dung từ đường link này."
+    assert "CONTENT_TRUNCATED" not in get_url_fetch_warning_vi("CONTENT_TRUNCATED")
 
 def test_explanation_vi():
     assert "khớp với bằng chứng" in get_explanation_vi("VERIFIED")

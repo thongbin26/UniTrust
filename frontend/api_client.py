@@ -2,6 +2,15 @@ import os
 import httpx
 from typing import Dict, Any, List
 
+
+class URLVerificationRequestError(RuntimeError):
+    """Safe URL-fetch failure returned by the API."""
+
+    def __init__(self, code: str):
+        super().__init__(code)
+        self.code = code
+
+
 class APIClient:
     def __init__(self):
         # We can read from environment or default to local FastAPI
@@ -11,6 +20,7 @@ class APIClient:
         self.llm_timeout = float(os.getenv("API_LLM_TIMEOUT", "120.0"))
         # Local CPU OCR plus verification needs more time than ordinary API calls.
         self.image_timeout = float(os.getenv("API_IMAGE_TIMEOUT", "120.0"))
+        self.url_timeout = float(os.getenv("API_URL_TIMEOUT", "30.0"))
 
     def _get(self, path: str, timeout: float = None) -> Dict[str, Any] | List[Dict[str, Any]]:
         try:
@@ -65,6 +75,27 @@ class APIClient:
             data={"top_k": str(top_k), "use_llm": str(use_llm).lower()},
             timeout=timeout,
         )
+
+    def verify_url(self, url: str, top_k: int = 5, use_llm: bool = False) -> Dict[str, Any]:
+        timeout = max(self.url_timeout, self.llm_timeout) if use_llm else self.url_timeout
+        try:
+            response = httpx.post(
+                f"{self.base_url}/verify/url",
+                json={"url": url, "top_k": top_k, "use_llm": use_llm},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            return response.json()
+        except httpx.HTTPStatusError as exc:
+            try:
+                detail = exc.response.json().get("detail", {})
+                if isinstance(detail, dict) and isinstance(detail.get("code"), str):
+                    raise URLVerificationRequestError(detail["code"]) from exc
+            except (TypeError, ValueError):
+                pass
+            raise URLVerificationRequestError("FETCH_FAILED") from exc
+        except httpx.HTTPError as exc:
+            raise URLVerificationRequestError("FETCH_FAILED") from exc
 
     def list_notices(self) -> List[Dict[str, Any]]:
         return self._get("/evidence/notices")

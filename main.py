@@ -7,6 +7,7 @@ from app.api.routes.health import router as health_router
 from app.api.routes.sources import router as sources_router
 from app.api.routes.verify import router as verify_router
 from app.api.routes.verify_image import router as verify_image_router
+from app.api.routes.verify_url import router as verify_url_router
 from app.api.routes.evidence import router as evidence_router
 from app.api.routes.for_you import router as for_you_router
 from app.core.config import settings
@@ -86,6 +87,7 @@ app.include_router(health_router)
 app.include_router(sources_router)
 app.include_router(verify_router)
 app.include_router(verify_image_router)
+app.include_router(verify_url_router)
 app.include_router(evidence_router)
 app.include_router(for_you_router)
 
