@@ -107,10 +107,12 @@ class VerificationService:
                         if isinstance(claim.deadline.normalized_value, str)
                         else None
                     ),
+                    normalized_official=official_obligation.deadline.normalized,
                     claimed_text=claim.deadline.raw_text,
                 )
                 canonical_values["deadline"] = FieldComparator._normalize_date(
-                    official_obligation.deadline.raw_text,
+                    official_obligation.deadline.normalized
+                    or official_obligation.deadline.raw_text,
                 )
             else:
                 field_results["deadline"] = self._insufficient_field(

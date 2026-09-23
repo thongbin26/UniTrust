@@ -39,10 +39,15 @@ class FieldComparator:
         official: str,
         *,
         normalized_claimed: str | None = None,
+        normalized_official: str | None = None,
         claimed_text: str | None = None,
     ) -> FieldComparisonResult:
         norm_claim = normalized_claimed or FieldComparator._normalize_date(claimed)
-        norm_off = FieldComparator._normalize_date(official)
+        # A reviewed normalized official value is authoritative.  Raw official
+        # prose remains a fallback only when that structured value is absent.
+        norm_off = FieldComparator._normalize_date(
+            normalized_official if normalized_official is not None else official,
+        )
         display_claim = claimed_text or claimed
         if norm_claim is None or norm_off is None:
             return FieldComparisonResult(
@@ -106,8 +111,11 @@ class FieldComparator:
         cl = claimed.lower()
         display_claim = claimed_text or claimed
         matched = False
-        if normalized_claimed == official_action.value:
-            matched = True
+        if normalized_claimed is not None:
+            # An explicit deterministic normalization must not be overridden
+            # by a broader raw lexical overlap (for example PAY vs SUBMIT
+            # where both phrases happen to contain "nộp").
+            matched = normalized_claimed == official_action.value
         elif official_action == ActionType.PAY and "đóng" in cl:
             matched = True
         elif official_action == ActionType.REGISTER and "đăng ký" in cl:

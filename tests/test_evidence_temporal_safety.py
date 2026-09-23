@@ -12,6 +12,7 @@ from app.verification.abstention import AbstentionPolicy
 from app.verification.decomposer import ClaimDecomposer
 from app.verification.models import AbstentionReason, OverallVerdict
 from app.verification.service import VerificationService
+import pytest
 
 
 def chunk(notice_id, version_id=1, chunk_id=None):
@@ -50,6 +51,16 @@ def with_deadline(item, value):
         "deadline": DeadlineValue(
             raw_text=value,
             normalized=value,
+            precision=TemporalPrecision.DATE,
+        )
+    })
+
+
+def with_reviewed_range_deadline(item, raw_text, normalized):
+    return item.model_copy(update={
+        "deadline": DeadlineValue(
+            raw_text=raw_text,
+            normalized=normalized,
             precision=TemporalPrecision.DATE,
         )
     })
@@ -221,6 +232,44 @@ def test_same_action_fields_still_verify():
 
     assert verified.verdict == OverallVerdict.VERIFIED
     assert all(item.state.value == "MATCH" for item in verified.field_results.values())
+
+
+@pytest.mark.parametrize(
+    ("case_id", "text", "action", "deadline"),
+    [
+        ("positive-001", "Sinh viên K26 cần đăng ký kiểm tra xếp lớp đầu vào trước ngày 18/09/2026.", ActionType.REGISTER, "2026-09-18"),
+        ("positive-002", "Hãy thực hiện khảo sát lớp học phần hè trước ngày 20/09/2026.", ActionType.OTHER, "2026-09-20"),
+        ("positive-003", "Em đăng ký phúc khảo điểm thi hè trên hệ thống sinh viên trước ngày 25/08/2026.", ActionType.REGISTER, "2026-08-25"),
+        ("positive-005", "Sinh viên K21 và K22 tự đánh giá kết quả rèn luyện học kỳ II trước ngày 17/07/2026.", ActionType.UPDATE, "2026-07-17"),
+        ("positive-016", "Đăng ký trực tuyến chương trình trao đổi Erasmus KA171 trước ngày 31/05/2026.", ActionType.REGISTER, "2026-05-31"),
+    ],
+)
+def test_frozen_range_end_failure_mechanisms_now_verify(case_id, text, action, deadline):
+    top = chunk(1, chunk_id=f"range-end-{case_id}")
+    official = with_reviewed_range_deadline(
+        obligation(action, suffix=case_id),
+        f"Từ 01/{deadline[5:7]}/{deadline[:4]} đến {deadline[8:10]}/{deadline[5:7]}/{deadline[:4]}",
+        deadline,
+    )
+    verified = service([result(top, 1)], {(1, 1): [official]}).verify(text)[0]
+
+    assert verified.verdict == OverallVerdict.VERIFIED
+    assert verified.field_results["deadline"].state.value == "MATCH"
+
+
+def test_explicit_pay_cannot_match_neighboring_submit_obligation_via_nop():
+    top = chunk(1, chunk_id="normalized-action-mismatch")
+    verified = service(
+        [result(top, 1)],
+        {(1, 1): [obligation(ActionType.SUBMIT, amount=200_000)]},
+    ).verify("Sinh viên phải nộp phí giữ xe 200.000 đồng mỗi tháng.")[0]
+
+    assert ClaimDecomposer().decompose(
+        "Sinh viên phải nộp phí giữ xe 200.000 đồng mỗi tháng."
+    )[0].action.normalized_value == ActionType.PAY.value
+    assert verified.verdict == OverallVerdict.ABSTAINED
+    assert verified.abstention_reason == AbstentionReason.NO_OFFICIAL_FIELD
+    assert not verified.field_results
 
 
 def test_missing_official_action_cannot_authorize_deadline_conflict():
