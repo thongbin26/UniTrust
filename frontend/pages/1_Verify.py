@@ -8,6 +8,7 @@ from frontend.ui_style import apply_global_styles, page_header, page_marker
 from frontend.verification_presentation import should_render_official_evidence
 from frontend.ui_translations import (
     get_abstention_reason_vi,
+    get_action_value_vi,
     get_explanation_vi,
     get_field_name_vi,
     get_field_state_vi,
@@ -95,6 +96,9 @@ def render_verification_result(claim_result: dict) -> None:
             state_class = _status_class("VERIFIED" if state == "MATCH" else state)
             claimed = field_value.get("claimed_text")
             official = field_value.get("official_text")
+            if field_name == "action":
+                claimed = get_action_value_vi(claimed)
+                official = get_action_value_vi(official)
             claimed_html = _html_text(claimed) if claimed else "—"
             official_html = _html_text(official) if official else "—"
             comparison_rows.append(

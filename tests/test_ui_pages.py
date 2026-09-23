@@ -72,6 +72,59 @@ def test_verify_page_renders_translated_hierarchy_and_escapes_dynamic_text(monke
     assert page.get("link_button")[0].label == "Xem thông báo chính thức"
 
 
+@pytest.mark.parametrize(
+    ("verdict", "received_action", "official_action", "expected_label"),
+    [
+        ("VERIFIED", "nộp", "submit", "Nộp"),
+        ("CONFLICT", "đăng ký", "register", "Đăng ký"),
+        ("VERIFIED", "ứng tuyển", "apply", "Ứng tuyển"),
+        ("VERIFIED", "thanh toán", "pay", "Thanh toán"),
+        ("VERIFIED", "tham gia", "attend", "Tham gia"),
+        ("VERIFIED", "nhận", "collect", "Nhận"),
+        ("VERIFIED", "kiểm tra", "check", "Kiểm tra"),
+        ("VERIFIED", "cập nhật", "update", "Cập nhật"),
+        ("VERIFIED", "thực hiện", "other", "Thực hiện"),
+    ],
+)
+def test_verify_page_translates_canonical_action_values_for_students(
+    monkeypatch, verdict, received_action, official_action, expected_label
+):
+    monkeypatch.setattr(
+        api_client,
+        "verify_claim",
+        lambda *args, **kwargs: {
+            "results": [
+                {
+                    "raw_claim_text": "Nội dung cần kiểm tra",
+                    "verdict": verdict,
+                    "temporal_status": "CURRENT",
+                    "field_results": {
+                        "action": {
+                            "state": "MATCH",
+                            "claimed_text": received_action,
+                            "official_text": official_action,
+                        }
+                    },
+                    "primary_provenance": {
+                        "title": "Nguồn phù hợp",
+                        "exact_chunk_text": "Bằng chứng chính thức có thể áp dụng.",
+                    },
+                }
+            ]
+        },
+    )
+
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_area[0].input("Nội dung cần kiểm tra").run()
+    page.button[0].click().run()
+
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert received_action in text
+    assert expected_label in text
+    assert official_action not in text
+
+
 def test_verify_page_hides_retrieved_only_provenance_for_no_official_field(monkeypatch):
     notice_title = "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN, GIẢM HỌC PHÍ"
     monkeypatch.setattr(

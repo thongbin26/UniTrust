@@ -59,6 +59,18 @@ SOURCE_NAMES_VI = {
     "dut_transport_energy_faculty": "Khoa Cơ khí Giao thông và Năng lượng",
 }
 
+ACTION_VALUES_VI = {
+    "submit": "Nộp",
+    "register": "Đăng ký",
+    "apply": "Ứng tuyển",
+    "pay": "Thanh toán",
+    "attend": "Tham gia",
+    "collect": "Nhận",
+    "check": "Kiểm tra",
+    "update": "Cập nhật",
+    "other": "Thực hiện",
+}
+
 URL_FETCH_ERRORS_VI = {
     "INVALID_URL": "Đường link không hợp lệ.",
     "UNSAFE_URL": "Đường link này không thể được truy cập vì lý do an toàn.",
@@ -81,6 +93,14 @@ def get_field_name_vi(field: str) -> str:
 
 def get_field_state_vi(state: str) -> str:
     return FIELD_STATE_VI.get(state, "Chưa xác định")
+
+
+def get_action_value_vi(value: str | None) -> str:
+    """Translate canonical action values without altering raw received wording."""
+    if value is None:
+        return ""
+    text = str(value)
+    return ACTION_VALUES_VI.get(text.strip().lower(), text)
 
 def get_source_name_vi(source_id: str, source_name: str) -> str:
     return SOURCE_NAMES_VI.get(source_id, source_name or "Nguồn chính thức DUT")
