@@ -4,6 +4,7 @@ from html import escape
 import streamlit as st
 
 from frontend.api_client import URLVerificationRequestError, api_client
+from frontend.demo_cases import DEMO_CASES, get_demo_case, selected_demo_text
 from frontend.ui_style import apply_global_styles, page_header, page_marker
 from frontend.verification_presentation import should_render_official_evidence
 from frontend.ui_translations import (
@@ -219,14 +220,41 @@ text_input = ""
 uploaded_image = None
 url_input = ""
 
+
+def _apply_demo_case_to_text_input() -> None:
+    """Seed the ordinary text input; verification still requires its normal button."""
+    selected_case_id = st.session_state.get("verify_demo_case")
+    if selected_case_id:
+        st.session_state["verify_text_input"] = selected_demo_text(selected_case_id)
+
 with st.container(border=True):
     if input_mode == "Văn bản":
         st.markdown('<div class="ut-section-title" style="margin:.1rem 0 .65rem;">Dán nội dung bạn nhận được</div>', unsafe_allow_html=True)
+        demo_options = [""] + [case["case_id"] for case in DEMO_CASES]
+        selected_case_id = st.selectbox(
+            "Tình huống mẫu phục vụ trình diễn",
+            options=demo_options,
+            format_func=lambda case_id: (
+                "Chọn tình huống mẫu" if not case_id
+                else get_demo_case(case_id)["ui_label"]
+            ),
+            key="verify_demo_case",
+            on_change=_apply_demo_case_to_text_input,
+        )
+        selected_case = get_demo_case(selected_case_id)
+        if selected_case:
+            st.caption("Tình huống mẫu phục vụ trình diễn")
+            if selected_case["is_synthetic"]:
+                st.caption(
+                    "Dữ liệu tình huống được tạo có kiểm soát để kiểm thử khả năng "
+                    "phát hiện mâu thuẫn hoặc báo chưa đủ bằng chứng."
+                )
         text_input = st.text_area(
             "Nội dung cần xác minh",
             height=138,
             placeholder="Dán tin nhắn, bài đăng hoặc đoạn thông báo bạn muốn kiểm tra...",
             label_visibility="collapsed",
+            key="verify_text_input",
         )
         st.markdown(
             '<div class="ut-helper"><span class="ut-helper-mark" aria-hidden="true">i</span><span>UniTrust đối chiếu những chi tiết có thể kiểm tra và nói rõ khi chưa đủ bằng chứng.</span></div>',
