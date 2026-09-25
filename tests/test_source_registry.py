@@ -39,7 +39,7 @@ def test_seed_source_registry(
 
     sources = list_sources()
 
-    assert len(sources) == 3
+    assert len(sources) == 7
 
     assert all(
         source.is_official
@@ -54,6 +54,14 @@ def test_seed_source_registry(
     assert "dut_ctsv" in ids
     assert "dut_academic" in ids
     assert "dut_it_faculty" in ids
+    assert "dut_sv_portal" in ids
+    assert "dut_finance" in ids
+    assert "dut_training_quality" in ids
+    assert "dut_transport_energy_faculty" in ids
+
+    assert all(source.enabled for source in sources)
+    assert all(source.authority_scope for source in sources)
+    assert all(source.crawl_method for source in sources)
 
 
 def test_startup_is_byte_idempotent(monkeypatch, tmp_path):
@@ -112,6 +120,28 @@ def test_seed_inserts_missing_source_only(monkeypatch, tmp_path):
     seed_sources()
     assert get_source("dut_ctsv") is not None
     assert get_source("dut_academic") == kept
+
+
+def test_baseline_seed_does_not_update_existing_production_metadata(monkeypatch, tmp_path):
+    from app.db.database import get_connection
+    from app.sources.seed import BASELINE_SOURCES
+
+    use_temp_database(monkeypatch, tmp_path)
+    with get_connection() as connection:
+        connection.execute(
+            "UPDATE sources SET name = 'Legacy display name' WHERE source_id = 'dut_ctsv'"
+        )
+        connection.commit()
+
+    seed_sources(sources=BASELINE_SOURCES, update_existing=False)
+
+    with get_connection() as connection:
+        name = connection.execute(
+            "SELECT name FROM sources WHERE source_id = 'dut_ctsv'"
+        ).fetchone()[0]
+        total = connection.execute("SELECT COUNT(*) FROM sources").fetchone()[0]
+    assert name == "Legacy display name"
+    assert total == 7
 
 
 def test_healthy_source_check_with_mock(

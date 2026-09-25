@@ -1,0 +1,59 @@
+{
+  "annotation_files_inspected": 10,
+  "distinct_source_notices": 10,
+  "distinct_reviewed_obligations": 18,
+  "usable_obligations": 18,
+  "ambiguous_obligations": 0,
+  "not_suitable_obligations": 0,
+  "field_support": {
+    "audience": 17,
+    "action": 18,
+    "object_hint": 18,
+    "deadline": 15,
+    "amount": 0,
+    "required_documents": 8,
+    "location": 7,
+    "exceptions": 5
+  },
+  "action_distribution": {
+    "register": 5,
+    "other": 2,
+    "check": 1,
+    "update": 1,
+    "submit": 9
+  },
+  "document_field_support": {
+    "đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác": 1,
+    "Phiếu đăng ký học bổng": 1,
+    "Các bảng điểm của 3 học kỳ liên tiếp": 1,
+    "Bản sao công chứng CMND hoặc CCCD": 1,
+    "Bản sao công chứng các chứng nhận/thành tích, chứng chỉ quốc tế và hoạt động cộng đồng nếu có": 1,
+    "mô tả ý tưởng": 1,
+    "sơ đồ hệ thống": 1,
+    "tính mới": 1,
+    "khả năng ứng dụng": 1,
+    "01 ảnh thẻ 2×3": 2,
+    "đơn xin xét tốt nghiệp": 1,
+    "các chứng chỉ cần nộp bổ sung": 1,
+    "Sơ yếu lý lịch (CV)": 2,
+    "Thư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị": 2,
+    "Bảng điểm": 2,
+    "Chứng chỉ ngoại ngữ": 2,
+    "Bản sao hộ chiếu": 2
+  },
+  "deadline_structure_support": {
+    "full_date": 15
+  },
+  "source_diversity_summary": {
+    "dut_academic": 4,
+    "dut_ctsv": 6,
+    "dut_it_faculty": 8
+  },
+  "potential_category_support": {
+    "ACTION_SCOPE": 18,
+    "AUDIENCE_SCOPE": 17,
+    "DATE_FULL": 15,
+    "LOCATION": 7,
+    "DOCUMENT": 8
+  }
+}

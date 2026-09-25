@@ -1,10 +1,21 @@
 from typing import List, Optional, Any, Dict
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from app.verification.models import OverallVerdict, AbstentionReason, OfficialProvenance, FieldMatchState
 from app.temporal.models import TemporalValidity
+from app.actionability.models import ActionabilityStatus
 
 class VerifyRequest(BaseModel):
     text: str = Field(..., min_length=1, description="The claim text to verify")
+    use_llm: bool = Field(default=False, description="Whether to use semantic LLM fallback")
+    top_k: int = Field(default=5, ge=1, le=20, description="Number of official chunks to retrieve")
+
+
+class URLVerifyRequest(BaseModel):
+    """API shape only; public-network safety belongs to WebContentFetcher."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    url: str = Field(..., min_length=1, description="Public URL containing user-supplied claim text")
     use_llm: bool = Field(default=False, description="Whether to use semantic LLM fallback")
     top_k: int = Field(default=5, ge=1, le=20, description="Number of official chunks to retrieve")
 
@@ -13,6 +24,15 @@ class FieldComparisonResponse(BaseModel):
     claimed_text: str
     official_text: Optional[str] = None
     explanation: str
+    received_provenance: Optional["ReceivedFieldProvenanceResponse"] = None
+
+
+class ReceivedFieldProvenanceResponse(BaseModel):
+    text: str
+    start_char: int
+    end_char: int
+    normalized_value: str | int | None = None
+    extraction_method: str
 
 class VerifyResponseItem(BaseModel):
     claim_id: str
@@ -22,11 +42,38 @@ class VerifyResponseItem(BaseModel):
     abstention_reason: Optional[str] = None
     field_results: Dict[str, FieldComparisonResponse] = {}
     primary_provenance: Optional[OfficialProvenance] = None
+    understood_fields: Dict[str, Any] = Field(default_factory=dict)
 
 class VerifyResponse(BaseModel):
     original_input: str
     results: List[VerifyResponseItem]
+    message_verdict: Optional[str] = None
+    extraction_method: str = "deterministic"
     latency_ms: float
+
+
+class OCRResponse(BaseModel):
+    text: str
+    engine: str
+    warnings: List[str] = Field(default_factory=list)
+    mean_confidence: float | None = None
+
+
+class VerifyImageResponse(VerifyResponse):
+    input_type: str = "IMAGE"
+    ocr: OCRResponse
+
+
+class VerifyURLResponse(VerifyResponse):
+    """Verification output plus metadata about user-supplied URL content."""
+
+    input_type: str = "URL"
+    requested_url: str
+    final_url: str
+    page_title: str | None = None
+    extracted_text: str
+    content_type: str
+    warnings: List[str] = Field(default_factory=list)
 
 class EvidenceCoverageStatus(BaseModel):
     has_structured_obligations: bool
@@ -47,6 +94,7 @@ class NoticeSearchIndexItem(BaseModel):
     source_id: str
     source_display_name: str
     searchable_text: str
+    monitoring_activity: Optional[str] = None
 
 class NoticeVersionChange(BaseModel):
     field_name: str
@@ -76,10 +124,15 @@ class ForYouObligationItem(BaseModel):
     location: Optional[str]
     applicability: ObligationApplicability
     temporal_status: str # "CURRENT", "SUPERSEDED_OUTDATED", "UNKNOWN"
+    actionability_status: ActionabilityStatus
     notice_id: int
     version_id: int
     title: str
     canonical_url: Optional[str]
+    # Additive V2.1 presentation data.  The factual values are produced only
+    # from reviewed StudentObligation fields.
+    action_brief: Optional[Dict[str, Any]] = None
 
 class ForYouResponse(BaseModel):
     obligations: List[ForYouObligationItem]
+    monitoring: Optional[Dict[str, Any]] = None

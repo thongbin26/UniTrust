@@ -7,22 +7,27 @@ from app.models.source import (
     SourceRead,
     SourceSeed,
 )
-from app.sources.seed import SEED_SOURCES
+from app.sources.seed import SEED_SOURCES, SOURCE_BY_ID
 
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def seed_sources() -> None:
+def seed_sources(
+    *,
+    sources: list[SourceSeed] | None = None,
+    update_existing: bool = True,
+) -> None:
     now = utc_now().isoformat()
+    selected_sources = SEED_SOURCES if sources is None else sources
 
     with get_connection() as connection:
 
-        for source in SEED_SOURCES:
+        for source in selected_sources:
 
-            connection.execute(
-                """
+            if update_existing:
+                statement = """
                 INSERT INTO sources (
                     source_id,
                     name,
@@ -58,7 +63,29 @@ def seed_sources() -> None:
                    OR sources.is_official IS NOT excluded.is_official
                    OR sources.expected_marker IS NOT excluded.expected_marker
                    OR sources.provenance_note IS NOT excluded.provenance_note
-                """,
+                """
+            else:
+                statement = """
+                INSERT INTO sources (
+                    source_id,
+                    name,
+                    source_type,
+                    base_url,
+                    listing_url,
+                    official_domain,
+                    is_official,
+                    expected_marker,
+                    provenance_note,
+                    health_status,
+                    created_at,
+                    updated_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(source_id) DO NOTHING
+                """
+
+            connection.execute(
+                statement,
                 (
                     source.source_id,
                     source.name,
@@ -82,6 +109,15 @@ def _row_to_source(row) -> SourceRead:
     data = dict(row)
 
     data["is_official"] = bool(data["is_official"])
+
+    configured = SOURCE_BY_ID.get(data["source_id"])
+    if configured is not None:
+        data.update(
+            authority_scope=configured.authority_scope,
+            enabled=configured.enabled,
+            crawl_method=configured.crawl_method,
+            notes=configured.notes,
+        )
 
     return SourceRead.model_validate(data)
 

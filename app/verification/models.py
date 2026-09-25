@@ -1,6 +1,6 @@
 from enum import StrEnum
 from pydantic import BaseModel, Field
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Literal
 from app.temporal.models import TemporalValidity
 
 class FieldMatchState(StrEnum):
@@ -28,12 +28,36 @@ class TypedUserField(BaseModel):
     text: str
     start_char: int
     end_char: int
+    raw_text: Optional[str] = None
+    normalized_value: str | int | None = None
+    extraction_method: Literal["deterministic", "ai_assisted", "hybrid"] = "deterministic"
+    confidence: float | None = Field(default=None, ge=0, le=1)
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.raw_text is None:
+            self.raw_text = self.text
+        elif self.raw_text != self.text:
+            raise ValueError("raw_text must equal the exact grounded text")
+
+
+class ReceivedFieldProvenance(BaseModel):
+    """Exact received-text evidence for one deterministically extracted field."""
+
+    text: str
+    start_char: int
+    end_char: int
+    normalized_value: str | int | None = None
+    extraction_method: Literal["deterministic"] = "deterministic"
 
 class DecomposedUserClaim(BaseModel):
     claim_id: str
     raw_claim_text: str
     start_char: int
     end_char: int
+    normalized_text: Optional[str] = None
+    extraction_method: Literal["deterministic", "ai_assisted", "hybrid"] = "deterministic"
+    claim_confidence: float | None = Field(default=None, ge=0, le=1)
+    object_hint: Optional[TypedUserField] = None
     
     action: Optional[TypedUserField] = None
     deadline: Optional[TypedUserField] = None
@@ -41,6 +65,7 @@ class DecomposedUserClaim(BaseModel):
     audience: Optional[TypedUserField] = None
     location: Optional[TypedUserField] = None
     required_documents: List[TypedUserField] = Field(default_factory=list)
+    exceptions: List[TypedUserField] = Field(default_factory=list)
 
 class OfficialProvenance(BaseModel):
     chunk_id: str
@@ -59,6 +84,7 @@ class FieldComparisonResult(BaseModel):
     official_text: Optional[str] = None
     explanation: str = ""
     provenance: Optional[OfficialProvenance] = None
+    received_provenance: Optional[ReceivedFieldProvenance] = None
 
 class VerificationResult(BaseModel):
     claim_id: str
@@ -68,3 +94,6 @@ class VerificationResult(BaseModel):
     temporal_status: Optional[TemporalValidity] = None
     field_results: dict[str, FieldComparisonResult] = Field(default_factory=dict)
     primary_provenance: Optional[OfficialProvenance] = None
+    # These are grounded fields extracted from the received input, not
+    # official evidence or comparison results.
+    understood_fields: dict[str, TypedUserField | list[TypedUserField]] = Field(default_factory=dict)

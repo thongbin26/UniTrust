@@ -7,6 +7,7 @@ from app.crawler.dut_parser import (
     extract_notice_links,
     parse_notice_detail,
 )
+from app.crawler.identity import canonical_source_for_url
 from app.crawler.fetcher import (
     create_http_client,
     fetch_with_retry,
@@ -37,6 +38,7 @@ def utc_now() -> datetime:
 def save_raw_html(
     source_id: str,
     content: bytes,
+    raw_data_dir: Path = RAW_DATA_DIR,
 ) -> tuple[str, str]:
 
     raw_hash = hashlib.sha256(
@@ -44,7 +46,7 @@ def save_raw_html(
     ).hexdigest()
 
     source_dir = (
-        RAW_DATA_DIR
+        raw_data_dir
         / source_id
     )
 
@@ -71,7 +73,10 @@ def crawl_source(
     source_id: str,
     limit: int = 10,
     delay_seconds: float = 0.4,
+    raw_data_dir: Path = RAW_DATA_DIR,
 ) -> dict:
+
+    started_at = time.monotonic()
 
     init_database()
     seed_sources()
@@ -86,13 +91,19 @@ def crawl_source(
             f"Unknown source: {source_id}"
         )
 
+    if not source.enabled:
+        raise ValueError(f"Source is disabled: {source_id}")
+
     stats = {
         "source_id": source_id,
         "discovered": 0,
+        "detail_fetches": 0,
         "created": 0,
         "updated": 0,
         "unchanged": 0,
+        "duplicate": 0,
         "failed": 0,
+        "warnings": [],
     }
 
     with create_http_client() as client:
@@ -128,6 +139,25 @@ def crawl_source(
             limit=limit,
         )
 
+        if (
+            source.expected_marker
+            and source.expected_marker.casefold()
+            not in listing_response.text.casefold()
+        ):
+            error = ValueError(
+                f"Expected marker not found for {source_id}: {source.expected_marker}"
+            )
+            record_crawl_failure(
+                source_id=source_id,
+                url=source.listing_url,
+                stage="listing_marker",
+                error=error,
+            )
+            raise error
+
+        if not links:
+            stats["warnings"].append("No official notice detail links were parsed.")
+
         stats["discovered"] = len(
             links
         )
@@ -143,18 +173,23 @@ def crawl_source(
                         link.url,
                     )
                 )
+                stats["detail_fetches"] += 1
 
                 raw_hash, raw_path = (
                     save_raw_html(
                         source_id,
                         response.content,
+                        raw_data_dir,
                     )
                 )
 
                 notice = (
                     parse_notice_detail(
                         html=response.text,
-                        source_id=source_id,
+                        source_id=canonical_source_for_url(
+                            str(response.url),
+                            source_id,
+                        ),
                         final_url=str(
                             response.url
                         ),
@@ -174,7 +209,13 @@ def crawl_source(
                 )
 
                 status = save_notice(
-                    notice
+                    notice,
+                    discovery_source_id=source_id,
+                    discovery_url=link.url,
+                    discovery_metadata={
+                        "external_id": link.external_id,
+                        "listing_url": source.listing_url,
+                    },
                 )
 
                 stats[
@@ -195,4 +236,5 @@ def crawl_source(
                 delay_seconds
             )
 
+    stats["duration_seconds"] = round(time.monotonic() - started_at, 3)
     return stats

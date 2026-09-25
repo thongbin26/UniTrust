@@ -5,9 +5,14 @@ from pydantic import BaseModel
 
 
 class SourceType(StrEnum):
+    CENTRAL = "official_central"
     STUDENT_AFFAIRS = "student_affairs"
+    STUDENT_PORTAL = "official_student_portal"
     ACADEMIC = "academic"
+    FINANCE = "official_finance"
     FACULTY = "faculty"
+    REFERENCE = "official_reference"
+    SOCIAL = "official_social_supplementary"
 
 
 class SourceHealthStatus(StrEnum):
@@ -31,6 +36,10 @@ class SourceSeed(BaseModel):
 
     expected_marker: str | None = None
     provenance_note: str
+    authority_scope: str = "university-wide"
+    enabled: bool = True
+    crawl_method: str = "dut_html"
+    notes: str = ""
 
 
 class SourceRead(SourceSeed):

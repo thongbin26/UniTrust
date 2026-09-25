@@ -21,6 +21,61 @@ This runbook outlines the steps to present the UniTrust prototype. The live demo
    ```
    A successful run checks health, Evidence, For You, and one deterministic verification request.
 
+## A1. Optional Continuous Official-Source Freshness Runtime
+
+Use this only when the demo needs the opt-in monitoring worker. The production
+database and published retrieval cache remain read-only inputs: all monitor
+writes go to one external runtime root shared by the three demo processes.
+
+Open PowerShell in the repository root and prepare the external snapshot once:
+
+```powershell
+$runtime = "C:\Users\DELL\unitrust-demo-freshness-runtime"
+if (Test-Path $runtime) { throw "Use the existing prepared runtime; do not overwrite it." }
+New-Item -ItemType Directory -Path $runtime | Out-Null
+Copy-Item .\unitrust.db "$runtime\unitrust-v2.db"
+Copy-Item .\data\processed\retrieval "$runtime\retrieval" -Recurse
+```
+
+Set the same runtime configuration in each terminal before starting a process:
+
+```powershell
+$runtime = "C:\Users\DELL\unitrust-demo-freshness-runtime"
+$env:DATABASE_URL = "sqlite:///$($runtime.Replace('\', '/'))/unitrust-v2.db"
+$env:RETRIEVAL_CACHE_DIR = "$runtime\retrieval"
+$env:MONITORING_RAW_DATA_DIR = "$runtime\raw"
+$env:MONITORING_ENABLED = "true"
+$env:DENSE_LOCAL_FILES_ONLY = "true"
+$env:HF_HUB_OFFLINE = "1"
+$env:TRANSFORMERS_OFFLINE = "1"
+```
+
+Start each process separately. The worker is deliberately never started by
+FastAPI or Streamlit.
+
+```powershell
+# Terminal 1 — backend
+.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000
+
+# Terminal 2 — frontend
+.venv\Scripts\python -m streamlit run frontend\Home.py --server.address 127.0.0.1 --server.port 8501
+
+# Terminal 3 — monitor worker (repeats every 10 minutes; Ctrl+C stops only this worker)
+.venv\Scripts\python scripts\run_monitor.py --data-root $runtime --interval-seconds 600 --limit 3 --bootstrap-from .\unitrust.db
+```
+
+For a bounded controlled cycle instead of continuous monitoring, use
+`--once` with the same command. Run the read-only preflight in either web-app
+terminal before presenting:
+
+```powershell
+.venv\Scripts\python scripts\preflight_demo.py
+```
+
+Stop each terminal with `Ctrl+C`. Do not point `DATABASE_URL` or
+`RETRIEVAL_CACHE_DIR` back at the repository while the monitor worker is
+running.
+
 ## B. Fixed Demo Cases
 
 Use these exact inputs so the live result remains traceable to the reviewed data:

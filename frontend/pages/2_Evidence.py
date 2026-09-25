@@ -7,7 +7,7 @@ from streamlit_searchbox import st_searchbox
 from frontend.api_client import api_client
 from frontend.evidence_search import rank_notices
 from frontend.ui_style import apply_global_styles, page_header, page_marker
-from frontend.ui_translations import format_date_vi, get_notice_title_vi, get_source_name_vi
+from frontend.ui_translations import format_date_vi, format_datetime_vi, get_notice_title_vi, get_source_name_vi
 
 
 apply_global_styles()
@@ -15,7 +15,7 @@ page_marker("evidence")
 page_header(
     "Kho thông báo chính thức",
     "Tra cứu thông báo",
-    "Gõ từ khóa để tìm nhanh hoặc mở danh sách để duyệt. Kết quả được xếp hạng ổn định theo mức độ liên quan.",
+    "Tìm thông báo chính thức theo từ khóa, rồi mở nguồn để đọc đầy đủ nội dung và ngày ban hành.",
 )
 
 
@@ -64,17 +64,19 @@ def fetch_search_index() -> list[dict]:
 
 
 def suggestion_label(notice: dict) -> str:
-    return f"[{notice['category']}] {get_notice_title_vi(notice['title'])} · {notice['source_display_name']}"
+    activity = {"NEW": " · Mới", "UPDATED": " · Vừa cập nhật"}.get(notice.get("monitoring_activity"), "")
+    return f"[{notice['category']}] {get_notice_title_vi(notice['title'])}{activity} · {notice['source_display_name']}"
 
 
 def render_browse_state(notices: list[dict]) -> None:
     """Show real index metadata without loading full notice details."""
     rows = []
     for notice in notices[:6]:
+        activity = {"NEW": "<span class='ut-count'>Mới</span>", "UPDATED": "<span class='ut-count'>Vừa cập nhật</span>"}.get(notice.get("monitoring_activity"), "")
         rows.append(
             '<div class="ut-notice-item">'
             f'<div class="ut-section-kicker">{escape(notice["category"])}</div>'
-            f'<strong style="display:block;line-height:1.45;">{escape(get_notice_title_vi(notice["title"]))}</strong>'
+            f'<strong style="display:block;line-height:1.45;">{escape(get_notice_title_vi(notice["title"]))} {activity}</strong>'
             f'<div class="ut-meta" style="margin-top:.25rem;">{escape(notice["source_display_name"])}</div>'
             '</div>'
         )
@@ -97,7 +99,7 @@ try:
             unsafe_allow_html=True,
         )
     else:
-        st.markdown('<div class="ut-section-title" style="margin-top:.35rem;">Tìm kiếm hoặc duyệt thông báo</div>', unsafe_allow_html=True)
+        st.markdown('<div class="ut-section-title" style="margin-top:.35rem;">Tìm thông báo chính thức</div>', unsafe_allow_html=True)
 
         def search_notices(searchterm: str):
             ranked = notices if not searchterm else rank_notices(notices, searchterm)
@@ -145,8 +147,13 @@ try:
                     st.link_button("Xem thông báo chính thức", canonical_url, icon=":material/open_in_new:")
 
                 changes = api_client.get_notice_changes(selected_id)
+                versions = api_client.get_notice_versions(selected_id)
                 if changes.get("has_history"):
-                    st.caption("Thông báo này có phiên bản cập nhật đã được lưu trong hệ thống.")
+                    st.caption(f"Phiên bản hiện tại: #{versions[0]['version_id']}. Thông báo này có phiên bản trước đó đã được lưu.")
+                    with st.expander(f"Xem lịch sử phiên bản ({len(versions) - 1} phiên bản trước)"):
+                        for item in versions[1:]:
+                            st.markdown(f"**Phiên bản #{item['version_id']}** · Lưu lúc {format_datetime_vi(item.get('retrieved_at'))}")
+                            st.text(item.get("raw_text") or "Không có nội dung được lưu.")
                 else:
                     st.caption("Hiện chưa có phiên bản lịch sử được lưu cho thông báo này.")
 except Exception:

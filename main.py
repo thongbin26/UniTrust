@@ -6,11 +6,15 @@ from fastapi import FastAPI
 from app.api.routes.health import router as health_router
 from app.api.routes.sources import router as sources_router
 from app.api.routes.verify import router as verify_router
+from app.api.routes.verify_image import router as verify_image_router
+from app.api.routes.verify_url import router as verify_url_router
 from app.api.routes.evidence import router as evidence_router
 from app.api.routes.for_you import router as for_you_router
+from app.api.routes.monitoring import router as monitoring_router
 from app.core.config import settings
 from app.db.database import init_database
 from app.sources.repository import seed_sources
+from app.sources.seed import BASELINE_SOURCES
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -28,7 +32,10 @@ async def lifespan(app: FastAPI):
     with startup_step("database initialization"):
         init_database()
     with startup_step("source registry"):
-        seed_sources()
+        # Phase A must not migrate or update the production source registry.
+        # A fresh demo DB may receive the three baseline rows, but existing rows
+        # remain byte-stable until production ingestion is explicitly approved.
+        seed_sources(sources=BASELINE_SOURCES, update_existing=False)
 
     # Initialize expensive singletons once
     with startup_step("retrieval imports"):
@@ -80,8 +87,11 @@ app = FastAPI(
 app.include_router(health_router)
 app.include_router(sources_router)
 app.include_router(verify_router)
+app.include_router(verify_image_router)
+app.include_router(verify_url_router)
 app.include_router(evidence_router)
 app.include_router(for_you_router)
+app.include_router(monitoring_router)
 
 
 @app.get("/")

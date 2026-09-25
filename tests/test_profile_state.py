@@ -32,15 +32,15 @@ def test_canonical_alias_is_grounded_in_reviewed_vocabulary():
 
 
 def test_unestablished_canonical_values_are_not_guessed():
-    saved = make_profile(load_catalog(), FACULTY, "Kỹ thuật phần mềm", "K22")
-    assert saved["major_label"] == "Kỹ thuật phần mềm"
+    saved = make_profile(load_catalog(), FACULTY, "Công nghệ thông tin (ngoại ngữ Nhật)", "K22")
+    assert saved["major_label"] == "Công nghệ thông tin (ngoại ngữ Nhật)"
     assert api_profile(saved)["major"] is None
     assert api_profile(saved)["faculty"] is None
 
 
 def test_provisional_relationship_survives_save_restore():
     saved = make_profile(load_catalog(), "Khoa Điện tử và Trí tuệ nhân tạo",
-                         "Khoa học dữ liệu và Trí tuệ nhân tạo", "K26")
+                         "Công nghệ thông tin, chuyên ngành Khoa học dữ liệu và Trí tuệ nhân tạo", "K26")
     state, params = {}, {}
     save_profile(state, params, saved)
     restored = restore_profile(load_catalog(), params)

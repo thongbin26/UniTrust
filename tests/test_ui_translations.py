@@ -1,5 +1,6 @@
 import os
 import json
+import pytest
 from frontend.ui_translations import (
     get_trust_state_vi,
     get_temporal_state_vi,
@@ -9,7 +10,10 @@ from frontend.ui_translations import (
     get_field_state_vi,
     get_notice_title_vi,
     get_source_name_vi,
+    get_url_fetch_error_vi,
+    get_url_fetch_warning_vi,
     format_date_vi,
+    format_datetime_vi,
 )
 from frontend.demo_cases import DEMO_CASES
 
@@ -22,7 +26,7 @@ def test_trust_state_vi():
 
 def test_temporal_state_vi():
     assert get_temporal_state_vi("CURRENT") == "Phiên bản hiện hành"
-    assert get_temporal_state_vi("SUPERSEDED_OUTDATED") == "Đã bị thay thế / lỗi thời"
+    assert get_temporal_state_vi("SUPERSEDED_OUTDATED") == "Đã có phiên bản mới hơn"
     assert get_temporal_state_vi("UNKNOWN") == "Chưa xác định phiên bản"
 
 def test_applicability_vi():
@@ -31,8 +35,25 @@ def test_applicability_vi():
     assert get_applicability_vi("UNKNOWN") == "Chưa đủ thông tin để xác định"
 
 def test_abstention_reasons_vi():
-    assert get_abstention_reason_vi("NO_OFFICIAL_FIELD") == "Chưa có bằng chứng chính thức cho loại thông tin này."
+    assert get_abstention_reason_vi("NO_OFFICIAL_FIELD") == (
+        "Chưa tìm thấy bằng chứng chính thức đủ phù hợp để đối chiếu với nội dung này."
+    )
     assert get_abstention_reason_vi(None) == "Không có"
+
+@pytest.mark.parametrize("code", [
+    "INVALID_URL", "UNSAFE_URL", "FETCH_TIMEOUT", "FETCH_FAILED", "TOO_LARGE",
+    "UNSUPPORTED_CONTENT_TYPE", "EMPTY_CONTENT", "TOO_MANY_REDIRECTS",
+])
+def test_url_fetch_errors_are_safe_and_vietnamese(code):
+    message = get_url_fetch_error_vi(code)
+    assert message
+    assert code not in message
+
+
+def test_url_fetch_messages_have_expected_fallback_and_warning():
+    assert get_url_fetch_error_vi("UNSAFE_URL") == "Đường link này không thể được truy cập vì lý do an toàn."
+    assert get_url_fetch_error_vi("UNKNOWN") == "Không thể đọc nội dung từ đường link này."
+    assert "CONTENT_TRUNCATED" not in get_url_fetch_warning_vi("CONTENT_TRUNCATED")
 
 def test_explanation_vi():
     assert "khớp với bằng chứng" in get_explanation_vi("VERIFIED")
@@ -46,6 +67,12 @@ def test_field_state_and_source_names_vi():
     assert format_date_vi("2026-09-14T15:58:00+07:00") == "14/09/2026"
     assert format_date_vi(None) == "Chưa xác định"
     assert format_date_vi("Học kỳ I") == "Học kỳ I"
+
+
+def test_monitoring_datetime_is_exposed_and_localized_safely():
+    assert format_datetime_vi("2026-09-23T10:05:00Z") == "23/09/2026, 17:05"
+    assert format_datetime_vi(None) == "Chưa có dữ liệu"
+    assert format_datetime_vi("not-a-timestamp") == "Chưa có dữ liệu"
 
 def test_notice_title_hides_flattened_source_badges_only_at_suffix():
     assert get_notice_title_vi("Thông báo tuyển sinh Hot") == "Thông báo tuyển sinh"

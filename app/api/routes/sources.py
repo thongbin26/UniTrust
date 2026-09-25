@@ -10,6 +10,7 @@ from app.sources.repository import (
     list_sources,
     seed_sources,
 )
+from app.sources.seed import BASELINE_SOURCES
 
 
 router = APIRouter(
@@ -25,7 +26,7 @@ router = APIRouter(
 def get_sources() -> list[SourceRead]:
 
     init_database()
-    seed_sources()
+    seed_sources(sources=BASELINE_SOURCES, update_existing=False)
 
     return list_sources()
 
@@ -37,6 +38,6 @@ def get_sources() -> list[SourceRead]:
 def check_sources() -> list[SourceCheckResult]:
 
     init_database()
-    seed_sources()
+    seed_sources(sources=BASELINE_SOURCES, update_existing=False)
 
     return check_all_sources()

@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 from app.api.deps import get_db_connection, get_structured_repository
 from app.api.schemas import NoticeSearchIndexItem
 from app.verification.repository import OfficialStructuredRepository
+from app.monitoring.repository import latest_notice_activity
 import sqlite3
 
 router = APIRouter(prefix="/evidence", tags=["Evidence"])
@@ -48,6 +49,7 @@ def list_notices(conn: sqlite3.Connection = Depends(get_db_connection), repo: Of
 
 @router.get("/search-index", response_model=List[NoticeSearchIndexItem])
 def get_search_index(conn: sqlite3.Connection = Depends(get_db_connection)):
+    activity = latest_notice_activity()
     cursor = conn.cursor()
     cursor.execute("""
         SELECT n.notice_id, n.title, s.name as source_display_name,
@@ -70,6 +72,7 @@ def get_search_index(conn: sqlite3.Connection = Depends(get_db_connection)):
             "source_id": r["source_id"],
             "source_display_name": r["source_display_name"],
             "searchable_text": r["raw_text"],
+            "monitoring_activity": activity.get(r["notice_id"]),
         })
     return results
 
@@ -109,11 +112,11 @@ def get_notice(notice_id: int, conn: sqlite3.Connection = Depends(get_db_connect
 @router.get("/notices/{notice_id}/versions")
 def get_notice_versions(notice_id: int, conn: sqlite3.Connection = Depends(get_db_connection)):
     cursor = conn.cursor()
-    cursor.execute("SELECT version_id, fetched_at as retrieved_at FROM notice_versions WHERE notice_id = ? ORDER BY version_id DESC", (notice_id,))
+    cursor.execute("SELECT version_id, fetched_at as retrieved_at, raw_text FROM notice_versions WHERE notice_id = ? ORDER BY version_id DESC", (notice_id,))
     rows = cursor.fetchall()
     if not rows:
         raise HTTPException(status_code=404, detail="No versions found for notice")
-    return [{"version_id": r["version_id"], "retrieved_at": r["retrieved_at"]} for r in rows]
+    return [{"version_id": r["version_id"], "retrieved_at": r["retrieved_at"], "raw_text": r["raw_text"]} for r in rows]
 
 @router.get("/notices/{notice_id}/changes")
 def get_notice_changes(notice_id: int, conn: sqlite3.Connection = Depends(get_db_connection)):

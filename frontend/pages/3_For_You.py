@@ -4,6 +4,7 @@ from html import escape
 import streamlit as st
 
 from frontend.api_client import api_client
+from frontend.for_you_presenter import group_visible_obligations
 from frontend.profile_state import (
     COHORT_LABELS,
     api_profile,
@@ -16,7 +17,7 @@ from frontend.profile_state import (
     sync_profile_state,
 )
 from frontend.ui_style import apply_global_styles, page_header, page_marker
-from frontend.ui_translations import get_field_name_vi, get_temporal_state_vi
+from frontend.ui_translations import format_datetime_vi, get_action_value_vi, get_actionability_vi, get_field_name_vi, get_temporal_state_vi
 
 
 apply_global_styles()
@@ -24,7 +25,7 @@ page_marker("for-you")
 page_header(
     "Nghĩa vụ theo hồ sơ",
     "Dành cho bạn",
-    "Lưu một hồ sơ ngắn để nhận biết thông báo nào có thể áp dụng, thông báo nào còn thiếu dữ liệu và thông báo nào không phù hợp với hồ sơ hiện tại.",
+    "Lưu một hồ sơ ngắn để xem những thông báo có thể cần quan tâm, những mục còn thiếu dữ liệu và các thông báo không phù hợp với bạn.",
 )
 
 catalog = load_catalog()
@@ -37,7 +38,7 @@ def _html_text(value) -> str:
 
 def render_provisional_note() -> None:
     st.markdown(
-        '<div class="ut-empty" style="background:var(--ut-warning-soft);border-color:#eadcb7;margin-bottom:1rem;"><strong>Đang tiếp tục đối chiếu</strong>Thông tin đơn vị quản lý đang chờ đối chiếu thêm với nguồn chính thức mới.</div>',
+        '<div class="ut-empty" style="background:var(--ut-warning-soft);border-color:#eadcb7;margin-bottom:1rem;"><strong>Đang tiếp tục đối chiếu</strong>Quan hệ khoa/ngành đang được UniTrust tiếp tục đối chiếu nguồn chính thức.</div>',
         unsafe_allow_html=True,
     )
 
@@ -84,6 +85,28 @@ def render_obligation(obligation: dict, status_class: str) -> None:
         """,
         unsafe_allow_html=True,
     )
+    brief = obligation.get("action_brief")
+    # An UNKNOWN applicability result is useful context, not authorization to
+    # direct a student to act.  Keep the official notice and explanation only.
+    if brief and obligation.get("applicability", {}).get("status") == "APPLIES":
+        missing = brief.get("missing_information") or []
+        action_heading = "Yêu cầu trong thông báo" if brief.get("deadline_status") == "EXPIRED" else "Bạn cần làm gì"
+        detail = [f"<strong>{action_heading}:</strong> {escape(get_action_value_vi(brief.get('action')))}"]
+        if brief.get("deadline"):
+            detail.append(f"<strong>Hạn chót:</strong> {escape(str(brief['deadline']))}")
+            lifecycle = get_actionability_vi(brief.get("deadline_status"))
+            if lifecycle:
+                detail.append(f"<strong>Trạng thái hạn:</strong> {escape(lifecycle)}")
+        else:
+            detail.append("<strong>Hạn chót:</strong> Chưa xác định từ nguồn chính thức")
+        if missing:
+            detail.append(f"<strong>Chưa xác định:</strong> {escape('; '.join(missing))}")
+        st.markdown(
+            '<div class="ut-card-flat" style="margin:-.3rem 0 1rem;background:var(--ut-surface-subtle);">'
+            '<div class="ut-section-kicker">Tóm tắt việc cần làm</div>'
+            + '<br>'.join(detail) + '</div>',
+            unsafe_allow_html=True,
+        )
 
 
 def render_obligation_list(items: list[dict], status_class: str, initially_visible: int | None = None) -> None:
@@ -188,25 +211,44 @@ if st.session_state.student_profile and not st.session_state.edit_mode:
         try:
             response = api_client.for_you(api_profile(st.session_state.student_profile))
             obligations = response["obligations"]
-            applies = [item for item in obligations if item["applicability"]["status"] == "APPLIES"]
-            unknown = [item for item in obligations if item["applicability"]["status"] == "UNKNOWN"]
-            not_applies = [item for item in obligations if item["applicability"]["status"] == "DOES_NOT_APPLY"]
+            monitoring = response.get("monitoring") or {}
+            if monitoring.get("enabled"):
+                latest = format_datetime_vi(monitoring.get("last_global_check"))
+                st.caption(
+                    f"Theo dõi gần thời gian thực · Cập nhật gần nhất: {latest}. "
+                    f"Nguồn chính thức trong lần quét gần nhất: {monitoring.get('recent_new', 0)} thông báo mới · "
+                    f"{monitoring.get('recent_updated', 0)} thông báo được cập nhật."
+                )
+            visible_groups = group_visible_obligations(obligations)
+            applies = visible_groups["APPLIES"]
+            unknown = visible_groups["UNKNOWN"]
+            not_applies = visible_groups["DOES_NOT_APPLY"]
+            expired_applies = [
+                item for item in obligations
+                if item.get("applicability", {}).get("status") == "APPLIES"
+                and item.get("actionability_status") == "EXPIRED"
+            ]
 
-            st.markdown(f'<div class="ut-section-title">Có thể áp dụng cho bạn <span class="ut-count">{len(applies)}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ut-section-title">Đang áp dụng cho bạn <span class="ut-count">{len(applies)}</span></div>', unsafe_allow_html=True)
             if applies:
                 render_obligation_list(applies, "applies")
             else:
                 st.markdown(
-                    '<div class="ut-empty"><strong>Chưa có nghĩa vụ áp dụng trực tiếp</strong>Không có thông báo nào khớp đầy đủ với hồ sơ hiện tại.</div>',
+                    '<div class="ut-empty"><strong>Chưa có nghĩa vụ còn hiệu lực khớp đầy đủ</strong>Trong dữ liệu UniTrust hiện có, chưa có thông báo còn cần quan tâm nào khớp đầy đủ với hồ sơ của bạn.</div>',
                     unsafe_allow_html=True,
                 )
+
+            if expired_applies:
+                with st.expander(f"Yêu cầu đã hết hạn ({len(expired_applies)})"):
+                    st.caption("Các yêu cầu dưới đây được lưu để tham khảo; thời hạn đã qua nên không nên hiểu là việc cần làm ngay.")
+                    render_obligation_list(expired_applies, "not-applies")
 
             st.markdown(f'<div class="ut-section-title">Chưa đủ thông tin để xác định <span class="ut-count">{len(unknown)}</span></div>', unsafe_allow_html=True)
             if unknown:
                 st.caption("Hồ sơ hiện chưa có đủ thông tin để xác định các thông báo dưới đây có áp dụng cho bạn hay không.")
                 render_obligation_list(unknown, "unknown", initially_visible=4)
             else:
-                st.caption("Không có thông báo nào đang chờ thêm thông tin hồ sơ.")
+                st.caption("Trong dữ liệu UniTrust hiện có, chưa có thông báo còn cần quan tâm nào đang chờ thêm thông tin hồ sơ.")
 
             with st.expander(f"Không áp dụng theo hồ sơ hiện tại ({len(not_applies)})"):
                 if not_applies:

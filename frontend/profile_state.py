@@ -30,19 +30,27 @@ def load_catalog():
 
 
 def major_options(catalog, faculty_label):
-    faculty = next((f for f in catalog["faculties"] if f["display_name"] == faculty_label), None)
+    faculty = next((f for f in catalog.get("faculties", []) if f["display_name"] == faculty_label), None)
     if not faculty or faculty["status"] == "UNVERIFIED":
         return []
-    return [p["display_name"] for p in faculty["programs"]
+    return [p["display_name"] for p in faculty.get("programs", [])
             if p["faculty_assignment_status"] in ("VERIFIED", "PROVISIONAL")]
 
 
 def make_profile(catalog, faculty_label, major_label, cohort):
-    faculty = next((f for f in catalog["faculties"] if f["display_name"] == faculty_label), None)
+    faculty = next((f for f in catalog.get("faculties", []) if f["display_name"] == faculty_label), None)
     faculty_label = faculty["display_name"] if faculty else None
+    if faculty and major_label not in major_options(catalog, faculty_label):
+        aliased = next(
+            (p["display_name"] for p in faculty.get("programs", [])
+             if major_label in p.get("aliases", [])
+             and p["faculty_assignment_status"] in ("VERIFIED", "PROVISIONAL")),
+            None,
+        )
+        major_label = aliased
     if major_label not in major_options(catalog, faculty_label):
         major_label = None
-    program = next((p for p in faculty["programs"] if p["display_name"] == major_label), None) if faculty else None
+    program = next((p for p in faculty.get("programs", []) if p["display_name"] == major_label), None) if faculty else None
     return {
         "faculty_label": faculty_label,
         "major_label": major_label,

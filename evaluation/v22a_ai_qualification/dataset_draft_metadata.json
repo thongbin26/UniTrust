@@ -1,0 +1,53 @@
+{
+  "batch_id": "Q001-Q006",
+  "candidate_count": 6,
+  "total_claims": 6,
+  "provenance_counts": {
+    "SOURCE_DERIVED": 3,
+    "CONTROLLED_PARAPHRASE": 2,
+    "CONTROLLED_SYNTHETIC": 1
+  },
+  "difficulty_counts": {
+    "MEDIUM": 2,
+    "HARD": 4
+  },
+  "category_counts": {
+    "SINGLE_CLAIM": 6,
+    "DATE_RANGE": 4,
+    "LOCATION": 1,
+    "DATE_FULL": 1,
+    "EXCEPTION": 2,
+    "DOCUMENT": 1,
+    "DATE_MISSING_YEAR": 1
+  },
+  "field_support_counts": {
+    "audience": 5,
+    "action": 6,
+    "action_normalized": 6,
+    "object_hint": 5,
+    "deadline_raw": 6,
+    "deadline_normalized": 5,
+    "location": 1,
+    "exceptions": 2,
+    "required_documents": 1
+  },
+  "source_obligations_represented": [
+    "INV-1-o1",
+    "INV-26-o2",
+    "INV-3-o1",
+    "INV-26-o1",
+    "INV-5-o1"
+  ],
+  "authoring_audit_counts": {
+    "PASS": 6
+  },
+  "exact_duplicate_count": 0,
+  "normalized_duplicate_count": 0,
+  "near_duplicate_concern_count": 0,
+  "historical_exact_overlap_count": 0,
+  "normalization_conventions": {
+    "date_range_scalar_deadline": "For a bounded date range represented by scalar deadline_normalized, use the terminal/end date; preserve the complete range in deadline_raw.",
+    "example": "14/9/2026 đến 18/9/2026 -> 2026-09-18",
+    "status": "PRECOMMITTED_BENCHMARK_NORMALIZATION_CONVENTION"
+  }
+}

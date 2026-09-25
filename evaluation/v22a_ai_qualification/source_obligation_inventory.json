@@ -1,0 +1,560 @@
+[
+  {
+    "inventory_id": "INV-1-o1",
+    "annotation_file": "data/annotations/batch_001/01_notice_1.json",
+    "annotation_record_id": "o1",
+    "notice_id": 1,
+    "version_id": 1,
+    "title": "Thông báo về việc xếp lớp tiếng Anh và kiểm tra trình độ tiếng Anh đầu vào đối với sinh viên khóa tuyển sinh năm 2026 Hot",
+    "official_source_url": "https://dut.udn.vn/Tintuc/Thongbao/id/12264",
+    "reviewed_fields": {
+      "audience": "Sinh viên đã được xếp lớp theo Phương thức 1 hoặc Phương thức 2 nhưng có nguyện vọng tham gia kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp",
+      "action": "register",
+      "object_hint": "đăng ký kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp",
+      "deadline": "14/9/2026 đến 18/9/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": "Khu hành chính 1 cửa (khu A)",
+      "exceptions": []
+    },
+    "supporting_text_reference": "Phòng Đào tạo và Bảo đảm Chất lượng thông báo cho tất cả các em sinh viên khóa tuyển sinh 2026\n\"Về việc xếp lớp tiếng Anh và kiểm tra trình độ tiếng Anh đầu vào đối với sinh viên khóa tuyển sinh năm 2026\".\n1. Chi tiết thông báo xem:\nTẠI ĐÂY\n2.\nSinh viên xếp lớp theo\nPhương thức 1: Sử dụng chứng chỉ tiếng Anh\n(Chi tiết có trong thông báo)\na) Áp dụng đối với sinh viên có chứng chỉ tiếng Anh còn giá trị tính đến ngày 20/6/2026 (thời hạn cung cấp chứng chỉ ngoại ngữ theo Quy chế tuyển sinh 2026).\nChứng chỉ được quy đổi để miễn học hoặc xếp vào lớp tương ứng theo bảng quy đổi tại Phụ lục I kèm theo Thông báo này.\nb)\nDanh sách sinh viên được xếp lớp tiếng Anh theo Phương thức 1 được công bố tại website\nhttps://sv.dut.udn.vn\nsau khi có kết quả hậu kiểm hợp lệ.\n3. Danh sách sinh viên được xếp lớp theo\nPhương thức 2:\nSử dụng kết quả thi tốt nghiệp THPT môn tiếng Anh xem:\nTẠI ĐÂY\nLưu ý:\nSinh viên đã được xếp lớp theo\nPhương thức 1 hoặc Phương thức 2\nnhưng có nguyện vọng tham gia kiểm tra xếp lớp đầu vào để thay đổi lớp học phần được xếp: sinh viên đăng ký trực tiếp tại Khu hành chính 1 cửa (khu A), từ ngày\n14/9/2026 đến 18/9/2026\n.\n4. Phương thức 3:\nTổ chức kiểm tra trình độ tiếng Anh và xếp lớp\n- Thời gian: sáng ngày 04/10/2026 (Chủ nhật), Từ\n07h00 đến\n10h45,\nĐịa điểm : Khu giảng đường F và giảng đường H.\nMọi thắc mắc cần hỗ trợ, sinh viên gửi email đến Phòng Đào tạo và Bảo đảm chất lượng (dt-bdcl.dhbk@dut.udn.vn), tiêu đề email “\nAV đầu vào-Khoa2026-MSSV\n” hoặc gọi điện thoại số 0905.168.760 gặp chuyên viên Nguyễn Văn Khai./.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-3-o1",
+    "annotation_file": "data/annotations/batch_001/02_notice_3.json",
+    "annotation_record_id": "o1",
+    "notice_id": 3,
+    "version_id": 3,
+    "title": "THÔNG BÁO Khảo sát lớp học phần học kỳ hè, năm học 2025-2026.",
+    "official_source_url": "https://dut.udn.vn/Tintuc/Thongbao/id/12237",
+    "reviewed_fields": {
+      "audience": "Sinh viên tham gia học kỳ hè",
+      "action": "other",
+      "object_hint": "thực hiện khảo sát lớp học phần học kỳ hè",
+      "deadline": "Từ ngày 08/09/2026 đến ngày 20/09/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "Nhằm thu thập ý kiến phản hồi của sinh viên về hoạt động giảng dạy và học tập, Nhà trường tổ chức khảo sát lớp học phần học kỳ hè, năm học 2025-2026.\n- Thời gian thực hiện khảo sát: Từ ngày 08/09/2026 đến ngày 20/09/2026.\n- Hình thức khảo sát trực tuyến tại website: https://fb.dut.udn.vn\nSinh viên tham gia học kỳ hè sử dụng tài khoản cá nhân (số thẻ sinh viên) đăng nhập vào website: https://fb.dut.udn.vn/PageDangNhap.aspx để thực hiện trả lời khảo sát (mục [Khảo sát] → [Về lớp học phần]).\nĐề nghị sinh viên tham gia khảo sát đầy đủ, nghiêm túc và đúng thời gian quy định.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-5-o1",
+    "annotation_file": "data/annotations/batch_001/03_notice_5.json",
+    "annotation_record_id": "o1",
+    "notice_id": 5,
+    "version_id": 5,
+    "title": "Thông báo phúc khảo điểm thi cuối kỳ Hè năm học 2025-2026",
+    "official_source_url": "https://dut.udn.vn/Tintuc/Thongbao/id/12183",
+    "reviewed_fields": {
+      "audience": null,
+      "action": "register",
+      "object_hint": "đăng ký phúc khảo điểm thi cuối học kỳ hè trên hệ thống thông tin sinh viên",
+      "deadline": "23/8/2026 đến 25/8/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": [
+        "Không áp dụng phúc khảo cho các học phần thi vấn đáp.",
+        "Chỉ đăng ký trên hệ thống, không nộp đơn."
+      ]
+    },
+    "supporting_text_reference": "Phòng Quản lý Chất lượng và Pháp chế Thông báo đến các em kế hoạch phúc khảo điểm thi cuối học kỳ hè năm học 2025-2026 như sau:\n- Đăng ký trên hệ thống thông tin sinh viên: từ ngày\n23/8/2026 đến 25/8/2026.\n-\nSinh viên không được đăng kí các học phần thi vấn đáp (nếu đăng kí cũng không được phúc khảo)\n* Lưu ý: - Sinh viên chỉ đăng kí trên hệ thống thông tin sv,\nkhông nộp đơn\n.\nSinh viên xem kết quả phúc khảo:\nTẠI ĐÂY\n- Nếu sinh viên đã\nđăng kí nhầm thì hủy\nđăng ký phúc khảo\nĐĂNG KÝ TẠI ĐÂY\n(LƯU Ý DÙNG TÀI KHOẢN CỦA SINH VIÊN)\n- Mọi thắc mắc xin báo về email đến Phòng QLCL&PC: qml.dhbk@dut.udn.vn; để được giải đáp.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "DATE_FULL"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-2-o1",
+    "annotation_file": "data/annotations/batch_001/04_notice_2.json",
+    "annotation_record_id": "o1",
+    "notice_id": 2,
+    "version_id": 2,
+    "title": "Thông báo kiểm tra trình độ tiếng Anh đầu vào cho sinh viên Chương trình tiên tiến và Cơ khí hàng không (dạy và học bằng tiếng Anh), khóa tuyển sinh năm 2026 New",
+    "official_source_url": "https://dut.udn.vn/Tintuc/Thongbao/id/12256",
+    "reviewed_fields": {
+      "audience": "Sinh viên",
+      "action": "check",
+      "object_hint": "xem thông báo kiểm tra trình độ tiếng Anh đầu vào",
+      "deadline": null,
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "Sinh viên xem thông báo kiểm tra:\nTẠI ĐÂY\nDanh sách miễn thi:\nTẠI ĐÂY\nDanh sách phòng thi, số báo danh:\nTẠI ĐÂY",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-26-o1",
+    "annotation_file": "data/annotations/batch_001/05_notice_26.json",
+    "annotation_record_id": "o1",
+    "notice_id": 26,
+    "version_id": 26,
+    "title": "Thông báo gia hạn thời gian tự đánh giá kết quả rèn luyện học kỳ II năm học 2025–2026 (đợt 1) đối với sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ",
+    "official_source_url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12119",
+    "reviewed_fields": {
+      "audience": "sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ có đăng ký học phần trong học kỳ II năm học 2025-2026",
+      "action": "update",
+      "object_hint": "tự đánh giá kết quả rèn luyện học kỳ II năm học 2025-2026",
+      "deadline": "Từ 15h00 ngày 16/7/2026 đến hết ngày 17/7/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "- Thời gian gia hạn tự đánh giá kết quả rèn luyện (ĐGRL) cho sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ có đăng ký học phần trong học kỳ II năm học 2025-2026:\nTừ 15h00 ngày 16/7/2026 đến hết ngày 17/7/2026\n;\n- Sau thời gian trên, sinh viên không thực hiện đầy đủ quy trình ĐGRL nhận 0 điểm;\n- Thời gian Lớp trưởng và Chủ nhiệm lớp hoàn thành việc xác nhận điểm cho lớp:\nhết ngày 24/7/2026\n;\n- Tất cả các lớp các khóa 2021, khóa 2022 và các lớp trễ tiến độ nộp hồ sơ ĐGRL HK2/2025-2026 về Khoa; Khoa tổng hợp, xác nhận và nộp về Phòng Công tác Sinh viên\ntrước ngày 30/7/2026\n.\n- Đối với các lớp không nộp hồ sơ đúng thời hạn quy định, Nhà trường xem xét hoãn xét cấp học bổng khuyến khích học tập HK2/2025-2026 và trừ điểm thi đua khen thưởng năm học.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-26-o2",
+    "annotation_file": "data/annotations/batch_001/05_notice_26.json",
+    "annotation_record_id": "o2",
+    "notice_id": 26,
+    "version_id": 26,
+    "title": "Thông báo gia hạn thời gian tự đánh giá kết quả rèn luyện học kỳ II năm học 2025–2026 (đợt 1) đối với sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ",
+    "official_source_url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12119",
+    "reviewed_fields": {
+      "audience": "Tất cả các lớp các khóa 2021, khóa 2022 và các lớp trễ tiến độ",
+      "action": "submit",
+      "object_hint": "nộp hồ sơ ĐGRL HK2/2025-2026 về Khoa",
+      "deadline": "trước ngày 30/7/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": [
+        "Nếu không nộp hồ sơ đúng hạn, Nhà trường có thể hoãn xét học bổng khuyến khích học tập và trừ điểm thi đua khen thưởng."
+      ]
+    },
+    "supporting_text_reference": "- Thời gian gia hạn tự đánh giá kết quả rèn luyện (ĐGRL) cho sinh viên khóa 2021, khóa 2022 và các lớp trễ tiến độ có đăng ký học phần trong học kỳ II năm học 2025-2026:\nTừ 15h00 ngày 16/7/2026 đến hết ngày 17/7/2026\n;\n- Sau thời gian trên, sinh viên không thực hiện đầy đủ quy trình ĐGRL nhận 0 điểm;\n- Thời gian Lớp trưởng và Chủ nhiệm lớp hoàn thành việc xác nhận điểm cho lớp:\nhết ngày 24/7/2026\n;\n- Tất cả các lớp các khóa 2021, khóa 2022 và các lớp trễ tiến độ nộp hồ sơ ĐGRL HK2/2025-2026 về Khoa; Khoa tổng hợp, xác nhận và nộp về Phòng Công tác Sinh viên\ntrước ngày 30/7/2026\n.\n- Đối với các lớp không nộp hồ sơ đúng thời hạn quy định, Nhà trường xem xét hoãn xét cấp học bổng khuyến khích học tập HK2/2025-2026 và trừ điểm thi đua khen thưởng năm học.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-24-o1",
+    "annotation_file": "data/annotations/batch_001/06_notice_24.json",
+    "annotation_record_id": "o1",
+    "notice_id": 24,
+    "version_id": 24,
+    "title": "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN, GIẢM HỌC PHÍ, TRỢ CẤP XÃ HỘI VÀ HỖ TRỢ CHI PHÍ HỌC TẬP HỌC KỲ I, NĂM HỌC 2026 -2027",
+    "official_source_url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12181",
+    "reviewed_fields": {
+      "audience": "SV hệ chính quy",
+      "action": "submit",
+      "object_hint": "nộp hồ sơ chính sách miễn, giảm học phí, trợ cấp xã hội và hỗ trợ chi phí học tập",
+      "deadline": "10/9/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": "Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)",
+      "exceptions": []
+    },
+    "supporting_text_reference": "Nhà trường hướng dẫn sinh viên (SV) nộp hồ sơ chính sách về Miễn, giảm học phí, Trợ cấp xã hội và Hỗ trợ chi phí học tập học kỳ I/\n2026\n-\n2027\ncho SV hệ chính quy, cụ thể như sau:\n1.\nCách thức nộp hồ sơ: SV nộp hồ sơ trực tiếp tại Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)\n2.\nThời gian nộp hồ sơ: Từ nay đến hết ngày\n10\n/\n9\n/2026 (vào khung giờ 07h30-11h00 từ thứ Hai đến thứ Sáu).\nLưu ý:\nSinh viên là con CBVC thuộc Đại học Đà Nẵng nộp đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác về Phòng Công tác Sinh viên, cụ thể như sau:\n- Đối với con CBVC của Trường ĐHBK, nộp đơn đề nghị một lần duy nhất vào đầu khoá học.\n- Đối với con CBVC thuộc các trường đại học thành viên của ĐHĐN, nộp đơn đề nghị vào đầu mỗi học kỳ trong suốt khoá học.\nSinh viên tải các mẫu đơn:\nhttps://dut.udn.vn/Phong/CTSV/Gioithieu/id/1077\nMọi thắc mắc, sinh viên vào nhóm zalo:\nhttps://zalo.me/g/qzznsy080\nChi tiết Thông báo xem tại:\nhttps://drive.google.com/file/d/1GXQH2URkObOQFzk5WkgtkLI2EfeMmEQR/view?usp=sharing",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-24-o2",
+    "annotation_file": "data/annotations/batch_001/06_notice_24.json",
+    "annotation_record_id": "o2",
+    "notice_id": 24,
+    "version_id": 24,
+    "title": "THÔNG BÁO NỘP HỒ SƠ XÉT MIỄN, GIẢM HỌC PHÍ, TRỢ CẤP XÃ HỘI VÀ HỖ TRỢ CHI PHÍ HỌC TẬP HỌC KỲ I, NĂM HỌC 2026 -2027",
+    "official_source_url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12181",
+    "reviewed_fields": {
+      "audience": "Sinh viên là con CBVC thuộc Đại học Đà Nẵng",
+      "action": "submit",
+      "object_hint": "nộp đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác",
+      "deadline": "10/9/2026",
+      "amount": null,
+      "required_documents": [
+        "đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác"
+      ],
+      "location": "Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)",
+      "exceptions": [
+        "Con CBVC của Trường ĐHBK nộp đơn một lần duy nhất vào đầu khoá học.",
+        "Con CBVC thuộc các trường đại học thành viên của ĐHĐN nộp đơn vào đầu mỗi học kỳ."
+      ]
+    },
+    "supporting_text_reference": "Nhà trường hướng dẫn sinh viên (SV) nộp hồ sơ chính sách về Miễn, giảm học phí, Trợ cấp xã hội và Hỗ trợ chi phí học tập học kỳ I/\n2026\n-\n2027\ncho SV hệ chính quy, cụ thể như sau:\n1.\nCách thức nộp hồ sơ: SV nộp hồ sơ trực tiếp tại Phòng Công tác Sinh viên, Trường Đại học Bách khoa (Phòng S06.08, Khu S)\n2.\nThời gian nộp hồ sơ: Từ nay đến hết ngày\n10\n/\n9\n/2026 (vào khung giờ 07h30-11h00 từ thứ Hai đến thứ Sáu).\nLưu ý:\nSinh viên là con CBVC thuộc Đại học Đà Nẵng nộp đơn đề nghị giảm học phí có xác nhận cơ quan cha/mẹ công tác về Phòng Công tác Sinh viên, cụ thể như sau:\n- Đối với con CBVC của Trường ĐHBK, nộp đơn đề nghị một lần duy nhất vào đầu khoá học.\n- Đối với con CBVC thuộc các trường đại học thành viên của ĐHĐN, nộp đơn đề nghị vào đầu mỗi học kỳ trong suốt khoá học.\nSinh viên tải các mẫu đơn:\nhttps://dut.udn.vn/Phong/CTSV/Gioithieu/id/1077\nMọi thắc mắc, sinh viên vào nhóm zalo:\nhttps://zalo.me/g/qzznsy080\nChi tiết Thông báo xem tại:\nhttps://drive.google.com/file/d/1GXQH2URkObOQFzk5WkgtkLI2EfeMmEQR/view?usp=sharing",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-29-o1",
+    "annotation_file": "data/annotations/batch_001/07_notice_29.json",
+    "annotation_record_id": "o1",
+    "notice_id": 29,
+    "version_id": 29,
+    "title": "Thông báo học bổng Vallet năm học 2026-2027",
+    "official_source_url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12104",
+    "reviewed_fields": {
+      "audience": "Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026",
+      "action": "register",
+      "object_hint": "đăng ký học bổng Vallet tại đường link đăng ký",
+      "deadline": null,
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "Phòng Công tác Sinh viên thông báo học bổng Vallet năm học 2026-2027\n1. Số lượng và số lượng học bổng:\n- Số lượng: 15 suất\n- Giá trị: 34.000.000 đồng/suất\n2. Tiêu chuẩn xét chọn sinh viên nhận học bổng:\n- Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026;\n- Là sinh viên học giỏi trong 3 học kỳ liên tiếp gồm HK 2 năm học 2024-2025; HK 1 và HK 2 năm học 2025-2026;\n- Ưu tiên cho những sinh viên đạt các giải thưởng về học tập, về NCKH trong thời gian theo học đại học (tính đến hết năm học 2025-2026), có các chứng chỉ quốc tế về tiếng Anh hay tiếng Pháp vẫn còn giá trị tính đến hết năm học 2025-2026.\n3. Nộp hồ sơ đề nghị xét cấp học bổng, bao gồm:\n- Phiếu đăng ký học bổng: sinh viên in ra và điền tay, tải mẫu tại đường link:\nhttps://drive.google.com/file/d/1ljqc0v0pgg6bxHIlF0KcTk6LV9l5EV5L/view?usp=sharing\n- Các bảng điểm của 3 học kỳ liên tiếp như đã nói ở mục ngay trên (HK 2 năm học 2024-2025; HK 1 và HK 2 năm học 2025-2026) có đóng dấu xác nhận của Nhà trường;\n- Bản sao công chứng CMND hoặc CCCD;\n- Bản sao công chứng của các tất cả các chứng nhận về thành tích học tập và/hoặc NCKH, chứng chỉ quốc tế về tiếng Anh hay Pháp, HĐCĐ trong thời gian học đại học (tính đến hết năm học 2025-2026);\nSinh viên đăng ký học bổng tại link:\nhttps://forms.gle/AtyFoN5pMQC6cvLJ8\nvà nộp hồ sơ về\nPhòng Công tác Sinh viên - Phòng S06.08\n(Chuyên viên Đới Phương Thanh) thời gian: từ\n09h00-11h00 ngày 24/7/2026",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-29-o2",
+    "annotation_file": "data/annotations/batch_001/07_notice_29.json",
+    "annotation_record_id": "o2",
+    "notice_id": 29,
+    "version_id": 29,
+    "title": "Thông báo học bổng Vallet năm học 2026-2027",
+    "official_source_url": "https://dut.udn.vn/Phong/CTSV/Thongbao/id/12104",
+    "reviewed_fields": {
+      "audience": "Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026",
+      "action": "submit",
+      "object_hint": "nộp hồ sơ đề nghị xét cấp học bổng Vallet",
+      "deadline": "09h00-11h00 ngày 24/7/2026",
+      "amount": null,
+      "required_documents": [
+        "Phiếu đăng ký học bổng",
+        "Các bảng điểm của 3 học kỳ liên tiếp",
+        "Bản sao công chứng CMND hoặc CCCD",
+        "Bản sao công chứng các chứng nhận/thành tích, chứng chỉ quốc tế và hoạt động cộng đồng nếu có"
+      ],
+      "location": "Phòng Công tác Sinh viên - Phòng S06.08",
+      "exceptions": []
+    },
+    "supporting_text_reference": "Phòng Công tác Sinh viên thông báo học bổng Vallet năm học 2026-2027\n1. Số lượng và số lượng học bổng:\n- Số lượng: 15 suất\n- Giá trị: 34.000.000 đồng/suất\n2. Tiêu chuẩn xét chọn sinh viên nhận học bổng:\n- Sinh viên từ năm thứ 2 đến năm áp cuối trong năm học 2025-2026;\n- Là sinh viên học giỏi trong 3 học kỳ liên tiếp gồm HK 2 năm học 2024-2025; HK 1 và HK 2 năm học 2025-2026;\n- Ưu tiên cho những sinh viên đạt các giải thưởng về học tập, về NCKH trong thời gian theo học đại học (tính đến hết năm học 2025-2026), có các chứng chỉ quốc tế về tiếng Anh hay tiếng Pháp vẫn còn giá trị tính đến hết năm học 2025-2026.\n3. Nộp hồ sơ đề nghị xét cấp học bổng, bao gồm:\n- Phiếu đăng ký học bổng: sinh viên in ra và điền tay, tải mẫu tại đường link:\nhttps://drive.google.com/file/d/1ljqc0v0pgg6bxHIlF0KcTk6LV9l5EV5L/view?usp=sharing\n- Các bảng điểm của 3 học kỳ liên tiếp như đã nói ở mục ngay trên (HK 2 năm học 2024-2025; HK 1 và HK 2 năm học 2025-2026) có đóng dấu xác nhận của Nhà trường;\n- Bản sao công chứng CMND hoặc CCCD;\n- Bản sao công chứng của các tất cả các chứng nhận về thành tích học tập và/hoặc NCKH, chứng chỉ quốc tế về tiếng Anh hay Pháp, HĐCĐ trong thời gian học đại học (tính đến hết năm học 2025-2026);\nSinh viên đăng ký học bổng tại link:\nhttps://forms.gle/AtyFoN5pMQC6cvLJ8\nvà nộp hồ sơ về\nPhòng Công tác Sinh viên - Phòng S06.08\n(Chuyên viên Đới Phương Thanh) thời gian: từ\n09h00-11h00 ngày 24/7/2026",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-17-o1",
+    "annotation_file": "data/annotations/batch_001/08_notice_17.json",
+    "annotation_record_id": "o1",
+    "notice_id": 17,
+    "version_id": 17,
+    "title": "VEDC 2026 – Cuộc thi Thiết kế Điện tử Việt Nam 2026 chính thức khởi động",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/11996",
+    "reviewed_fields": {
+      "audience": "Sinh viên các trường Đại học, Cao đẳng trên toàn quốc; mỗi đội gồm 2–5 thành viên",
+      "action": "register",
+      "object_hint": "đăng ký tham gia VEDC 2026 và nộp hồ sơ sơ loại",
+      "deadline": "Hạn nộp hồ sơ: 30/06/2026",
+      "amount": null,
+      "required_documents": [
+        "mô tả ý tưởng",
+        "sơ đồ hệ thống",
+        "tính mới",
+        "khả năng ứng dụng"
+      ],
+      "location": null,
+      "exceptions": [
+        "Video minh họa là tài liệu tùy chọn nếu có."
+      ]
+    },
+    "supporting_text_reference": "Cuộc thi Thiết kế Điện tử Việt Nam 2026 (VEDC 2026) chính thức được phát động trên quy mô toàn quốc. Đây là sân chơi học thuật dành cho sinh viên yêu thích lĩnh vực Điện tử, IoT và Trí tuệ nhân tạo, tạo cơ hội nghiên cứu, sáng tạo và hiện thực hóa các ý tưởng công nghệ.\n1. Chủ đề\n“AI nhúng cho hệ thống IoT thông minh” (Embedded AI for Smart IoT Systems)\n2. Đơn vị tổ chức\n- Hội Vô tuyến – Điện tử Việt Nam (REV)\n– Đơn vị chủ trì\n- Phối hợp tổ chức:\na) Trường Đại học Công nghệ Thông tin và Truyền thông Việt – Hàn (VKU), Đại học Đà Nẵng (đơn vị đăng cai)\nb) Học viện Kỹ thuật Quân sự (MTA)\nc) Trường Đại học Khoa học Tự nhiên – ĐHQG TP.HCM (HCMUS)\n3. Nội dung cuộc thi\nSinh viên tham gia nghiên cứu, thiết kế và xây dựng các sản phẩm điện tử ứng dụng hệ thống nhúng và công nghệ IoT nhằm giải quyết các vấn đề thực tiễn.\nLĩnh vực ưu tiên:\nCông nghiệp, nông nghiệp, môi trường, y tế, giáo dục, giao thông, đô thị thông minh.\nYêu cầu kỹ thuật:\n- Có thành phần nhúng và IoT (cảm biến, vi điều khiển, FPGA/GPU, kết nối mạng...)\n- Phần cứng: ESP32, STM32, Raspberry Pi, Arduino, Jetson Nano, Google Coral, FPGA hoặc PCB tự thiết kế\n- Phần mềm: firmware, hệ thống kết nối cloud hoặc server nội bộ, dashboard hiển thị dữ liệu\n- Khuyến khích tích hợp AI/ML trên thiết bị nhúng hoặc thiết bị biên\n4. Đối tượng tham gia\n- Sinh viên các trường Đại học, Cao đẳng trên toàn quốc\n- Mỗi đội gồm\n2–5 thành viên\n- Khuyến khích có giảng viên hướng dẫn\n5. Lộ trình và thời gian\na) Vòng 1 – Sơ loại (theo 3 miền)\n- Hạn nộp hồ sơ: 30/06/2026\n- Công bố kết quả: trước 11/07/2026\n- Chọn 30 đội vào vòng Bán kết\nb) Vòng 2 – Bán kết (theo 3 miền)\n- Thời gian: 19 – 24/10/2026\n- Địa điểm: Hà Nội (MTA), Đà Nẵng (VKU), TP.HCM (HCMUS)\n- Công bố kết quả: trước 27/10/2026\n- Chọn 10 đội vào Chung kết\nc) Vòng 3 – Chung kết toàn quốc\n- Thời gian: 25/11/2026\n- Địa điểm: Trường VKU, 470 Trần Đại Nghĩa, Ngũ Hành Sơn, Đà Nẵng\n6. Cơ cấu giải thưởng\n- Giải Nhất: 20 triệu đồng và Giấy chứng nhận\n- 02 Giải Nhì: 10 triệu đồng/giải và Giấy chứng nhận\n- 03 Giải Ba: 6 triệu đồng/giải và Giấy chứng nhận\n- 04 Giải Khuyến khích: 3 triệu đồng/giải và Giấy chứng nhận\n- Giải phụ (Sáng tạo nhất, Được yêu thích nhất, Tiềm năng nhất): 1 triệu đồng/giải và Giấy chứng nhận\n7. Đăng ký tham gia\n- Link đăng ký: https://bom.so/VEDC2026\n- Hồ sơ gồm: mô tả ý tưởng, sơ đồ hệ thống, tính mới, khả năng ứng dụng, video minh họa (nếu có)\n8. Thông tin thêm\nVEDC 2026 không chỉ là một cuộc thi học thuật mà còn là cơ hội kết nối sinh viên với doanh nghiệp công nghệ, góp phần phát triển các ý tưởng sáng tạo thành sản phẩm thực tiễn và định hướng khởi nghiệp.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-13-o1",
+    "annotation_file": "data/annotations/batch_001/09_notice_13.json",
+    "annotation_record_id": "o1",
+    "notice_id": 13,
+    "version_id": 13,
+    "title": "THÔNG BÁO THỜI GIAN VỀ XÉT TỐT NGHIỆP ĐỢT 2 VÀ ĐỢT 3 NĂM 2026 (THÁNG 7)",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/12038",
+    "reviewed_fields": {
+      "audience": "Các sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp",
+      "action": "other",
+      "object_hint": "hoàn tất nghĩa vụ học phí hoặc nộp lưu chiểu Đồ án tốt nghiệp còn thiếu",
+      "deadline": "trước ngày 17/06/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về kế hoạch xét tốt nghiệp đợt 2 và đợt 3 năm 2026 để các bạn chủ động hoàn thiện các thủ tục cần thiết.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 2 NĂM 2026\nDanh sách sinh viên dự kiến được xét tốt nghiệp đợt 2:\nhttps://bom.so/Fc2LX1\nCác sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp cần khẩn trương hoàn tất trước ngày 17/06/2026 để được xét tốt nghiệp.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 3 NĂM 2026 (THÁNG 7)\nĐối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT: cán bộ lớp nhận danh sách tại HC1C từ ngày 16/06, tổ chức cho sinh viên ký tên và nộp 01 ảnh thẻ 2×3 (ghi rõ họ tên phía sau ảnh).\nĐối với các sinh viên khác:\nIn đơn xin xét tốt nghiệp tại trang\nsv.dut.udn.vn\n(mục Đề nghị trường → Xét tốt nghiệp, hoãn tốt nghiệp) và nộp kèm 01 ảnh thẻ 2×3.\nThời hạn nộp đơn xét tốt nghiệp và danh sách đăng ký theo lớp:\nTrước 16h00 ngày 26/06/2026\nĐịa điểm: Phòng Hành chính 1 Cửa - Khu A\nDanh sách sinh viên chưa hoàn thành học phí:\nhttps://bom.so/C1Un6C\nSinh viên cần liên hệ Phòng Kế hoạch Tài chính để kiểm tra và xử lý.\nĐối với sinh viên cần nộp bổ sung các chứng chỉ, thời hạn hoàn thành là trước ngày 15/06/2026 để đảm bảo công tác hậu kiểm phục vụ xét tốt nghiệp. Các bạn sinh viên lưu ý theo dõi và thực hiện đầy đủ các yêu cầu đúng thời gian quy định để quá trình xét tốt nghiệp được diễn ra thuận lợi.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-13-o2",
+    "annotation_file": "data/annotations/batch_001/09_notice_13.json",
+    "annotation_record_id": "o2",
+    "notice_id": 13,
+    "version_id": 13,
+    "title": "THÔNG BÁO THỜI GIAN VỀ XÉT TỐT NGHIỆP ĐỢT 2 VÀ ĐỢT 3 NĂM 2026 (THÁNG 7)",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/12038",
+    "reviewed_fields": {
+      "audience": "Đối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT",
+      "action": "submit",
+      "object_hint": "ký tên theo danh sách lớp và nộp 01 ảnh thẻ 2×3",
+      "deadline": "Trước 16h00 ngày 26/06/2026",
+      "amount": null,
+      "required_documents": [
+        "01 ảnh thẻ 2×3"
+      ],
+      "location": "Phòng Hành chính 1 Cửa - Khu A",
+      "exceptions": []
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về kế hoạch xét tốt nghiệp đợt 2 và đợt 3 năm 2026 để các bạn chủ động hoàn thiện các thủ tục cần thiết.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 2 NĂM 2026\nDanh sách sinh viên dự kiến được xét tốt nghiệp đợt 2:\nhttps://bom.so/Fc2LX1\nCác sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp cần khẩn trương hoàn tất trước ngày 17/06/2026 để được xét tốt nghiệp.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 3 NĂM 2026 (THÁNG 7)\nĐối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT: cán bộ lớp nhận danh sách tại HC1C từ ngày 16/06, tổ chức cho sinh viên ký tên và nộp 01 ảnh thẻ 2×3 (ghi rõ họ tên phía sau ảnh).\nĐối với các sinh viên khác:\nIn đơn xin xét tốt nghiệp tại trang\nsv.dut.udn.vn\n(mục Đề nghị trường → Xét tốt nghiệp, hoãn tốt nghiệp) và nộp kèm 01 ảnh thẻ 2×3.\nThời hạn nộp đơn xét tốt nghiệp và danh sách đăng ký theo lớp:\nTrước 16h00 ngày 26/06/2026\nĐịa điểm: Phòng Hành chính 1 Cửa - Khu A\nDanh sách sinh viên chưa hoàn thành học phí:\nhttps://bom.so/C1Un6C\nSinh viên cần liên hệ Phòng Kế hoạch Tài chính để kiểm tra và xử lý.\nĐối với sinh viên cần nộp bổ sung các chứng chỉ, thời hạn hoàn thành là trước ngày 15/06/2026 để đảm bảo công tác hậu kiểm phục vụ xét tốt nghiệp. Các bạn sinh viên lưu ý theo dõi và thực hiện đầy đủ các yêu cầu đúng thời gian quy định để quá trình xét tốt nghiệp được diễn ra thuận lợi.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-13-o3",
+    "annotation_file": "data/annotations/batch_001/09_notice_13.json",
+    "annotation_record_id": "o3",
+    "notice_id": 13,
+    "version_id": 13,
+    "title": "THÔNG BÁO THỜI GIAN VỀ XÉT TỐT NGHIỆP ĐỢT 2 VÀ ĐỢT 3 NĂM 2026 (THÁNG 7)",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/12038",
+    "reviewed_fields": {
+      "audience": "Đối với các sinh viên khác",
+      "action": "submit",
+      "object_hint": "in và nộp đơn xin xét tốt nghiệp",
+      "deadline": "Trước 16h00 ngày 26/06/2026",
+      "amount": null,
+      "required_documents": [
+        "đơn xin xét tốt nghiệp",
+        "01 ảnh thẻ 2×3"
+      ],
+      "location": "Phòng Hành chính 1 Cửa - Khu A",
+      "exceptions": []
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về kế hoạch xét tốt nghiệp đợt 2 và đợt 3 năm 2026 để các bạn chủ động hoàn thiện các thủ tục cần thiết.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 2 NĂM 2026\nDanh sách sinh viên dự kiến được xét tốt nghiệp đợt 2:\nhttps://bom.so/Fc2LX1\nCác sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp cần khẩn trương hoàn tất trước ngày 17/06/2026 để được xét tốt nghiệp.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 3 NĂM 2026 (THÁNG 7)\nĐối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT: cán bộ lớp nhận danh sách tại HC1C từ ngày 16/06, tổ chức cho sinh viên ký tên và nộp 01 ảnh thẻ 2×3 (ghi rõ họ tên phía sau ảnh).\nĐối với các sinh viên khác:\nIn đơn xin xét tốt nghiệp tại trang\nsv.dut.udn.vn\n(mục Đề nghị trường → Xét tốt nghiệp, hoãn tốt nghiệp) và nộp kèm 01 ảnh thẻ 2×3.\nThời hạn nộp đơn xét tốt nghiệp và danh sách đăng ký theo lớp:\nTrước 16h00 ngày 26/06/2026\nĐịa điểm: Phòng Hành chính 1 Cửa - Khu A\nDanh sách sinh viên chưa hoàn thành học phí:\nhttps://bom.so/C1Un6C\nSinh viên cần liên hệ Phòng Kế hoạch Tài chính để kiểm tra và xử lý.\nĐối với sinh viên cần nộp bổ sung các chứng chỉ, thời hạn hoàn thành là trước ngày 15/06/2026 để đảm bảo công tác hậu kiểm phục vụ xét tốt nghiệp. Các bạn sinh viên lưu ý theo dõi và thực hiện đầy đủ các yêu cầu đúng thời gian quy định để quá trình xét tốt nghiệp được diễn ra thuận lợi.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-13-o4",
+    "annotation_file": "data/annotations/batch_001/09_notice_13.json",
+    "annotation_record_id": "o4",
+    "notice_id": 13,
+    "version_id": 13,
+    "title": "THÔNG BÁO THỜI GIAN VỀ XÉT TỐT NGHIỆP ĐỢT 2 VÀ ĐỢT 3 NĂM 2026 (THÁNG 7)",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/12038",
+    "reviewed_fields": {
+      "audience": "Đối với sinh viên cần nộp bổ sung các chứng chỉ",
+      "action": "submit",
+      "object_hint": "nộp bổ sung các chứng chỉ phục vụ xét tốt nghiệp",
+      "deadline": "trước ngày 15/06/2026",
+      "amount": null,
+      "required_documents": [
+        "các chứng chỉ cần nộp bổ sung"
+      ],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về kế hoạch xét tốt nghiệp đợt 2 và đợt 3 năm 2026 để các bạn chủ động hoàn thiện các thủ tục cần thiết.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 2 NĂM 2026\nDanh sách sinh viên dự kiến được xét tốt nghiệp đợt 2:\nhttps://bom.so/Fc2LX1\nCác sinh viên trong danh sách nhưng chưa hoàn thành học phí hoặc chưa nộp lưu chiểu Đồ án tốt nghiệp cần khẩn trương hoàn tất trước ngày 17/06/2026 để được xét tốt nghiệp.\nĐỐI VỚI XÉT TỐT NGHIỆP ĐỢT 3 NĂM 2026 (THÁNG 7)\nĐối với sinh viên khóa 2021 đang làm ĐATN, sinh viên khóa 2022 ngành CNTT: cán bộ lớp nhận danh sách tại HC1C từ ngày 16/06, tổ chức cho sinh viên ký tên và nộp 01 ảnh thẻ 2×3 (ghi rõ họ tên phía sau ảnh).\nĐối với các sinh viên khác:\nIn đơn xin xét tốt nghiệp tại trang\nsv.dut.udn.vn\n(mục Đề nghị trường → Xét tốt nghiệp, hoãn tốt nghiệp) và nộp kèm 01 ảnh thẻ 2×3.\nThời hạn nộp đơn xét tốt nghiệp và danh sách đăng ký theo lớp:\nTrước 16h00 ngày 26/06/2026\nĐịa điểm: Phòng Hành chính 1 Cửa - Khu A\nDanh sách sinh viên chưa hoàn thành học phí:\nhttps://bom.so/C1Un6C\nSinh viên cần liên hệ Phòng Kế hoạch Tài chính để kiểm tra và xử lý.\nĐối với sinh viên cần nộp bổ sung các chứng chỉ, thời hạn hoàn thành là trước ngày 15/06/2026 để đảm bảo công tác hậu kiểm phục vụ xét tốt nghiệp. Các bạn sinh viên lưu ý theo dõi và thực hiện đầy đủ các yêu cầu đúng thời gian quy định để quá trình xét tốt nghiệp được diễn ra thuận lợi.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-16-o1",
+    "annotation_file": "data/annotations/batch_001/10_notice_16.json",
+    "annotation_record_id": "o1",
+    "notice_id": 16,
+    "version_id": 16,
+    "title": "Thông báo về việc tuyển chọn sinh viên tham gia Chương trình trao đổi sinh viên Erasmus KA171 tại Hy Lạp",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/11999",
+    "reviewed_fields": {
+      "audience": "Sinh viên đăng ký cần đáp ứng các tiêu chí của chương trình Erasmus KA171",
+      "action": "register",
+      "object_hint": "đăng ký online chương trình trao đổi Erasmus KA171",
+      "deadline": "Từ ngày 26/05/2026 đến ngày 31/05/2026",
+      "amount": null,
+      "required_documents": [],
+      "location": null,
+      "exceptions": []
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về chương trình trao đổi sinh viên trong khuôn khổ dự án Erasmus KA171 tại Trường Đại học Địa Trung Hải Hellenic (Hy Lạp) với các thông tin cụ thể như sau:\n1. Thông tin học bổng\nSố lượng\n: 01 suất\nThời gian học tập\n: Học kỳ mùa đông năm 2026\nDự kiến từ\ntháng 10/2026 đến tháng 02/2027\nQuyền lợi học bổng\n:\nHỗ trợ chi phí đi lại:\n1.735 EUR\nHỗ trợ sinh hoạt:\ntối đa 850 EUR/tháng\n(tối đa 150 ngày ~ khoảng 5 tháng)\n🔹\nLưu ý\n:\nMức hỗ trợ sinh hoạt được tính theo số ngày học tập thực tế (không bao gồm thời gian di chuyển và thời gian đến nơi).\nTheo quy định của Ủy ban Châu Âu, mỗi tháng được tính là 30 ngày.\n2. Điều kiện tham gia\nSinh viên đăng ký cần đáp ứng các tiêu chí sau:\nCó chứng chỉ tiếng Anh:\nIELTS từ 6.5 trở lên\nhoặc tương đương\nCó chuyên môn phù hợp với chương trình\nGiao tiếp tiếng Anh tốt, tự tin, chủ động\nTích cực tham gia các hoạt động xã hội và hợp tác quốc tế\nCó nguyện vọng tham gia chương trình trao đổi quốc tế\nCam kết tham gia hỗ trợ, quảng bá các hoạt động hợp tác quốc tế của Trường sau khi hoàn thành chương trình\n3. Thời gian và link đăng ký\nThời gian đăng ký online\n:\nTừ ngày\n26/05/2026 đến ngày 31/05/2026\nLink đăng ký\n:\n👉\nhttps://forms.gle/XrVJbNHWt9UhkB4z6\n4. Hồ sơ đăng ký\nHồ sơ bao gồm (nộp\nbằng tiếng Anh và tiếng Việt\n):\nSơ yếu lý lịch (CV)\nThư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị\nBảng điểm\nChứng chỉ ngoại ngữ\nBản sao hộ chiếu\nBằng khen/Giấy khen (nếu có)\n📩\nNộp hồ sơ bản mềm qua email\n: vnha@dut.udn.vn\n📌\nLưu ý\n:\nSinh viên chuẩn bị sẵn hồ sơ bản cứng.\nHồ sơ bản cứng sẽ được nộp trực tiếp tại Ban Khoa học và Hợp tác quốc tế vào\nngày 02/06/2026\nsau khi có thông báo kết quả tuyển chọn.\n5. Thông tin bổ sung\nĐây là cơ hội tốt để sinh viên trải nghiệm môi trường học tập quốc tế, nâng cao năng lực chuyên môn và kỹ năng ngoại ngữ. Khoa CNTT khuyến khích sinh viên quan tâm tích cực tham gia.\n📣\nKhoa Công nghệ Thông tin\nđề nghị sinh viên quan tâm theo dõi và đăng ký đúng thời hạn.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-16-o2",
+    "annotation_file": "data/annotations/batch_001/10_notice_16.json",
+    "annotation_record_id": "o2",
+    "notice_id": 16,
+    "version_id": 16,
+    "title": "Thông báo về việc tuyển chọn sinh viên tham gia Chương trình trao đổi sinh viên Erasmus KA171 tại Hy Lạp",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/11999",
+    "reviewed_fields": {
+      "audience": "Sinh viên đăng ký cần đáp ứng các tiêu chí của chương trình Erasmus KA171",
+      "action": "submit",
+      "object_hint": "nộp hồ sơ bản mềm qua email vnha@dut.udn.vn",
+      "deadline": null,
+      "amount": null,
+      "required_documents": [
+        "Sơ yếu lý lịch (CV)",
+        "Thư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị",
+        "Bảng điểm",
+        "Chứng chỉ ngoại ngữ",
+        "Bản sao hộ chiếu"
+      ],
+      "location": null,
+      "exceptions": [
+        "Bằng khen/Giấy khen là tài liệu tùy chọn nếu có."
+      ]
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về chương trình trao đổi sinh viên trong khuôn khổ dự án Erasmus KA171 tại Trường Đại học Địa Trung Hải Hellenic (Hy Lạp) với các thông tin cụ thể như sau:\n1. Thông tin học bổng\nSố lượng\n: 01 suất\nThời gian học tập\n: Học kỳ mùa đông năm 2026\nDự kiến từ\ntháng 10/2026 đến tháng 02/2027\nQuyền lợi học bổng\n:\nHỗ trợ chi phí đi lại:\n1.735 EUR\nHỗ trợ sinh hoạt:\ntối đa 850 EUR/tháng\n(tối đa 150 ngày ~ khoảng 5 tháng)\n🔹\nLưu ý\n:\nMức hỗ trợ sinh hoạt được tính theo số ngày học tập thực tế (không bao gồm thời gian di chuyển và thời gian đến nơi).\nTheo quy định của Ủy ban Châu Âu, mỗi tháng được tính là 30 ngày.\n2. Điều kiện tham gia\nSinh viên đăng ký cần đáp ứng các tiêu chí sau:\nCó chứng chỉ tiếng Anh:\nIELTS từ 6.5 trở lên\nhoặc tương đương\nCó chuyên môn phù hợp với chương trình\nGiao tiếp tiếng Anh tốt, tự tin, chủ động\nTích cực tham gia các hoạt động xã hội và hợp tác quốc tế\nCó nguyện vọng tham gia chương trình trao đổi quốc tế\nCam kết tham gia hỗ trợ, quảng bá các hoạt động hợp tác quốc tế của Trường sau khi hoàn thành chương trình\n3. Thời gian và link đăng ký\nThời gian đăng ký online\n:\nTừ ngày\n26/05/2026 đến ngày 31/05/2026\nLink đăng ký\n:\n👉\nhttps://forms.gle/XrVJbNHWt9UhkB4z6\n4. Hồ sơ đăng ký\nHồ sơ bao gồm (nộp\nbằng tiếng Anh và tiếng Việt\n):\nSơ yếu lý lịch (CV)\nThư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị\nBảng điểm\nChứng chỉ ngoại ngữ\nBản sao hộ chiếu\nBằng khen/Giấy khen (nếu có)\n📩\nNộp hồ sơ bản mềm qua email\n: vnha@dut.udn.vn\n📌\nLưu ý\n:\nSinh viên chuẩn bị sẵn hồ sơ bản cứng.\nHồ sơ bản cứng sẽ được nộp trực tiếp tại Ban Khoa học và Hợp tác quốc tế vào\nngày 02/06/2026\nsau khi có thông báo kết quả tuyển chọn.\n5. Thông tin bổ sung\nĐây là cơ hội tốt để sinh viên trải nghiệm môi trường học tập quốc tế, nâng cao năng lực chuyên môn và kỹ năng ngoại ngữ. Khoa CNTT khuyến khích sinh viên quan tâm tích cực tham gia.\n📣\nKhoa Công nghệ Thông tin\nđề nghị sinh viên quan tâm theo dõi và đăng ký đúng thời hạn.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DOCUMENT"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  },
+  {
+    "inventory_id": "INV-16-o3",
+    "annotation_file": "data/annotations/batch_001/10_notice_16.json",
+    "annotation_record_id": "o3",
+    "notice_id": 16,
+    "version_id": 16,
+    "title": "Thông báo về việc tuyển chọn sinh viên tham gia Chương trình trao đổi sinh viên Erasmus KA171 tại Hy Lạp",
+    "official_source_url": "https://dut.udn.vn/KhoaCNTT/Thongbao/id/11999",
+    "reviewed_fields": {
+      "audience": "Sinh viên đăng ký cần đáp ứng các tiêu chí của chương trình Erasmus KA171",
+      "action": "submit",
+      "object_hint": "nộp hồ sơ bản cứng sau khi có thông báo kết quả tuyển chọn",
+      "deadline": "ngày 02/06/2026",
+      "amount": null,
+      "required_documents": [
+        "Sơ yếu lý lịch (CV)",
+        "Thư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị",
+        "Bảng điểm",
+        "Chứng chỉ ngoại ngữ",
+        "Bản sao hộ chiếu"
+      ],
+      "location": "Ban Khoa học và Hợp tác quốc tế",
+      "exceptions": []
+    },
+    "supporting_text_reference": "Khoa Công nghệ Thông tin thông báo đến sinh viên về chương trình trao đổi sinh viên trong khuôn khổ dự án Erasmus KA171 tại Trường Đại học Địa Trung Hải Hellenic (Hy Lạp) với các thông tin cụ thể như sau:\n1. Thông tin học bổng\nSố lượng\n: 01 suất\nThời gian học tập\n: Học kỳ mùa đông năm 2026\nDự kiến từ\ntháng 10/2026 đến tháng 02/2027\nQuyền lợi học bổng\n:\nHỗ trợ chi phí đi lại:\n1.735 EUR\nHỗ trợ sinh hoạt:\ntối đa 850 EUR/tháng\n(tối đa 150 ngày ~ khoảng 5 tháng)\n🔹\nLưu ý\n:\nMức hỗ trợ sinh hoạt được tính theo số ngày học tập thực tế (không bao gồm thời gian di chuyển và thời gian đến nơi).\nTheo quy định của Ủy ban Châu Âu, mỗi tháng được tính là 30 ngày.\n2. Điều kiện tham gia\nSinh viên đăng ký cần đáp ứng các tiêu chí sau:\nCó chứng chỉ tiếng Anh:\nIELTS từ 6.5 trở lên\nhoặc tương đương\nCó chuyên môn phù hợp với chương trình\nGiao tiếp tiếng Anh tốt, tự tin, chủ động\nTích cực tham gia các hoạt động xã hội và hợp tác quốc tế\nCó nguyện vọng tham gia chương trình trao đổi quốc tế\nCam kết tham gia hỗ trợ, quảng bá các hoạt động hợp tác quốc tế của Trường sau khi hoàn thành chương trình\n3. Thời gian và link đăng ký\nThời gian đăng ký online\n:\nTừ ngày\n26/05/2026 đến ngày 31/05/2026\nLink đăng ký\n:\n👉\nhttps://forms.gle/XrVJbNHWt9UhkB4z6\n4. Hồ sơ đăng ký\nHồ sơ bao gồm (nộp\nbằng tiếng Anh và tiếng Việt\n):\nSơ yếu lý lịch (CV)\nThư tự giới thiệu (Letter of Motivation) có xác nhận của đơn vị\nBảng điểm\nChứng chỉ ngoại ngữ\nBản sao hộ chiếu\nBằng khen/Giấy khen (nếu có)\n📩\nNộp hồ sơ bản mềm qua email\n: vnha@dut.udn.vn\n📌\nLưu ý\n:\nSinh viên chuẩn bị sẵn hồ sơ bản cứng.\nHồ sơ bản cứng sẽ được nộp trực tiếp tại Ban Khoa học và Hợp tác quốc tế vào\nngày 02/06/2026\nsau khi có thông báo kết quả tuyển chọn.\n5. Thông tin bổ sung\nĐây là cơ hội tốt để sinh viên trải nghiệm môi trường học tập quốc tế, nâng cao năng lực chuyên môn và kỹ năng ngoại ngữ. Khoa CNTT khuyến khích sinh viên quan tâm tích cực tham gia.\n📣\nKhoa Công nghệ Thông tin\nđề nghị sinh viên quan tâm theo dõi và đăng ký đúng thời hạn.",
+    "usability": "USABLE",
+    "usability_reason": "Reviewed actionable obligation.",
+    "potential_benchmark_categories": [
+      "ACTION_SCOPE",
+      "AUDIENCE_SCOPE",
+      "DATE_FULL",
+      "DOCUMENT",
+      "LOCATION"
+    ],
+    "authoring_notes": "Use only fields explicitly retained above."
+  }
+]

@@ -1,217 +1,118 @@
 {
   "catalog_year": 2026,
   "organization_effective_date": "2026-08-20",
-  "last_verified_date": "2026-09-18",
+  "last_verified_date": "2026-09-20",
+  "institution_program_count": 49,
+  "audit_summary": {"VERIFIED": 1, "PROVISIONAL": 44, "UNVERIFIED": 4, "note": "The 2026 institution-level inventory is complete; the faculty migration audit is not complete."},
+  "source_registry": {
+    "org_restructure_2026": {"url": "https://dut.udn.vn/Tintuc/Tintuc/id/12201", "title": "Bách khoa Đà Nẵng: Kiện toàn tổ chức, nâng cao năng lực, mở rộng không gian phát triển", "published_date": "2026-08-22", "effective_date": "2026-08-20", "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_ANNOUNCEMENT", "supports": "Current nine-faculty organization; not program ownership."},
+    "current_directory_2026": {"url": "https://dut.udn.vn/Danhba/id/53", "title": "Danh bạ - Trường Đại học Bách khoa, Đại học Đà Nẵng", "published_date": null, "effective_date": null, "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_CURRENT_DIRECTORY", "supports": "Current faculty display names and leadership; not program ownership."},
+    "program_inventory_2026": {"url": "https://tuyensinh.dut.udn.vn/nganh-va-chi-tieu-tuyen-sinh", "title": "Ngành và chỉ tiêu tuyển sinh 2026", "published_date": null, "effective_date": "2026-01-01", "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_ADMISSIONS_CATALOG", "supports": "Names and institution-level presence of 49 programs; category headings are not faculty ownership."},
+    "k2026_confirmation": {"url": "https://dut.udn.vn/TrangNCKH/Thongbao/id/12208", "title": "Bách khoa Đà Nẵng chào đón 4.000 tân sinh viên K2026", "published_date": "2026-08-25", "effective_date": "2026-08-25", "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_ANNOUNCEMENT", "supports": "Count 49, seven talent-program codes and four newly opened programs; not faculty ownership."},
+    "pre_restructure_ownership_2020": {"url": "https://dut.udn.vn/Tuyensinh2020/Gioithieu/id/3990", "title": "Danh sách các ngành / chương trình đào tạo năm 2020", "published_date": "2020-06-15", "effective_date": "2020-06-15", "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_HISTORICAL_ADMISSIONS_TABLE", "supports": "Pre-restructure ownership and historical codes only."},
+    "cntt_2026_pre_restructure": {"url": "https://dut.udn.vn/Tintuc/Thongbao/id/11804", "title": "Thông tin tuyển sinh ngành Công nghệ thông tin 2026 (dự kiến)", "published_date": "2026-03-11", "effective_date": "2026-01-01", "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_PRE_RESTRUCTURE_ADMISSIONS_NOTICE", "supports": "Pre-restructure CNTT names and codes; insufficient for post-restructure ownership."},
+    "thermal_current_faculty_2026": {"url": "https://dut.udn.vn/khoackgt", "title": "Khoa Cơ khí Giao thông và Năng lượng", "published_date": "2026-09-05", "effective_date": "2026-08-20", "retrieved_date": "2026-09-20", "source_type": "OFFICIAL_CURRENT_FACULTY_PAGE", "supports": "Post-restructure faculty page directly publishes a notice for Kỹ thuật nhiệt students."},
+    "project_owner_dsai": {"url": null, "title": "Project-owner-reported current state for Data Science and Artificial Intelligence", "published_date": null, "effective_date": null, "retrieved_date": "2026-09-20", "source_type": "PROJECT_OWNER_REPORTED_CURRENT_STATE", "supports": "Reported current assignment to Khoa Điện tử và Trí tuệ nhân tạo; not official evidence."}
+  },
   "faculties": [
     {
-      "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao",
-      "display_name": "Khoa Điện tử và Trí tuệ nhân tạo",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao", "display_name": "Khoa Điện tử và Trí tuệ nhân tạo", "previous_names": ["Khoa Điện tử - Viễn thông"], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kỹ thuật điện tử - viễn thông",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Khoa học dữ liệu và Trí tuệ nhân tạo",
-          "type": "nganh",
-          "faculty_assignment_status": "PROVISIONAL",
-          "evidence_status": "PROJECT_OWNER_REPORTED_CURRENT_STATE",
-          "official_post_restructure_confirmation_found": false,
-          "note": "Older official pages still reflect the pre-20/08/2026 structure. Moved from Khoa Công nghệ Thông tin."
-        }
+        {"display_name": "Công nghệ thông tin, chuyên ngành Khoa học dữ liệu và Trí tuệ nhân tạo", "aliases": ["Khoa học dữ liệu và Trí tuệ nhân tạo"], "official_code": "7480201B", "type": "chuyen_nganh", "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "cntt_2026_pre_restructure", "project_owner_dsai"], "previous_faculty": "Khoa Công nghệ Thông tin", "notes": "No direct official post-restructure confirmation found."},
+        {"display_name": "Kỹ thuật máy tính", "official_code": "7480106", "type": "nganh", "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"], "previous_faculty": "Khoa Điện tử - Viễn thông"},
+        {"display_name": "Kỹ thuật điện tử - viễn thông", "official_code": "7520207", "type": "nganh", "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Chương trình đào tạo kỹ sư tài năng Kỹ thuật điện tử - viễn thông", "official_code": "7520207TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]},
+        {"display_name": "Kỹ thuật điện tử - viễn thông, chuyên ngành vi điện tử - thiết kế vi mạch", "official_code": "7520207A", "type": "chuyen_nganh", "faculty_id": "khoa_dien_tu_tri_tue_nhan_tao", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]}
       ]
     },
     {
-      "faculty_id": "khoa_co_khi_giao_thong_nang_luong",
-      "display_name": "Khoa Cơ khí Giao thông và Năng lượng",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "display_name": "Khoa Cơ khí Giao thông và Năng lượng", "previous_names": ["Khoa Cơ khí Giao thông", "Khoa Công nghệ Nhiệt - Điện lạnh"], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kỹ thuật cơ khí (Cơ khí Động lực)",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật ô tô",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật tàu thủy",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật nhiệt",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật phương tiện đường sắt tốc độ cao",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        }
+        {"display_name": "Kỹ thuật cơ khí - chuyên ngành Cơ khí động lực", "official_code": "7520103A", "type": "chuyen_nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật cơ khí, chuyên ngành Kỹ thuật phương tiện đường sắt tốc độ cao", "official_code": null, "type": "chuyen_nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]},
+        {"display_name": "Kỹ thuật nhiệt", "official_code": "7520115", "type": "nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "thermal_current_faculty_2026"]},
+        {"display_name": "Kỹ thuật nhiệt - chuyên ngành Quản lý năng lượng", "official_code": null, "type": "chuyen_nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "thermal_current_faculty_2026"]},
+        {"display_name": "Kỹ thuật tàu thủy", "official_code": "7520122", "type": "nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật hệ thống công nghiệp", "official_code": "7520118", "type": "nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật ô tô", "official_code": "7520130", "type": "nganh", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Chương trình đào tạo kỹ sư tài năng Kỹ thuật ô tô", "official_code": "7520130TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": "khoa_co_khi_giao_thong_nang_luong", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]}
       ]
     },
     {
-      "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song",
-      "display_name": "Khoa Hóa, Môi trường và Khoa học Sự sống",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "display_name": "Khoa Hóa, Môi trường và Khoa học Sự sống", "previous_names": ["Khoa Hóa", "Khoa Môi trường"], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kỹ thuật hóa học",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật môi trường",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Công nghệ thực phẩm",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Công nghệ sinh học",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Quản lý tài nguyên và môi trường",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        }
+        {"display_name": "Công nghệ sinh học", "official_code": "7420201", "type": "nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Công nghệ sinh học chuyên ngành Công nghệ sinh học Y Dược", "official_code": "7420201A", "type": "chuyen_nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Công nghệ dầu khí và khai thác dầu", "official_code": "7510701", "type": "nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật hóa học", "official_code": "7520301", "type": "nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật môi trường", "official_code": "7520320", "type": "nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Công nghệ thực phẩm", "official_code": "7540101", "type": "nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Quản lý tài nguyên và môi trường", "official_code": "7850101", "type": "nganh", "faculty_id": "khoa_hoa_moi_truong_khoa_hoc_su_song", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]}
       ]
     },
     {
-      "faculty_id": "khoa_xay_dung",
-      "display_name": "Khoa Xây dựng",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_xay_dung", "display_name": "Khoa Xây dựng", "previous_names": ["Khoa Xây dựng Dân dụng và Công nghiệp", "Khoa Xây dựng Cầu đường", "Khoa Xây dựng Thủy lợi - Thủy điện"], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kỹ thuật xây dựng",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật xây dựng công trình giao thông",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật xây dựng công trình thủy",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật cơ sở hạ tầng",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        }
+        {"display_name": "Công nghệ kỹ thuật vật liệu xây dựng", "official_code": "7510105", "type": "nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật xây dựng, chuyên ngành Xây dựng dân dụng & Công nghiệp", "official_code": "7580201", "type": "chuyen_nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật xây dựng, chuyên ngành Tin học xây dựng", "official_code": null, "type": "chuyen_nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật xây dựng, chuyên ngành Kỹ thuật và quản lý xây dựng đô thị thông minh", "official_code": null, "type": "chuyen_nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật xây dựng, chuyên ngành Mô hình thông tin và trí tuệ nhân tạo trong xây dựng", "official_code": null, "type": "chuyen_nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Chương trình đào tạo kỹ sư tài năng Kỹ thuật xây dựng", "official_code": "7580201TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]},
+        {"display_name": "Kỹ thuật xây dựng công trình thủy", "official_code": "7580202", "type": "nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật xây dựng công trình giao thông", "official_code": "7580205", "type": "nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật xây dựng công trình giao thông - chuyên ngành xây dựng đường sắt tốc độ cao và đường sắt đô thị", "official_code": null, "type": "chuyen_nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật cơ sở hạ tầng", "official_code": "7580210", "type": "nganh", "faculty_id": "khoa_xay_dung", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]}
       ]
     },
     {
-      "faculty_id": "khoa_dien",
-      "display_name": "Khoa Điện",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_dien", "display_name": "Khoa Điện", "previous_names": [], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kỹ thuật điện",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật điều khiển và tự động hóa",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        }
+        {"display_name": "Kỹ thuật điện", "official_code": "7520201", "type": "nganh", "faculty_id": "khoa_dien", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Chương trình đào tạo kỹ sư tài năng Kỹ thuật điện", "official_code": "7520201TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": "khoa_dien", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]},
+        {"display_name": "Kỹ thuật điều khiển và tự động hóa", "official_code": "7520216", "type": "nganh", "faculty_id": "khoa_dien", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Chương trình đào tạo kỹ sư tài năng Kỹ thuật điều khiển và tự động hóa", "official_code": "7520216TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": "khoa_dien", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]}
       ]
     },
     {
-      "faculty_id": "khoa_co_khi",
-      "display_name": "Khoa Cơ khí",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_co_khi", "display_name": "Khoa Cơ khí", "previous_names": [], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kỹ thuật cơ khí",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật cơ điện tử",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        }
+        {"display_name": "Công nghệ chế tạo máy", "official_code": "7510202", "type": "nganh", "faculty_id": "khoa_co_khi", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật cơ điện tử", "official_code": "7520114", "type": "nganh", "faculty_id": "khoa_co_khi", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Chương trình đào tạo kỹ sư tài năng Kỹ thuật cơ điện tử", "official_code": "7520114TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": "khoa_co_khi", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]},
+        {"display_name": "Kỹ thuật cơ khí - chuyên ngành cơ khí hàng không", "official_code": "7520103B", "type": "chuyen_nganh", "faculty_id": "khoa_co_khi", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kỹ thuật Cơ khí, chuyên ngành Cơ khí hàng không (Hợp tác doanh nghiệp, dạy và học bằng tiếng Anh)", "official_code": null, "type": "chuong_trinh_hop_tac_doanh_nghiep", "faculty_id": "khoa_co_khi", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation"]}
       ]
     },
     {
-      "faculty_id": "khoa_cong_nghe_thong_tin",
-      "display_name": "Khoa Công nghệ Thông tin",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_cong_nghe_thong_tin", "display_name": "Khoa Công nghệ Thông tin", "previous_names": [], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Công nghệ thông tin",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật máy tính",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        },
-        {
-          "display_name": "Kỹ thuật phần mềm",
-          "type": "nganh",
-          "faculty_assignment_status": "VERIFIED"
-        }
+        {"display_name": "Công nghệ thông tin", "official_code": "7480201", "type": "nganh", "faculty_id": "khoa_cong_nghe_thong_tin", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "cntt_2026_pre_restructure"]},
+        {"display_name": "Công nghệ thông tin (ngoại ngữ Nhật)", "official_code": "7480201A", "type": "chuong_trinh", "faculty_id": "khoa_cong_nghe_thong_tin", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "cntt_2026_pre_restructure"]},
+        {"display_name": "Công nghệ thông tin, chuyên ngành An toàn thông tin trên không gian số", "official_code": "7480201C", "type": "chuyen_nganh", "faculty_id": "khoa_cong_nghe_thong_tin", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "k2026_confirmation", "cntt_2026_pre_restructure"]}
       ]
     },
     {
-      "faculty_id": "khoa_quan_ly_du_an_cong_nghiep",
-      "display_name": "Khoa Quản lý Dự án và Công nghiệp",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_quan_ly_du_an_cong_nghiep", "display_name": "Khoa Quản lý Dự án và Công nghiệp", "previous_names": ["Khoa Quản lý Dự án"], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kinh tế xây dựng",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Quản lý công nghiệp",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        },
-        {
-          "display_name": "Logistics và Quản lý chuỗi cung ứng",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        }
+        {"display_name": "Quản lý công nghiệp", "official_code": "7510601", "type": "nganh", "faculty_id": "khoa_quan_ly_du_an_cong_nghiep", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]},
+        {"display_name": "Kinh tế xây dựng", "official_code": "7580301", "type": "nganh", "faculty_id": "khoa_quan_ly_du_an_cong_nghiep", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]}
       ]
     },
     {
-      "faculty_id": "khoa_kien_truc",
-      "display_name": "Khoa Kiến trúc",
-      "status": "VERIFIED",
-      "effective_from": "2026-08-20",
+      "faculty_id": "khoa_kien_truc", "display_name": "Khoa Kiến trúc", "previous_names": [], "status": "VERIFIED", "effective_from": "2026-08-20", "sources": ["org_restructure_2026", "current_directory_2026"],
       "programs": [
-        {
-          "display_name": "Kiến trúc",
-          "type": "nganh",
-          "faculty_assignment_status": "UNVERIFIED"
-        }
+        {"display_name": "Kiến trúc", "official_code": "7580101", "type": "nganh", "faculty_id": "khoa_kien_truc", "faculty_assignment_status": "PROVISIONAL", "effective_from": "2026-08-20", "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"]}
       ]
     }
+  ],
+  "unassigned_programs": [
+    {"display_name": "Chương trình đào tạo kỹ sư tài năng Công nghệ thông tin (định hướng Khoa học dữ liệu và Trí tuệ nhân tạo)", "official_code": "7480201TN", "type": "chuong_trinh_ky_su_tai_nang", "faculty_id": null, "faculty_assignment_status": "UNVERIFIED", "effective_from": null, "sources": ["program_inventory_2026", "k2026_confirmation"], "notes": "Institution and code confirmed; no direct post-restructure faculty owner found."},
+    {"display_name": "Chương trình Kỹ sư chất lượng cao Việt - Pháp (PFIEV)", "official_code": "PFIEV", "type": "pfiev", "faculty_id": null, "faculty_assignment_status": "UNVERIFIED", "effective_from": null, "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"], "notes": "Interdisciplinary program; current faculty ownership not established."},
+    {"display_name": "Chương trình tiên tiến Việt - Mỹ ngành Điện tử viễn thông", "official_code": "7520207VM", "type": "chuong_trinh_tien_tien", "faculty_id": null, "faculty_assignment_status": "UNVERIFIED", "effective_from": null, "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"], "notes": "Current post-restructure faculty ownership not established."},
+    {"display_name": "Chương trình tiên tiến Việt - Mỹ chuyên ngành Hệ thống nhúng và IoT thuộc ngành Kỹ thuật điện, điện tử", "official_code": "7480118VM", "type": "chuong_trinh_tien_tien", "faculty_id": null, "faculty_assignment_status": "UNVERIFIED", "effective_from": null, "sources": ["program_inventory_2026", "pre_restructure_ownership_2020"], "notes": "Current post-restructure faculty ownership not established."}
+  ],
+  "migration_audit": [
+    {"program": "Công nghệ thông tin, chuyên ngành Khoa học dữ liệu và Trí tuệ nhân tạo", "pre_restructure_faculty": "Khoa Công nghệ Thông tin", "current_faculty": "Khoa Điện tử và Trí tuệ nhân tạo", "old_source": "cntt_2026_pre_restructure", "old_source_date": "2026-03-11", "new_source": "project_owner_dsai", "new_source_date": "2026-09-20", "effective_date": null, "status": "PROVISIONAL", "notes": "Migration table is not complete; no official current URL was fabricated."}
   ]
 }

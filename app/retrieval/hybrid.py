@@ -45,3 +45,36 @@ class HybridRetriever(Retriever):
             ))
             
         return final_results
+
+    def search_current(self, query: str, top_k: int = 5) -> List[RetrievalResult]:
+        """Search only current-version chunks without changing global search.
+
+        Historical chunks stay indexed for audit/history features.  This
+        verification-specific view asks each retriever for the full small
+        corpus, filters by the persisted latest-version flag, then performs
+        the unchanged RRF fusion over only current evidence.
+        """
+        if not self.chunks:
+            return []
+
+        chunk_scores: Dict[str, float] = {}
+        chunk_map: Dict[str, RetrievalChunk] = {}
+        for retriever in self.retrievers:
+            for result in retriever.search(query, top_k=len(self.chunks)):
+                if not result.chunk.is_latest_version:
+                    continue
+                chunk_id = result.chunk.chunk_id
+                chunk_map[chunk_id] = result.chunk
+                rrf_score = 1.0 / (self.rrf_k + result.rank)
+                chunk_scores[chunk_id] = chunk_scores.get(chunk_id, 0.0) + rrf_score
+
+        ranked = sorted(chunk_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
+        return [
+            RetrievalResult(
+                chunk=chunk_map[chunk_id],
+                rank=rank + 1,
+                score=score,
+                retrieval_method="hybrid_rrf_current",
+            )
+            for rank, (chunk_id, score) in enumerate(ranked)
+        ]

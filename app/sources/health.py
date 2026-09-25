@@ -143,7 +143,7 @@ def check_source(
 
 def check_all_sources() -> list[SourceCheckResult]:
 
-    sources = list_sources()
+    sources = [source for source in list_sources() if source.enabled]
 
     return [
         check_source(source)

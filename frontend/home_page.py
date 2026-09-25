@@ -26,7 +26,7 @@ with hero_copy:
     )
     if st.button("Xác minh thông tin", type="primary", icon=":material/verified_user:", width="content"):
         st.switch_page("pages/1_Verify.py")
-    st.page_link("pages/2_Evidence.py", label="Tra cứu thông báo", icon=":material/search:", width="content")
+    st.page_link("pages/2_Evidence.py", label="Tra cứu thông báo chính thức", icon=":material/search:", width="content")
 
 with hero_visual:
     with st.container(border=True):
@@ -35,9 +35,9 @@ with hero_visual:
 st.markdown('<div class="ut-section-title" style="margin-top:2.4rem;">Ba cách UniTrust hỗ trợ bạn</div>', unsafe_allow_html=True)
 value_columns = st.columns(3, gap="medium")
 values = [
-    ("pages/1_Verify.py", ":material/verified_user:", "Xác minh", "Đối chiếu từng chi tiết với bằng chứng chính thức."),
-    ("pages/2_Evidence.py", ":material/search:", "Tra cứu", "Tìm và đọc thông báo từ đúng nguồn."),
-    ("pages/3_For_You.py", ":material/person:", "Dành cho bạn", "Phân nhóm nghĩa vụ theo hồ sơ đã lưu."),
+    ("pages/1_Verify.py", ":material/verified_user:", "Kiểm chứng", "Dán văn bản, tải ảnh hoặc gửi đường link để đối chiếu với nguồn chính thức."),
+    ("pages/2_Evidence.py", ":material/search:", "Tra cứu", "Tìm thông báo, đọc nguồn gốc và biết nội dung nào đang hiện hành."),
+    ("pages/3_For_You.py", ":material/person:", "Dành cho bạn", "Xem những việc có thể liên quan đến hồ sơ sinh viên của bạn."),
 ]
 for column, (path, icon, title, description) in zip(value_columns, values):
     with column:
