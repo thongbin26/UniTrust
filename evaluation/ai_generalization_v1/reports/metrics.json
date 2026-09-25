@@ -1,0 +1,101 @@
+{
+  "pack_version": "ai-generalization-v1",
+  "dataset": {
+    "total_candidates": 49,
+    "human_accepted": 18,
+    "human_review_required": 31,
+    "source_distribution": {
+      "dut_academic": 12,
+      "dut_ctsv": 15,
+      "dut_finance": 3,
+      "dut_it_faculty": 15,
+      "dut_training_quality": 1,
+      "dut_transport_energy_faculty": 3
+    }
+  },
+  "extraction": {
+    "action": {
+      "status": "MEASURED",
+      "support_n": 18,
+      "matched_n": 7,
+      "predicted_value_n": 18,
+      "field_presence_accuracy": 0.3888888888888889,
+      "precision": 0.3888888888888889,
+      "recall": 0.3888888888888889,
+      "f1": 0.3888888888888889
+    },
+    "deadline": {
+      "status": "MEASURED",
+      "support_n": 15,
+      "matched_n": 2,
+      "predicted_value_n": 15,
+      "field_presence_accuracy": 0.13333333333333333,
+      "precision": 0.13333333333333333,
+      "recall": 0.13333333333333333,
+      "f1": 0.13333333333333333
+    },
+    "amount": {
+      "status": "NOT_YET_MEASURED",
+      "support_n": 0
+    },
+    "audience": {
+      "status": "MEASURED",
+      "support_n": 1,
+      "matched_n": 1,
+      "predicted_value_n": 1,
+      "field_presence_accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "location": {
+      "status": "MEASURED",
+      "support_n": 7,
+      "matched_n": 2,
+      "predicted_value_n": 11,
+      "field_presence_accuracy": 0.2857142857142857,
+      "precision": 0.18181818181818182,
+      "recall": 0.2857142857142857,
+      "f1": 0.2222222222222222
+    }
+  },
+  "retrieval": {
+    "status": "MEASURED",
+    "n": 18,
+    "recall_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "recall_at_5": 1.0,
+    "mrr": 1.0,
+    "current_version_correctness": 1.0,
+    "stale_version_retrieval_violations": 0
+  },
+  "failure_taxonomy": {
+    "EXTRACTION": 16,
+    "NORMALIZATION": 0,
+    "RETRIEVAL": 0,
+    "REVIEWED_EVIDENCE_SELECTION": 0,
+    "TEMPORAL": 0,
+    "APPLICABILITY": 0,
+    "OTHER": 0
+  },
+  "future_gemini_contract": {
+    "evaluation_population": "HUMAN_ACCEPTED_ONLY",
+    "gold_record_count": 18,
+    "prediction_record_count": 0,
+    "comparable_fields": [
+      "action",
+      "deadline",
+      "amount",
+      "audience",
+      "location"
+    ],
+    "required_provenance": [
+      "record_id",
+      "provider_id",
+      "model_id",
+      "field_spans"
+    ],
+    "runtime_authorization": "NOT_GRANTED_BY_THIS_PACK"
+  },
+  "provider_requests_executed": 0
+}
