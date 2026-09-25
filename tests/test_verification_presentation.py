@@ -1,4 +1,7 @@
-from frontend.verification_presentation import should_render_official_evidence
+from frontend.verification_presentation import (
+    has_verified_primary_information,
+    should_render_official_evidence,
+)
 
 
 NOTICE_24_PROVENANCE = {
@@ -37,3 +40,39 @@ def test_applicable_evidence_verdicts_keep_official_provenance():
             "verdict": verdict,
             "primary_provenance": NOTICE_24_PROVENANCE,
         }) is True
+
+
+def _safe_partial_response():
+    return {
+        "message_verdict": "PARTIALLY_VERIFIED",
+        "results": [
+            {
+                "verdict": "VERIFIED",
+                "temporal_status": "CURRENT",
+                "primary_provenance": NOTICE_24_PROVENANCE,
+            },
+            {
+                "verdict": "INSUFFICIENT_EVIDENCE",
+                "abstention_reason": "UNSUPPORTED_CLAIM_FIELD",
+            },
+        ],
+    }
+
+
+def test_verified_primary_presentation_requires_only_unsupported_remaining_segments():
+    assert has_verified_primary_information(_safe_partial_response()) is True
+
+
+def test_verified_primary_presentation_rejects_substantive_or_temporal_unresolved_partials():
+    for remaining in (
+        {"verdict": "CONFLICT"},
+        {"verdict": "INSUFFICIENT_EVIDENCE", "abstention_reason": "NO_OFFICIAL_FIELD"},
+        {"verdict": "INSUFFICIENT_EVIDENCE", "abstention_reason": "AMBIGUOUS_OFFICIAL_EVIDENCE"},
+    ):
+        response = _safe_partial_response()
+        response["results"][1] = remaining
+        assert has_verified_primary_information(response) is False
+
+    response = _safe_partial_response()
+    response["results"][0]["temporal_status"] = "SUPERSEDED_OUTDATED"
+    assert has_verified_primary_information(response) is False

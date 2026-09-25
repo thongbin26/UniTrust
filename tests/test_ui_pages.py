@@ -163,6 +163,112 @@ def test_verify_page_hides_retrieved_only_provenance_for_no_official_field(monke
     assert not page.get("link_button")
 
 
+def test_verify_page_emphasizes_verified_primary_information_only_for_safe_partial_pattern(monkeypatch):
+    monkeypatch.setattr(
+        api_client,
+        "verify_claim",
+        lambda *args, **kwargs: {
+            "message_verdict": "PARTIALLY_VERIFIED",
+            "results": [
+                {
+                    "raw_claim_text": "Sinh viên nộp ảnh thẻ trước ngày 26/06/2026.",
+                    "verdict": "VERIFIED",
+                    "temporal_status": "CURRENT",
+                    "field_results": {},
+                    "primary_provenance": {
+                        "title": "Nguồn xác minh chính",
+                        "exact_chunk_text": "Nộp ảnh thẻ trước ngày 26/06/2026.",
+                    },
+                },
+                {
+                    "raw_claim_text": "Sinh viên khóa 2022 ngành CNTT ký tên theo danh sách lớp.",
+                    "verdict": "INSUFFICIENT_EVIDENCE",
+                    "abstention_reason": "UNSUPPORTED_CLAIM_FIELD",
+                    "field_results": {},
+                    "primary_provenance": None,
+                },
+            ],
+        },
+    )
+
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_area[0].input("Nội dung cần kiểm tra").run()
+    page.button[0].click().run()
+
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert "Đã xác minh thông tin chính" in text
+    assert "Nội dung cần kiểm chứng chính đã khớp với nguồn chính thức" in text
+    assert "Chưa được đối chiếu" in text
+    assert "Nguồn xác minh chính" in text
+
+
+def test_verify_page_keeps_conservative_partial_presentation_for_substantive_unknown(monkeypatch):
+    monkeypatch.setattr(
+        api_client,
+        "verify_claim",
+        lambda *args, **kwargs: {
+            "message_verdict": "PARTIALLY_VERIFIED",
+            "results": [
+                {
+                    "raw_claim_text": "Thông tin đã xác minh.",
+                    "verdict": "VERIFIED",
+                    "temporal_status": "CURRENT",
+                    "field_results": {},
+                    "primary_provenance": {
+                        "title": "Nguồn xác minh chính",
+                        "exact_chunk_text": "Bằng chứng chính thức có thể áp dụng.",
+                    },
+                },
+                {
+                    "raw_claim_text": "Thông tin còn thiếu bằng chứng.",
+                    "verdict": "INSUFFICIENT_EVIDENCE",
+                    "abstention_reason": "NO_OFFICIAL_FIELD",
+                    "field_results": {},
+                    "primary_provenance": None,
+                },
+            ],
+        },
+    )
+
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_area[0].input("Nội dung cần kiểm tra").run()
+    page.button[0].click().run()
+
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert "Xác minh một phần" in text
+    assert "Đã xác minh thông tin chính" not in text
+
+
+def test_verify_page_keeps_generic_insufficient_evidence_wording_for_standalone_unsupported_claim(monkeypatch):
+    monkeypatch.setattr(
+        api_client,
+        "verify_claim",
+        lambda *args, **kwargs: {
+            "message_verdict": "INSUFFICIENT_EVIDENCE",
+            "results": [
+                {
+                    "raw_claim_text": "Đại học yêu cầu sinh viên đi học mặc áo màu đỏ.",
+                    "verdict": "INSUFFICIENT_EVIDENCE",
+                    "abstention_reason": "UNSUPPORTED_CLAIM_FIELD",
+                    "field_results": {},
+                    "primary_provenance": None,
+                }
+            ],
+        },
+    )
+
+    page = AppTest.from_file(ROOT / "frontend/pages/1_Verify.py").run()
+    page.text_area[0].input("Nội dung cần kiểm tra").run()
+    page.button[0].click().run()
+
+    assert not page.exception and not page.error
+    text = "\n".join(element.value for element in page.markdown)
+    assert "Chưa đủ bằng chứng" in text
+    assert "Chưa được đối chiếu" not in text
+
+
 @pytest.mark.parametrize("verdict", ["VERIFIED", "PARTIALLY_VERIFIED", "CONFLICT"])
 def test_verify_page_keeps_applicable_source_for_verdicts_with_evidence(monkeypatch, verdict):
     source_title = f"Nguồn phù hợp {verdict}"

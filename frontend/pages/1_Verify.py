@@ -6,7 +6,10 @@ import streamlit as st
 from frontend.api_client import URLVerificationRequestError, api_client
 from frontend.demo_cases import DEMO_CASES, get_demo_case, selected_demo_text
 from frontend.ui_style import apply_global_styles, page_header, page_marker
-from frontend.verification_presentation import should_render_official_evidence
+from frontend.verification_presentation import (
+    has_verified_primary_information,
+    should_render_official_evidence,
+)
 from frontend.ui_translations import (
     get_abstention_reason_vi,
     get_action_value_vi,
@@ -76,8 +79,10 @@ def render_temporal_note(temporal_label: str) -> None:
 def render_message_results(response: dict) -> None:
     """Render one message-level summary before independently verified claims."""
     results = response.get("results", [])
+    has_verified_primary = False
     if len(results) > 1:
         verdict = response.get("message_verdict", "INSUFFICIENT_EVIDENCE")
+        has_verified_primary = has_verified_primary_information(response)
         counts = {
             state: sum(item.get("verdict") == state for item in results)
             for state in ("VERIFIED", "PARTIALLY_VERIFIED", "CONFLICT", "INSUFFICIENT_EVIDENCE")
@@ -92,23 +97,55 @@ def render_message_results(response: dict) -> None:
         if counts["INSUFFICIENT_EVIDENCE"]:
             summary_parts.append(f'{counts["INSUFFICIENT_EVIDENCE"]} nội dung chưa đủ bằng chứng')
         st.markdown('<div class="ut-section-title">Kết luận toàn bộ</div>', unsafe_allow_html=True)
+        if has_verified_primary:
+            headline = "Đã xác minh thông tin chính"
+            explanation = (
+                "Nội dung cần kiểm chứng chính đã khớp với nguồn chính thức. "
+                "Một phần văn bản còn lại nằm ngoài các trường mà hệ thống hiện hỗ trợ đối chiếu."
+            )
+        else:
+            headline = get_trust_state_vi(verdict)
+            explanation = (
+                f"UniTrust nhận diện {len(results)} nội dung cần kiểm chứng: "
+                f'{"; ".join(summary_parts)}.'
+            )
         st.markdown(
-            f'<div class="ut-card-flat"><strong>{escape(get_trust_state_vi(verdict))}</strong><br>'
-            f'UniTrust nhận diện {len(results)} nội dung cần kiểm chứng: '
-            f'{"; ".join(summary_parts)}.</div>',
+            f'<div class="ut-card-flat"><strong>{escape(headline)}</strong><br>{escape(explanation)}</div>',
             unsafe_allow_html=True,
         )
     for index, item in enumerate(results, start=1):
-        render_verification_result(item, index if len(results) > 1 else None, len(results) if len(results) > 1 else None)
+        render_verification_result(
+            item,
+            index if len(results) > 1 else None,
+            len(results) if len(results) > 1 else None,
+            unsupported_safe_partial=(
+                has_verified_primary
+                and item.get("verdict") == "INSUFFICIENT_EVIDENCE"
+                and item.get("abstention_reason") == "UNSUPPORTED_CLAIM_FIELD"
+            ),
+        )
 
 
-def render_verification_result(claim_result: dict, position: int | None = None, total: int | None = None) -> None:
+def render_verification_result(
+    claim_result: dict,
+    position: int | None = None,
+    total: int | None = None,
+    *,
+    unsupported_safe_partial: bool = False,
+) -> None:
     verdict = claim_result.get("verdict", "INSUFFICIENT_EVIDENCE")
     temporal_status = claim_result.get("temporal_status") or "UNKNOWN"
     status_class = _status_class(verdict)
     trust_label = escape(get_trust_state_vi(verdict))
     temporal_label = escape(get_temporal_state_vi(temporal_status))
     explanation = escape(get_explanation_vi(verdict))
+    if (
+        unsupported_safe_partial
+    ):
+        trust_label = "Chưa được đối chiếu"
+        explanation = (
+            "Phần này chưa có trường thông tin mà hệ thống hiện hỗ trợ đối chiếu."
+        )
     claim_text = _html_text(claim_result.get("raw_claim_text"))
     compact = position is not None and total is not None
     heading = "Kết luận" if not compact else f"Nội dung {position}/{total}"
