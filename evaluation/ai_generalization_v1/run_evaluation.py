@@ -30,6 +30,12 @@ FAILURE_LAYERS = (
     "EXTRACTION", "NORMALIZATION", "RETRIEVAL", "REVIEWED_EVIDENCE_SELECTION",
     "TEMPORAL", "APPLICABILITY", "OTHER",
 )
+ANALYSIS_ERROR_SUBTYPES = {
+    "SEMANTIC_ROLE": {"AGV1-023", "AGV1-025", "AGV1-027", "AGV1-039", "AGV1-042"},
+    "TEMPORAL_ROLE": {"AGV1-011", "AGV1-012", "AGV1-024", "AGV1-040", "AGV1-046", "AGV1-047", "AGV1-048"},
+    "MULTI_OBLIGATION_SEGMENTATION": {"AGV1-028", "AGV1-034", "AGV1-041"},
+    "FIELD_ROLE": {"AGV1-038", "AGV1-049"},
+}
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -38,6 +44,24 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def accepted_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [record for record in records if record["review_status"] == "HUMAN_ACCEPTED"]
+
+
+def accepted_claim_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Expand accepted records only for per-obligation measurement.
+
+    Human adjudication can retain one source record while explicitly marking
+    multiple independent obligations.  Record counts and claim counts are
+    intentionally kept separate in metrics and reports.
+    """
+    expanded: list[dict[str, Any]] = []
+    for record in accepted_records(records):
+        claims = record.get("gold_claims") or [record["gold_claim"]]
+        for index, claim in enumerate(claims):
+            item = dict(record)
+            item["gold_claim"] = claim
+            item["claim_index"] = index
+            expanded.append(item)
+    return expanded
 
 
 def _normalize_location(value: str) -> str:
@@ -142,6 +166,7 @@ def retrieval_metrics(records: list[dict[str, Any]], retriever: Any) -> tuple[di
         ]
         traces.append({
             "record_id": record["record_id"],
+            "claim_index": record.get("claim_index", 0),
             "expected": {"notice_id": expected[0], "version_id": expected[1]},
             "query": source_derived_query(record),
             "retrieved": [
@@ -180,9 +205,9 @@ def evaluate_provider_output(gold_records: list[dict[str, Any]], predictions: di
 
 def failure_taxonomy(records: list[dict[str, Any]], retrieval_traces: list[dict[str, Any]]) -> dict[str, int]:
     counts = Counter({name: 0 for name in FAILURE_LAYERS})
-    trace_by_id = {trace["record_id"]: trace for trace in retrieval_traces}
+    trace_by_id = {(trace["record_id"], trace.get("claim_index", 0)): trace for trace in retrieval_traces}
     for record in records:
-        trace = trace_by_id[record["record_id"]]
+        trace = trace_by_id[(record["record_id"], record.get("claim_index", 0))]
         if trace["rank"] is None:
             counts["RETRIEVAL"] += 1
             continue
@@ -195,12 +220,22 @@ def failure_taxonomy(records: list[dict[str, Any]], retrieval_traces: list[dict[
     return dict(counts)
 
 
+def analysis_extraction_error_breakdown(records: list[dict[str, Any]]) -> dict[str, int]:
+    """Human-review analysis only; it has no runtime or verdict effect."""
+    accepted_ids = {record["record_id"] for record in records}
+    counts = {name: len(record_ids & accepted_ids) for name, record_ids in ANALYSIS_ERROR_SUBTYPES.items()}
+    counts["MISSING_FIELD"] = 0
+    counts["OTHER_EXTRACTION"] = 0
+    return counts
+
+
 def markdown_report(metrics: dict[str, Any]) -> str:
     retrieval = metrics["retrieval"]
     return (
         "# AI Generalization Evaluation Pack V1\n\n"
         f"- Candidate records: {metrics['dataset']['total_candidates']}\n"
-        f"- Reused human-accepted records: {metrics['dataset']['human_accepted']}\n"
+        f"- Human-accepted records: {metrics['dataset']['human_accepted_record_count']}\n"
+        f"- Human-accepted obligations: {metrics['dataset']['human_accepted_obligation_count']}\n"
         f"- Human review required: {metrics['dataset']['human_review_required']}\n\n"
         "## Measured\n\n"
         f"- Current-only Recall@1: {retrieval['recall_at_1']:.4f}\n"
@@ -219,7 +254,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-dir", type=Path, default=PACK / "reports")
     args = parser.parse_args(argv)
     records = load_jsonl(args.pack_dir / "dataset.jsonl")
-    gold = accepted_records(records)
+    gold_records = accepted_records(records)
+    gold = accepted_claim_records(records)
     if not gold:
         raise RuntimeError("No HUMAN_ACCEPTED records are available for evaluation.")
     if any(not record["source"]["current_version_at_pack_generation"] for record in gold):
@@ -231,13 +267,16 @@ def main(argv: list[str] | None = None) -> int:
         "pack_version": "ai-generalization-v1",
         "dataset": {
             "total_candidates": len(records),
-            "human_accepted": len(gold),
-            "human_review_required": len(records) - len(gold),
+            "human_accepted_record_count": len(gold_records),
+            "human_accepted_obligation_count": len(gold),
+            "human_rejected_count": sum(record["review_status"] == "REJECTED" for record in records),
+            "human_review_required": sum(record["review_status"] == "CANDIDATE_UNREVIEWED" for record in records),
             "source_distribution": dict(sorted(source_distribution.items())),
         },
         "extraction": extraction_metrics(gold),
         "retrieval": retrieval,
         "failure_taxonomy": failure_taxonomy(gold, traces),
+        "analysis_extraction_error_breakdown": analysis_extraction_error_breakdown(gold),
         "future_gemini_contract": evaluate_provider_output(gold, {}),
         "provider_requests_executed": 0,
     }

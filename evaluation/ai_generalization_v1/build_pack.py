@@ -88,6 +88,7 @@ def _field_payload(annotation: dict[str, Any], obligation: dict[str, Any]) -> di
     location = obligation.get("location")
     documents = obligation.get("required_documents", [])
     exceptions = obligation.get("exceptions", [])
+    occurrences = obligation.get("event_occurrences", [])
     return {
         "claim_span": None,
         "claim_span_status": "NOT_ANNOTATED_IN_REVIEWED_SOURCE",
@@ -98,6 +99,9 @@ def _field_payload(annotation: dict[str, Any], obligation: dict[str, Any]) -> di
         "location": location,
         "required_documents": documents,
         "exceptions": exceptions,
+        # Capability only: existing V1 gold is intentionally not retrofitted
+        # with event labels during schema introduction.
+        "event_occurrences": occurrences,
         "evidence_spans": {
             "audience": evidence(audience.get("evidence_span_ids", [])) if audience else [],
             "action": evidence(action.get("evidence_span_ids", [])),
@@ -111,6 +115,10 @@ def _field_payload(annotation: dict[str, Any], obligation: dict[str, Any]) -> di
             "exceptions": [
                 {"text": exception["text"], "evidence": evidence(exception.get("evidence_span_ids", []))}
                 for exception in exceptions
+            ],
+            "event_occurrences": [
+                {"raw_text": occurrence["raw_text"], "evidence": evidence(occurrence.get("evidence_span_ids", []))}
+                for occurrence in occurrences
             ],
         },
     }

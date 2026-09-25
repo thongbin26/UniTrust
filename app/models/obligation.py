@@ -19,6 +19,7 @@ class EvidenceField(StrEnum):
     AUDIENCE = "audience"
     ACTION = "action"
     DEADLINE = "deadline"
+    EVENT_OCCURRENCE = "event_occurrence"
     AMOUNT = "amount"
     LOCATION = "location"
     REQUIRED_DOCUMENT = "required_document"
@@ -42,6 +43,15 @@ class TemporalPrecision(StrEnum):
     DATE = "date"
     DATETIME = "datetime"
     UNKNOWN = "unknown"
+
+
+class EventOccurrenceKind(StrEnum):
+    """Role of an obligation-related occurrence, never a completion deadline."""
+
+    EVENT = "event"
+    SCHEDULE = "schedule"
+    INTERVIEW = "interview"
+    AWARD = "award"
 
 
 class TemporalRelationType(StrEnum):
@@ -199,6 +209,38 @@ class DeadlineValue(BaseModel):
         return self
 
 
+class EventOccurrence(BaseModel):
+    """Reviewed event or schedule metadata associated with an obligation.
+
+    This is structurally separate from ``DeadlineValue`` so an event date can
+    never silently be compared as a completion deadline.
+    """
+
+    raw_text: str = Field(min_length=1)
+    normalized_start: str | None = None
+    normalized_end: str | None = None
+    precision: TemporalPrecision
+    kind: EventOccurrenceKind
+    location: EvidenceBackedText | None = None
+    audience: AudienceCondition | None = None
+    evidence_span_ids: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_normalized_values(self):
+        for value in (self.normalized_start, self.normalized_end):
+            if value is None:
+                continue
+            if self.precision == TemporalPrecision.DATE:
+                date.fromisoformat(value)
+            elif self.precision == TemporalPrecision.DATETIME:
+                parsed = datetime.fromisoformat(value)
+                if parsed.tzinfo is None:
+                    raise ValueError("Normalized event datetime must include timezone.")
+        if self.normalized_start and self.normalized_end and self.normalized_end < self.normalized_start:
+            raise ValueError("Event occurrence end cannot precede its start.")
+        return self
+
+
 class MoneyValue(BaseModel):
     raw_text: str = Field(min_length=1)
 
@@ -220,6 +262,9 @@ class StudentObligation(BaseModel):
     action: ActionValue
 
     deadline: DeadlineValue | None = None
+
+    # Representation only: current verification does not compare this field.
+    event_occurrences: list[EventOccurrence] = Field(default_factory=list)
 
     amount: MoneyValue | None = None
 
@@ -387,6 +432,13 @@ class CanonicalNoticeAnnotation(BaseModel):
                     .evidence_span_ids,
                     obligation.obligation_id,
                 )
+
+            for occurrence in obligation.event_occurrences:
+                check_ids(occurrence.evidence_span_ids, obligation.obligation_id)
+                if occurrence.location:
+                    check_ids(occurrence.location.evidence_span_ids, obligation.obligation_id)
+                if occurrence.audience:
+                    check_ids(occurrence.audience.evidence_span_ids, obligation.obligation_id)
 
             if obligation.amount:
                 check_ids(

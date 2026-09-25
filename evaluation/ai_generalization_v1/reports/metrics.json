@@ -2,8 +2,10 @@
   "pack_version": "ai-generalization-v1",
   "dataset": {
     "total_candidates": 49,
-    "human_accepted": 18,
-    "human_review_required": 31,
+    "human_accepted_record_count": 35,
+    "human_accepted_obligation_count": 43,
+    "human_rejected_count": 14,
+    "human_review_required": 0,
     "source_distribution": {
       "dut_academic": 12,
       "dut_ctsv": 15,
@@ -16,23 +18,23 @@
   "extraction": {
     "action": {
       "status": "MEASURED",
-      "support_n": 18,
-      "matched_n": 7,
-      "predicted_value_n": 18,
-      "field_presence_accuracy": 0.3888888888888889,
-      "precision": 0.3888888888888889,
-      "recall": 0.3888888888888889,
-      "f1": 0.3888888888888889
+      "support_n": 43,
+      "matched_n": 10,
+      "predicted_value_n": 40,
+      "field_presence_accuracy": 0.23255813953488372,
+      "precision": 0.25,
+      "recall": 0.23255813953488372,
+      "f1": 0.24096385542168675
     },
     "deadline": {
       "status": "MEASURED",
-      "support_n": 15,
-      "matched_n": 2,
-      "predicted_value_n": 15,
-      "field_presence_accuracy": 0.13333333333333333,
-      "precision": 0.13333333333333333,
-      "recall": 0.13333333333333333,
-      "f1": 0.13333333333333333
+      "support_n": 24,
+      "matched_n": 5,
+      "predicted_value_n": 30,
+      "field_presence_accuracy": 0.20833333333333334,
+      "precision": 0.16666666666666666,
+      "recall": 0.20833333333333334,
+      "f1": 0.1851851851851852
     },
     "amount": {
       "status": "NOT_YET_MEASURED",
@@ -50,37 +52,45 @@
     },
     "location": {
       "status": "MEASURED",
-      "support_n": 7,
+      "support_n": 14,
       "matched_n": 2,
-      "predicted_value_n": 11,
-      "field_presence_accuracy": 0.2857142857142857,
-      "precision": 0.18181818181818182,
-      "recall": 0.2857142857142857,
-      "f1": 0.2222222222222222
+      "predicted_value_n": 15,
+      "field_presence_accuracy": 0.14285714285714285,
+      "precision": 0.13333333333333333,
+      "recall": 0.14285714285714285,
+      "f1": 0.1379310344827586
     }
   },
   "retrieval": {
     "status": "MEASURED",
-    "n": 18,
-    "recall_at_1": 1.0,
-    "recall_at_3": 1.0,
-    "recall_at_5": 1.0,
-    "mrr": 1.0,
-    "current_version_correctness": 1.0,
+    "n": 43,
+    "recall_at_1": 0.9302325581395349,
+    "recall_at_3": 0.9767441860465116,
+    "recall_at_5": 0.9767441860465116,
+    "mrr": 0.9534883720930233,
+    "current_version_correctness": 0.9767441860465116,
     "stale_version_retrieval_violations": 0
   },
   "failure_taxonomy": {
-    "EXTRACTION": 16,
+    "EXTRACTION": 39,
     "NORMALIZATION": 0,
-    "RETRIEVAL": 0,
+    "RETRIEVAL": 1,
     "REVIEWED_EVIDENCE_SELECTION": 0,
     "TEMPORAL": 0,
     "APPLICABILITY": 0,
     "OTHER": 0
   },
+  "analysis_extraction_error_breakdown": {
+    "SEMANTIC_ROLE": 5,
+    "TEMPORAL_ROLE": 7,
+    "MULTI_OBLIGATION_SEGMENTATION": 3,
+    "FIELD_ROLE": 2,
+    "MISSING_FIELD": 0,
+    "OTHER_EXTRACTION": 0
+  },
   "future_gemini_contract": {
     "evaluation_population": "HUMAN_ACCEPTED_ONLY",
-    "gold_record_count": 18,
+    "gold_record_count": 43,
     "prediction_record_count": 0,
     "comparable_fields": [
       "action",

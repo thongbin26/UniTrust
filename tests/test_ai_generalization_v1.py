@@ -14,10 +14,26 @@ def test_pack_strictly_separates_reviewed_gold_from_candidates():
     records = run_evaluation.load_jsonl(PACK / "dataset.jsonl")
     accepted = run_evaluation.accepted_records(records)
     assert len(records) == 49
-    assert len(accepted) == 18
-    assert all(record["gold_provenance"] == "REUSED_REVIEWED_ANNOTATION" for record in accepted)
+    assert len(accepted) == 35
+    rejected = {"AGV1-004", "AGV1-006", "AGV1-007", "AGV1-008", "AGV1-009", "AGV1-010", "AGV1-017", "AGV1-018", "AGV1-026", "AGV1-031", "AGV1-035", "AGV1-043", "AGV1-044", "AGV1-045"}
+    assert {record["record_id"] for record in records if record["review_status"] == "REJECTED"} == rejected
     assert all(record["gold_claim"] is not None for record in accepted)
-    assert all(record["gold_claim"] is None for record in records if record["review_status"] == "CANDIDATE_UNREVIEWED")
+    assert all(record["record_id"] not in {item["record_id"] for item in accepted} for record in records if record["review_status"] == "REJECTED")
+
+
+def test_human_adjudication_spans_and_multiclaims_are_exactly_grounded():
+    records = {record["record_id"]: record for record in run_evaluation.load_jsonl(PACK / "dataset.jsonl")}
+    for record_id in {"AGV1-011", "AGV1-012", "AGV1-023", "AGV1-024", "AGV1-025", "AGV1-027", "AGV1-028", "AGV1-034", "AGV1-038", "AGV1-039", "AGV1-040", "AGV1-041", "AGV1-042", "AGV1-046", "AGV1-047", "AGV1-048", "AGV1-049"}:
+        record = records[record_id]
+        assert record["review_status"] == "HUMAN_ACCEPTED"
+        for claim in record["gold_claims"]:
+            for field_spans in claim["evidence_spans"].values():
+                for span in field_spans:
+                    assert record["source_text"][span["start_char"]:span["end_char"]] == span["text"]
+    assert len(records["AGV1-041"]["gold_claims"]) == 3
+    assert all(claim["deadline"] is None for claim in records["AGV1-028"]["gold_claims"])
+    assert records["AGV1-049"]["gold_claim"]["amount"] is None
+    assert "1.300.000" not in str(records["AGV1-049"]["gold_claim"]["amount"])
 
 
 def test_builder_is_reproducible_and_does_not_touch_qualification_dataset(tmp_path):

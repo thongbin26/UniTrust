@@ -2,8 +2,8 @@
   "pack_version": "ai-generalization-v1",
   "selection_policy": "all current notice versions; one record per reviewed obligation or one unreviewed notice candidate",
   "record_count": 49,
-  "human_accepted_count": 18,
-  "human_review_required_count": 31,
+  "human_accepted_count": 35,
+  "human_review_required_count": 0,
   "source_distribution": {
     "dut_academic": 12,
     "dut_ctsv": 15,
@@ -12,5 +12,7 @@
     "dut_training_quality": 1,
     "dut_transport_energy_faculty": 3
   },
-  "provider_required": false
+  "provider_required": false,
+  "human_rejected_count": 14,
+  "human_accepted_obligation_count": 43
 }
