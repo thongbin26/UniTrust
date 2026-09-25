@@ -33,7 +33,12 @@ def test_demo_cases_content():
     # Verify Case B
     case_b = next(c for c in DEMO_CASES if c["case_id"] == "case_b_conflict")
     assert case_b["is_synthetic"]
-    assert case_b["source_notice_id"] == 13
+    # Case B is the controlled VEDC deadline mutation of reviewed notice 17,
+    # not notice 13 (which has multiple compatible submit obligations).
+    assert case_b["source_notice_id"] == 17
+    assert case_b["source_version_id"] == 17
+    assert "VEDC 2026" in case_b["claim_text"]
+    assert "01/07/2026" in case_b["claim_text"]
     assert "SYNTHETIC DEMO MUTATION" in case_b["label"]
     
     # Verify Case C

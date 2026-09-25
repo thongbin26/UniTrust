@@ -177,7 +177,21 @@ class VerificationService:
             # 2. Retrieval
             # Keep raw claim text as the retrieval fallback; normalized values are
             # used only for deterministic field comparison below.
-            retrieved_results = self.retriever.search(claim.raw_claim_text, top_k=top_k)
+            # Verification must never choose a historical version when the
+            # corpus also contains a current version.  Generic search keeps
+            # historical chunks for audit/history views; the HybridRetriever
+            # exposes this narrow current-evidence view for trust decisions.
+            search_current = getattr(self.retriever, "search_current", None)
+            if callable(search_current) and isinstance(getattr(self.retriever, "retrievers", None), list):
+                retrieved_results = search_current(claim.raw_claim_text, top_k=top_k)
+            else:
+                # Compatibility for small test/custom retrievers.  Production
+                # HybridRetriever always provides search_current().
+                retrieved_results = [
+                    result
+                    for result in self.retriever.search(claim.raw_claim_text, top_k=top_k)
+                    if result.chunk.is_latest_version
+                ]
 
             if not has_supported_field:
                 results.append(VerificationResult(
