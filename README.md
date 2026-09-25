@@ -58,8 +58,10 @@ flowchart TD
     X[DRAFT] --> H[Human review] --> P[PROMOTED trusted evidence]
 ```
 
-Monitor là process độc lập. FastAPI và Streamlit không tự khởi chạy monitor,
-và Streamlit rerun không crawl nguồn.
+UniTrust chạy bằng các process thành phần: FastAPI backend, Streamlit frontend
+và monitor worker cho continuous freshness. FastAPI và Streamlit không tự khởi
+chạy monitor, và Streamlit rerun không crawl nguồn. OCR sidecar chỉ là thành
+phần cục bộ bổ sung khi xác minh ảnh.
 
 ## 4. Continuous Freshness
 
@@ -71,8 +73,9 @@ Khi monitor đang chạy, nó tuần tự kiểm tra các nguồn chính thức 
 - lưu phiên bản để lịch sử vẫn audit được;
 - chỉ rebuild/publish retrieval cache khi có `NEW` hoặc `UPDATED`.
 
-Nếu dừng terminal monitor thì freshness tự động cũng dừng. Thu thập và
-versioning là tự động; **promotion thành trusted structured evidence không tự
+Nếu dừng terminal monitor, web UI vẫn chạy và dữ liệu hiện có vẫn sẵn sàng,
+nhưng thu thập/cập nhật tự động sẽ dừng. Thu thập và versioning là tự động khi
+worker đang chạy; **promotion thành trusted structured evidence không tự
 động**.
 
 ## 5. Tech stack
@@ -116,7 +119,6 @@ OCR là tùy chọn và cần isolated runtime riêng; xem phần OCR.
 ```powershell
 git clone https://github.com/thongbin26/UniTrust.git
 cd UniTrust
-git checkout feature/demo-readiness
 ```
 
 ## 9. Tạo virtual environment
@@ -132,11 +134,13 @@ Nếu PowerShell chặn activation, dùng Python trong `.venv\Scripts\python.exe
 trực tiếp hoặc làm theo chính sách execution policy của máy; không thay đổi
 chính sách bảo mật toàn máy chỉ để chạy UniTrust.
 
-## 10. Quick start — core system với external runtime
+## 10. Quick Start — Chạy UniTrust với external runtime
 
-Để monitor không ghi vào repository, dùng một runtime ngoài repo. Nhận bundle
-demo snapshot (DB, retrieval cache và local E5 snapshot) qua kênh nội bộ của
-team trước khi chạy. Git clone **không** tự mang theo các file runtime lớn đó.
+UniTrust là một hệ thống gồm backend, frontend và monitor worker chạy tách
+process. Để monitor không ghi vào repository, dùng một runtime ngoài repo.
+Nhận bundle demo snapshot (DB, retrieval cache và local E5 snapshot) qua kênh
+nội bộ của team trước khi chạy. Git clone **không** tự mang theo các file
+runtime lớn đó.
 
 ```powershell
 $runtime = "$env:USERPROFILE\unitrust-demo-runtime"
@@ -207,8 +211,9 @@ một cycle; monitor không chấp nhận interval dưới 300 giây.
 
 ## 14. OCR — OPTIONAL
 
-Text verification không cần OCR. Image verification cần OCR sidecar loopback
-cục bộ và một isolated Python runtime có `requirements-ocr.txt`:
+Text verification không cần OCR. OCR sidecar chỉ cần khi dùng image
+verification; nó chạy loopback cục bộ trong một isolated Python runtime có
+`requirements-ocr.txt`:
 
 ```powershell
 <ocr-python> -m pip install -r requirements-ocr.txt
@@ -269,8 +274,7 @@ máy sau này.
 Với nhóm ba người, làm việc trên branch ngắn, nhỏ và review được:
 
 ```powershell
-git pull
-git checkout feature/demo-readiness
+git pull origin main
 git checkout -b feature/<ten-cong-viec>
 # thay đổi nhỏ, test liên quan, review diff
 git commit -m "<mô tả ngắn>"
@@ -278,8 +282,8 @@ git push -u origin feature/<ten-cong-viec>
 ```
 
 Không commit `.env`, API keys, external runtime folders, model caches, OCR
-models hoặc logs. Phối hợp PR/merge riêng; không tự merge branch demo vào
-`main` trong lúc rehearsal.
+models hoặc logs. Mở PR từ branch cá nhân về `main`; có thể dùng
+`test/<ten-cong-viec>` thay cho `feature/<ten-cong-viec>` khi chỉ làm test.
 
 ## 20. Troubleshooting
 
@@ -300,7 +304,7 @@ models hoặc logs. Phối hợp PR/merge riêng; không tự merge branch demo 
 
 ## 21. Project status
 
-**Demo-ready core system.**
+**Demo-ready UniTrust system.**
 
 Công việc để sau demo: Gemini qualification/integration, cải thiện chất lượng
 OCR, event extraction/comparison, retrieval miss tuning và deployment
