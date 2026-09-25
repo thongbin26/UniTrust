@@ -4,6 +4,8 @@ venv/
 
 # Environment secrets
 .env
+.env.*
+!.env.example
 
 # Python cache
 __pycache__/
@@ -45,6 +47,7 @@ temp/
 data/raw/*
 data/processed/*
 data/benchmark/*
+data/v2-monitoring/
 
 # Keep folder structure
 !data/raw/.gitkeep
@@ -55,3 +58,18 @@ data/benchmark/*
 *.pem
 *.key
 credentials.json
+
+# Local demo/runtime state and downloaded model caches
+unitrust-demo-runtime/
+unitrust-demo-freshness-runtime/
+unitrust-*-runtime/
+.huggingface/
+.paddlex/
+paddle_models/
+PaddleOCR/
+PaddleX/
+
+# Local test-output folders (curated evaluation artifacts remain tracked)
+test-output/
+test-results/
+pytest-*.xml
